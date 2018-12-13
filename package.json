@@ -1,0 +1,11 @@
+{
+	"name": "causal-canvas",
+	"main": "index.js",
+	"scripts": {
+		"build": "node ./build.js"
+	},
+	"devDependencies": {
+		"electron-packager": "^12.2.0",
+		"fs-extra": "^7.0.0"
+	}
+}

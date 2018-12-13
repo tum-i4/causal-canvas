@@ -1,0 +1,6 @@
+node_modules
+causal-canvas-win32-x64
+main/node_modules
+main/dist
+renderer/node_modules
+renderer/build
