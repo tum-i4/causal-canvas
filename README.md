@@ -1,14 +1,12 @@
 
 
 ## dev
-//in rernderer
+in rernderer:
+* npm start
 
-npm start
 
-
-//in main
-
-npm start
+in main:
+* npm start
 
 ## build prod
 npm build
