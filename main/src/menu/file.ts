@@ -1,6 +1,6 @@
 import { MenuItemConstructorOptions, dialog, BrowserWindow, ipcMain } from 'electron';
 import * as fs from 'fs';
-import { extractr } from '../java-tools-wrapper/extractr';
+import { extractr_atack, extractr_fault } from '../java-tools-wrapper/extractr';
 
 export const fileMenuTemplate: MenuItemConstructorOptions[] = [
     {
@@ -15,7 +15,7 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
                     },
                     {
                         label: 'fault-tree',
-                        click: () => console.log('import fault-tree')
+                        click: menuHandlerFaultConvert
                     },
                     {
                         label: 'dot-file',
@@ -78,16 +78,18 @@ async function menuHandlerAtackConvert() {
         return;
     }
 
-    const srcString = await extractr(adtSrcPath, userSrcPath);
+    const srcString = await extractr_atack(adtSrcPath, userSrcPath);
     BrowserWindow.getFocusedWindow().webContents.send('import', srcString)
 }
 
-function menuHandlerImport() {
-    dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] }, (paths) => {
-        fs.readFile(paths[0], (error, data) => {
-            BrowserWindow.getFocusedWindow().webContents.send('import', data.toString())
-        });
-    })
+async function menuHandlerFaultConvert() {
+    const emftaSrcPath = await openFile({ properties: ['openFile'], filters: [{ name: 'EMFTA', extensions: ['emfta'] }] });
+    if (emftaSrcPath === undefined) {
+        return;
+    }
+
+    const srcString = await extractr_fault(emftaSrcPath);
+    BrowserWindow.getFocusedWindow().webContents.send('import', srcString)
 }
 
 function menuHandlerExport() {
