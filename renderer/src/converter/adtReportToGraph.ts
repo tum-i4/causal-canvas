@@ -1,14 +1,24 @@
 import { IGraph, INode } from "../types/GraphTypes";
+import { graphToDrawGraph } from "../graph-layout/graphToDrawGraph";
+import { d3ForceGraphLayout } from "../graph-layout/d3ForceLayout";
 
 
-export function adtReportToGraph(src: string): IGraph {
+export async function adtReportToGraph(src: string): Promise<IGraph> {
 
     const parts = src.split('\n\n');
-
-    return {
+    const graph = {
         title: getTitel(parts[0]),
         directed: true,
         nodes: getNodes(parts[1], parts[2])
+    }
+    const drawGraph = graphToDrawGraph(graph);
+    const layoutedDrawGraph = await d3ForceGraphLayout(drawGraph);
+
+    console.log('resolved graph:', layoutedDrawGraph);
+
+    return {
+        ...graph,
+        nodes: layoutedDrawGraph.nodes
     }
 }
 

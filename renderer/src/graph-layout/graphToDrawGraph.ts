@@ -11,9 +11,7 @@ export function graphToDrawGraph(graph: IGraph): IDrawGraph {
 
 function getEdgeFromNodesFormula(nodes: INode[]): IDrawEdge[] {
 
-    const getNodeByID = (id: string): INode | undefined => {
-        return nodes.find(node => node.id === id);
-    }
+    const getNodeByID = (id: string): INode | undefined => nodes.find(node => node.id === id);
 
     const makeDrawEdgeFromEdge = (sourceID: string, targetID: string): IDrawEdge | undefined => {
         const source = getNodeByID(sourceID);

@@ -32,9 +32,9 @@ class CausalCanvas extends Component<any, ICausalCanvasState> {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
 
-        ipcRenderer.on('import', (event, data) => {
+        ipcRenderer.on('import', async (event, data) => {
             //console.log(data);
-            const graph = adtReportToGraph(data);
+            const graph = await adtReportToGraph(data);
             console.log(graph);
             this.setState({ graph });
         })
