@@ -1,5 +1,5 @@
 import React from 'react';
-import { INode } from './GraphTypes';
+import { INode } from '../../types/GraphTypes';
 import styled from './../../style/theme/styled-components';
 
 

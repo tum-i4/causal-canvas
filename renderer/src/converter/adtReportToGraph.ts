@@ -1,4 +1,4 @@
-import { IGraph, INode } from "../components/graph/GraphTypes";
+import { IGraph, INode } from "../types/GraphTypes";
 
 
 export function adtReportToGraph(src: string): IGraph {
@@ -11,7 +11,6 @@ export function adtReportToGraph(src: string): IGraph {
         nodes: getNodes(parts[1], parts[2])
     }
 }
-
 
 function getTitel(titlePart: string): string {
     return titlePart.split("'")[1];

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IGraph, IPoint, INode, IEdge, IDrawEdge } from './GraphTypes';
+import { IGraph, IPoint, INode, IEdge, IDrawEdge } from '../../types/GraphTypes';
 import * as _ from 'lodash';
 import { Node } from './Node';
 import { Edge } from './Edge';
@@ -8,6 +8,7 @@ import { AreaSelection } from './SelectionArea';
 import { getSelectdFromArea } from './helper/areaSelection';
 import { InfoPanel } from './InfoPanel';
 import { FormulaInput } from './FormulaInput';
+import { graphToDrawGraph } from '../../graph-layout/graphToDrawGraph';
 
 export interface IGraphProps {
     data: IGraph;
@@ -230,20 +231,6 @@ class Graph extends Component<IGraphProps, IGraphState> {
         return this.state.graph.nodes.find(node => node.id === id);
     }
 
-    makeDrawEdgeFromEdge = (edge: IEdge): IDrawEdge | undefined => {
-        const source = this.getNodeByID(edge.source);
-        const target = this.getNodeByID(edge.target);
-        if (source === undefined || target === undefined) {
-            return undefined;
-        }
-
-        return {
-            source,
-            target,
-            id: edge.id
-        };
-    }
-
     createNewNode = (ev: React.MouseEvent) => {
         if (!ev.shiftKey) {
             return;
@@ -393,24 +380,6 @@ class Graph extends Component<IGraphProps, IGraphState> {
         this.removeMouseMoveEvent();
     }
 
-    getEdgeFromFormula = (node: INode): IDrawEdge[] => {
-        const { id, formula } = node;
-
-        const edges = formula
-            .replace(/!|\(|\)/g, '')
-            .split(/&|\|/)
-            .filter(target => target.length > 0)
-            .map((target): IEdge => ({
-                target,
-                source: id,
-                id: target + '-' + id
-            }))
-            .map(this.makeDrawEdgeFromEdge)
-            .filter(edge => edge !== undefined) as any;
-
-        return edges;
-    }
-
     updateNode = (updatedNode: INode) => {
         this.setState({
             ...this.state,
@@ -426,7 +395,9 @@ class Graph extends Component<IGraphProps, IGraphState> {
         const { height, width } = this.props;
         const { graph, viewPos, selected, newEdge, areaSelect } = this.state;
 
-        const nodes = graph.nodes.map(
+        const drawGraph = graphToDrawGraph(graph);
+
+        const nodes = drawGraph.nodes.map(
             (node, idx) => <Node
                 key={idx}
                 {...node}
@@ -438,14 +409,14 @@ class Graph extends Component<IGraphProps, IGraphState> {
             />
         )
 
-        const edges = _.flatten(graph.nodes.map(this.getEdgeFromFormula))
-            .map((edge, idx) => <Edge
+        const edges = drawGraph.edges.map(
+            (edge, idx) => <Edge
                 key={idx}
                 {...edge}
                 select={this.select}
                 selected={false}
             />
-            )
+        )
 
         // const edges = graph.edges
         //     .map(this.makeDrawEdges)

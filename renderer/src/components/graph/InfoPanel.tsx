@@ -1,19 +1,19 @@
 import * as React from 'react';
-import { INode } from './GraphTypes';
+import { INode } from '../../types/GraphTypes';
 
-export interface IInfoPanelProps{
+export interface IInfoPanelProps {
     node: INode;
-    applyNodeChanges: (updatedNode:INode)=>void;
+    applyNodeChanges: (updatedNode: INode) => void;
 }
 
-export interface IInfoPanelState{
+export interface IInfoPanelState {
     title: string;
     editTitle: boolean;
 }
 
-export class InfoPanel extends React.Component<IInfoPanelProps,IInfoPanelState>{
+export class InfoPanel extends React.Component<IInfoPanelProps, IInfoPanelState>{
 
-    constructor(props:IInfoPanelProps){
+    constructor(props: IInfoPanelProps) {
         super(props);
 
         this.state = {
@@ -22,15 +22,15 @@ export class InfoPanel extends React.Component<IInfoPanelProps,IInfoPanelState>{
         }
     }
 
-    onTitleChange= (ev:React.ChangeEvent<HTMLInputElement>)=>{
+    onTitleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({
             ...this.state,
             title: ev.target.value
         })
     }
 
-    applyNewName = (ev:React.KeyboardEvent<HTMLInputElement>)=>{
-        if(ev.key === 'Enter'){
+    applyNewName = (ev: React.KeyboardEvent<HTMLInputElement>) => {
+        if (ev.key === 'Enter') {
             this.props.applyNodeChanges({
                 ...this.props.node,
                 title: this.state.title
@@ -43,24 +43,24 @@ export class InfoPanel extends React.Component<IInfoPanelProps,IInfoPanelState>{
         }
     }
 
-    toggelNodeValue = ()=>{
+    toggelNodeValue = () => {
         this.props.applyNodeChanges({
             ...this.props.node,
             value: !this.props.node.value
         })
     }
 
-    render(){
+    render() {
 
-        const { title,editTitle } = this.state;
+        const { title, editTitle } = this.state;
 
         return (
-            <div  style={{backgroundColor:'grey',position:'fixed',top:'50%',right:0,transform:'translateY(-50%)',height:'200px',width:'200px'}}>
-                <div style={{textAlign: 'center',marginTop: '10px'}}>
+            <div style={{ backgroundColor: 'grey', position: 'fixed', top: '50%', right: 0, transform: 'translateY(-50%)', height: '200px', width: '200px' }}>
+                <div style={{ textAlign: 'center', marginTop: '10px' }}>
                     {
                         !editTitle
-                        ?<label onClick={()=>this.setState({...this.state,editTitle:true})}>{title}</label>
-                        :<input style={{textAlign: 'center'}} type='text' value={title} onChange={this.onTitleChange} onKeyUp={this.applyNewName}/>
+                            ? <label onClick={() => this.setState({ ...this.state, editTitle: true })}>{title}</label>
+                            : <input style={{ textAlign: 'center' }} type='text' value={title} onChange={this.onTitleChange} onKeyUp={this.applyNewName} />
                     }
                 </div>
                 <label onClick={this.toggelNodeValue}>value: {String(this.props.node.value)}</label>

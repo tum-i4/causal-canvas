@@ -1,26 +1,26 @@
 import * as React from 'react';
-import { INode } from './GraphTypes';
+import { INode } from '../../types/GraphTypes';
 import { ISelect, MoveType } from './Graph';
 
-export interface INodeProps extends INode{
+export interface INodeProps extends INode {
     selected: boolean;
-    select: (event:React.MouseEvent,selected:ISelect)=>void;
-    dragStart: (moveType:MoveType)=>void;
-    startNewEdge: (sourceID:string)=>void;
-    endNewEdge: (sourceID:string)=>void;
+    select: (event: React.MouseEvent, selected: ISelect) => void;
+    dragStart: (moveType: MoveType) => void;
+    startNewEdge: (sourceID: string) => void;
+    endNewEdge: (sourceID: string) => void;
 }
 
-export const Node: React.SFC<INodeProps> = ({x,y,selected,select,id,dragStart,startNewEdge,endNewEdge,title})=>{
+export const Node: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragStart, startNewEdge, endNewEdge, title }) => {
     return (
         <g
             onMouseDown={
-                (ev)=>{
+                (ev) => {
                     ev.stopPropagation();
 
-                    if(!selected){
+                    if (!selected) {
                         return;
                     }
-                    if(ev.ctrlKey){
+                    if (ev.ctrlKey) {
                         return dragStart(MoveType.Selection)
                     }
 
@@ -28,20 +28,20 @@ export const Node: React.SFC<INodeProps> = ({x,y,selected,select,id,dragStart,st
                 }
             }
             onMouseUp={
-                (ev)=>{
-                    if(!ev.ctrlKey){
+                (ev) => {
+                    if (!ev.ctrlKey) {
                         return endNewEdge(id);
                     }
                 }
             }
-            onClick={(ev)=>select(ev,{nodes:[id],edges:[]})}
+            onClick={(ev) => select(ev, { nodes: [id], edges: [] })}
         >
             <ellipse
                 cx={x}
                 cy={y}
                 rx="80"
                 ry="30"
-                stroke={selected?'blue':'black'}
+                stroke={selected ? 'blue' : 'black'}
                 strokeWidth={2}
                 fill="lightgrey"
             />

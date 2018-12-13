@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Graph from './graph/Graph';
-import { IGraph, INode, IEdge } from './graph/GraphTypes';
+import { IGraph, INode, IEdge } from '../types/GraphTypes';
 import _ from 'lodash';
 import { IpcRenderer } from 'electron';
 import { adtReportToGraph } from '../converter/adtReportToGraph';

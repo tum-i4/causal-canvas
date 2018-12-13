@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { IDrawEdge } from './GraphTypes';
+import { IDrawEdge } from '../../types/GraphTypes';
 import { ISelect } from './Graph';
 
-export interface IEdgeProps extends IDrawEdge{
+export interface IEdgeProps extends IDrawEdge {
     selected: boolean;
-    select: (event:React.MouseEvent,selected:ISelect)=>void
+    select: (event: React.MouseEvent, selected: ISelect) => void
 }
 
-export const Edge: React.SFC<IEdgeProps> = ({source,target,select,selected,id})=>{
+export const Edge: React.SFC<IEdgeProps> = ({ source, target, select, selected, id }) => {
     return (
         <g>
             <defs>
@@ -16,8 +16,8 @@ export const Edge: React.SFC<IEdgeProps> = ({source,target,select,selected,id})=
                 </marker>
             </defs>
             <path
-                stroke={selected?'blue':"black"}
-                onClick={(ev)=>select(ev,{nodes:[],edges:[id]})}
+                stroke={selected ? 'blue' : "black"}
+                onClick={(ev) => select(ev, { nodes: [], edges: [id] })}
                 strokeWidth="2"
                 d={`M${source.x},${source.y}L${target.x},${target.y}`}
                 markerEnd={'url(#arrow)'}
