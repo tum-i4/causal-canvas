@@ -1,12 +1,12 @@
 import { app, BrowserWindow, Menu, ipcMain, dialog } from 'electron'
 import { fileMenuTemplate } from './menu/file';
 import { helpMenuTemplate } from './menu/help';
-
+import * as fs from 'fs-extra';
 let mainWindow: Electron.BrowserWindow
-
+let currentPath = '';
 function onReady() {
 	mainWindow = new BrowserWindow({
-		width: 1000,
+		width: 1200,
 		height: 900
 	})
 
@@ -25,6 +25,24 @@ function onReady() {
 	mainWindow.loadURL(process.env.NODE_ENV === 'development' ? devDileName : prodFileName);
 	mainWindow.on('close', () => app.quit());
 
+	ipcMain.on('saveToFile', (event: any, data: string) => {
+
+		const jsonData = JSON.parse(data);
+		if (jsonData.type === 'save' && currentPath !== '') {
+			fs.writeFile(currentPath, jsonData.data, (err) => console.log(err));
+			return;
+		}
+
+		dialog.showSaveDialog({
+			filters: [{ name: 'causalmodel', extensions: ['causalmodel'] }]
+		}, (fileName: string) => {
+			if (fileName === undefined) {
+				return;
+			}
+			currentPath = fileName;
+			fs.writeFile(fileName, jsonData.data, (err) => console.log(err));
+		})
+	})
 }
 
 app.on('ready', () => onReady());
@@ -41,3 +59,7 @@ console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 // 		fs.writeFile(fileName, data, (err) => console.log(err));
 // 	})
 // })
+
+export function setCurrentPath(path: string) {
+	currentPath = path;
+}

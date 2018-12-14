@@ -3,7 +3,7 @@ import { graphToDrawGraph } from "../graph-layout/graphToDrawGraph";
 import { d3ForceGraphLayout } from "../graph-layout/d3ForceLayout";
 
 
-export async function adtReportToGraph(src: string): Promise<IGraph> {
+export async function extracterReportToGraph(src: string): Promise<IGraph> {
 
     const parts = src.split('\n\n');
     const graph = {

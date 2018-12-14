@@ -1,6 +1,17 @@
 import { MenuItemConstructorOptions, dialog, BrowserWindow, ipcMain } from 'electron';
-import * as fs from 'fs';
 import { extractr_atack, extractr_fault } from '../java-tools-wrapper/extractr';
+import * as fs from 'fs-extra';
+import { setCurrentPath } from '../index';
+
+export enum GraphImportType {
+    Extracter,
+    CausalModel
+}
+
+export interface IGraphImportData {
+    type: GraphImportType;
+    src: string;
+}
 
 export const fileMenuTemplate: MenuItemConstructorOptions[] = [
     {
@@ -19,11 +30,12 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
                     },
                     {
                         label: 'dot-file',
-                        click: () => console.log('import dot-file')
+                        click: () => console.log('import causal-model')
                     },
                     {
                         label: 'causal-model',
-                        click: () => console.log('import causal-model')
+                        click: menuHandlerImportCausalModel
+
                     },
                 ]
             },
@@ -42,15 +54,15 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
             },
             {
                 label: 'Save',
-                click: () => console.log('Save')
+                click: menuHandlerSave
             },
             {
                 label: 'Save as',
-                click: () => console.log('Save as')
+                click: menuHandlerSaveAs
             },
             {
                 label: 'Exit',
-                click: () => console.log('Save')
+                click: () => console.log('exit')
             }
         ]
     }
@@ -79,7 +91,12 @@ async function menuHandlerAtackConvert() {
     }
 
     const srcString = await extractr_atack(adtSrcPath, userSrcPath);
-    BrowserWindow.getFocusedWindow().webContents.send('import', srcString)
+
+    const importDate: IGraphImportData = {
+        type: GraphImportType.Extracter,
+        src: srcString
+    }
+    BrowserWindow.getFocusedWindow().webContents.send('import', JSON.stringify(importDate))
 }
 
 async function menuHandlerFaultConvert() {
@@ -89,9 +106,33 @@ async function menuHandlerFaultConvert() {
     }
 
     const srcString = await extractr_fault(emftaSrcPath);
-    BrowserWindow.getFocusedWindow().webContents.send('import', srcString)
+    const importDate: IGraphImportData = {
+        type: GraphImportType.Extracter,
+        src: srcString
+    }
+    BrowserWindow.getFocusedWindow().webContents.send('import', JSON.stringify(importDate))
 }
 
-function menuHandlerExport() {
-    BrowserWindow.getFocusedWindow().webContents.send('export', 'yolo');
+async function menuHandlerImportCausalModel() {
+    const modelSrcPath = await openFile({ properties: ['openFile'], filters: [{ name: 'causalmodel', extensions: ['causalmodel'] }] });
+    if (modelSrcPath === undefined) {
+        return;
+    }
+
+    const srcString = await fs.readFile(modelSrcPath);
+
+    const importDate: IGraphImportData = {
+        type: GraphImportType.CausalModel,
+        src: srcString.toString()
+    }
+    setCurrentPath(modelSrcPath);
+    BrowserWindow.getFocusedWindow().webContents.send('import', JSON.stringify(importDate))
+}
+
+function menuHandlerSave() {
+    BrowserWindow.getFocusedWindow().webContents.send('save');
+}
+
+function menuHandlerSaveAs() {
+    BrowserWindow.getFocusedWindow().webContents.send('saveas');
 }

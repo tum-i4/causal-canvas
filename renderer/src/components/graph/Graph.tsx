@@ -68,6 +68,10 @@ class Graph extends Component<IGraphProps, IGraphState> {
 
     }
 
+    public getCurrentGraph(): IGraph {
+        return this.state.graph;
+    }
+
     componentDidMount() {
         window.addEventListener('keyup', this.onKeyUp);
     }

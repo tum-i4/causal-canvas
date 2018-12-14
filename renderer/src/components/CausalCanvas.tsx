@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import Graph from './graph/Graph';
 import { IGraph, INode, IEdge } from '../types/GraphTypes';
 import _ from 'lodash';
 import { IpcRenderer } from 'electron';
-import { adtReportToGraph } from '../converter/adtReportToGraph';
+import { extracterReportToGraph } from '../converter/extracterReportToGraph';
 const electron = (window as any).require('electron');
 const fs = electron.remote.require('fs');
 const ipcRenderer: IpcRenderer = electron.ipcRenderer;
@@ -14,7 +14,19 @@ interface ICausalCanvasState {
     graph: IGraph;
 }
 
+export enum GraphImportType {
+    Extracter,
+    CausalModel
+}
+
+export interface IGraphImportData {
+    type: GraphImportType;
+    src: string;
+}
+
 class CausalCanvas extends Component<any, ICausalCanvasState> {
+
+    private graphRef = createRef<Graph>();
 
     constructor(props) {
         super(props);
@@ -32,11 +44,26 @@ class CausalCanvas extends Component<any, ICausalCanvasState> {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
 
-        ipcRenderer.on('import', async (event, data) => {
-            //console.log(data);
-            const graph = await adtReportToGraph(data);
-            console.log(graph);
-            this.setState({ graph });
+        ipcRenderer.on('import', async (event, data) => this.handelGraphImport(JSON.parse(data)))
+
+        ipcRenderer.on('save', async (event, data) => {
+            if (this.graphRef.current !== null) {
+                const graph = this.graphRef.current.getCurrentGraph();
+                ipcRenderer.send('saveToFile', JSON.stringify({
+                    type: 'save',
+                    data: JSON.stringify(graph, null, 2)
+                }));
+            }
+        })
+
+        ipcRenderer.on('saveas', async (event, data) => {
+            if (this.graphRef.current !== null) {
+                const graph = this.graphRef.current.getCurrentGraph();
+                ipcRenderer.send('saveToFile', JSON.stringify({
+                    type: 'saveas',
+                    data: JSON.stringify(graph, null, 2)
+                }));
+            }
         })
     }
 
@@ -48,11 +75,26 @@ class CausalCanvas extends Component<any, ICausalCanvasState> {
         this.setState({ width: window.innerWidth, height: window.innerHeight });
     }
 
+    handelGraphImport = async (data: IGraphImportData) => {
+
+        let graph: IGraph | null = null;
+
+        switch (data.type) {
+            case GraphImportType.Extracter: graph = await extracterReportToGraph(data.src); break;
+            case GraphImportType.CausalModel: graph = JSON.parse(data.src); break;
+        }
+
+        if (graph !== null) {
+            this.setState({ graph });
+        }
+    }
+
     render() {
 
         const { width, height, graph } = this.state;
 
         return <Graph
+            ref={this.graphRef}
             width={width}
             height={height}
             data={graph}
