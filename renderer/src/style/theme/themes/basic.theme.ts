@@ -4,7 +4,9 @@ export const BasicTheme: ITheme = {
     colors: {
         primary: 'red',
     },
-    nodes: {
+    node: {
+        rx: 90,
+        ry: 25,
         font: {
             size: '18',
             weight: '500'
@@ -20,5 +22,9 @@ export const BasicTheme: ITheme = {
             default: '2',
             selected: '3'
         }
+    },
+    edge: {
+        lineNodeSpace: 10,
+        width: '2'
     }
 }

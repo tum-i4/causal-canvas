@@ -2,6 +2,8 @@ import * as React from 'react';
 import { INode } from '../../types/GraphTypes';
 import { ISelect, MoveType } from './Graph';
 import styled from './../../style/theme/styled-components';
+import { withTheme } from 'styled-components';
+import { ITheme } from '../../style/theme/Theme';
 
 const NodeShape = styled.ellipse<React.SVGProps<SVGEllipseElement> & { selected: boolean, isExogenousVariable: boolean, markAsPartOfFormular: boolean }>`
     stroke: ${
@@ -10,15 +12,15 @@ const NodeShape = styled.ellipse<React.SVGProps<SVGEllipseElement> & { selected:
             : 'black'
     };
     stroke-width: ${
-    props => props.selected || props.markAsPartOfFormular ? props.theme.nodes.strokeWidth.selected
-        : props.theme.nodes.strokeWidth.default
+    props => props.selected || props.markAsPartOfFormular ? props.theme.node.strokeWidth.selected
+        : props.theme.node.strokeWidth.default
     };
-    stroke-dasharray: ${props => props.isExogenousVariable ? props.theme.nodes.exogenousNodes.strokeDasharray : ''};
+    stroke-dasharray: ${props => props.isExogenousVariable ? props.theme.node.exogenousNodes.strokeDasharray : ''};
 `
 
 const NodeText = styled.text<React.SVGProps<SVGTextElement>>`
-    font-size: ${props => props.theme.nodes.font.size};
-    font-wight: ${props => props.theme.nodes.font.weight};
+    font-size: ${props => props.theme.node.font.size};
+    font-wight: ${props => props.theme.node.font.weight};
 `
 
 export interface INodeProps extends INode {
@@ -28,9 +30,10 @@ export interface INodeProps extends INode {
     dragStart: (moveType: MoveType) => void;
     startNewEdge: (sourceID: string) => void;
     endNewEdge: (sourceID: string) => void;
+    theme: ITheme;
 }
 
-export const Node: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragStart, startNewEdge, endNewEdge, title, isExogenousVariable, markAsPartOfFormular }) => {
+const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragStart, startNewEdge, endNewEdge, title, isExogenousVariable, markAsPartOfFormular, theme }) => {
     return (
         <g
             onMouseDown={
@@ -62,11 +65,13 @@ export const Node: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragSt
                 markAsPartOfFormular={markAsPartOfFormular}
                 cx={x}
                 cy={y}
-                rx="80"
-                ry="30"
+                rx={theme.node.rx}
+                ry={theme.node.ry}
                 fill="transparent"
             />
             <NodeText textAnchor="middle" x={x} y={y} fill='#000000'>{title}</NodeText>
         </g>
     )
 }
+
+export const Node = withTheme(NodeRender)

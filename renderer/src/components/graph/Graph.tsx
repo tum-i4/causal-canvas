@@ -470,7 +470,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
                     </g>
                 </svg>
                 {
-                    selected.nodes.length > 0
+                    selected.nodes.length === 1
                         ? <React.Fragment key={selectedNodes[0].id}>
                             <InfoPanel applyNodeChanges={this.updateNode} node={selectedNodes[0]} />
                             {

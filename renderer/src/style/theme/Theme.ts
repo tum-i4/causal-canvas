@@ -2,7 +2,9 @@ export interface ITheme {
     colors: {
         primary: string;
     };
-    nodes: {
+    node: {
+        rx: number;
+        ry: number;
         font: {
             size: string;
             weight: string;
@@ -18,5 +20,9 @@ export interface ITheme {
             default: string;
             selected: string;
         }
+    };
+    edge: {
+        width: string;
+        lineNodeSpace: number;
     }
 }

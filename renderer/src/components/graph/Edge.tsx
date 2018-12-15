@@ -2,14 +2,17 @@ import * as React from 'react';
 import { IDrawEdge, INode, IPoint } from '../../types/GraphTypes';
 import { ISelect } from './Graph';
 const kld = require('kld-intersections');
+import { withTheme } from 'styled-components';
+import { ITheme } from '../../style/theme/Theme';
 
 export interface IEdgeProps extends IDrawEdge {
     selected: boolean;
-    select: (event: React.MouseEvent, selected: ISelect) => void
+    select: (event: React.MouseEvent, selected: ISelect) => void;
+    theme: ITheme;
 }
 
-export const Edge: React.SFC<IEdgeProps> = ({ source, target, select, selected, id }) => {
-    const [sourcePoint, targetPoint] = intersectionPoint(source, target);
+const EdgeRender: React.SFC<IEdgeProps> = ({ source, target, select, selected, id, theme }) => {
+    const [sourcePoint, targetPoint] = intersectionPoint(source, target, theme);
     return (
         <g>
             <defs>
@@ -42,12 +45,12 @@ export const Edge: React.SFC<IEdgeProps> = ({ source, target, select, selected, 
 
 
 
-function intersectionPoint(source: INode, target: INode): IPoint[] {
+function intersectionPoint(source: INode, target: INode, theme: ITheme): IPoint[] {
     const Point2D = kld.Point2D;
     const Intersection = kld.Intersection
 
-    const rx = 85;
-    const ry = 35;
+    const rx = theme.node.rx + theme.edge.lineNodeSpace;
+    const ry = theme.node.ry + theme.edge.lineNodeSpace;
 
     const line = {
         p1: new Point2D(source.x, source.y),
@@ -81,3 +84,5 @@ function intersectionPoint(source: INode, target: INode): IPoint[] {
 
     return [result1.points[0] || source, result2.points[0] || target];
 }
+
+export const Edge = withTheme(EdgeRender);
