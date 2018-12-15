@@ -112,7 +112,8 @@ function getTestData(): IGraph {
         title: 'a',
         value: true,
         id: 'a',
-        formula: 'b&c'
+        formula: 'b&c',
+        isExogenousVariable: false
     }
 
     const nodeB: INode = {
@@ -121,7 +122,8 @@ function getTestData(): IGraph {
         title: 'b',
         value: true,
         id: 'b',
-        formula: ''
+        formula: '',
+        isExogenousVariable: true
     }
 
     const nodeC: INode = {
@@ -130,7 +132,8 @@ function getTestData(): IGraph {
         title: 'c',
         value: true,
         id: 'c',
-        formula: ''
+        formula: '',
+        isExogenousVariable: true
     }
 
     return {

@@ -35,7 +35,8 @@ function getNodes(exoPart: string, endoPart: string): INode[] {
         y: 0,
         formula: '',
         id: name,
-        value: true
+        value: true,
+        isExogenousVariable: true
     }))
 
     const [endoTitle, ...endoValues] = endoPart.split('\n');
@@ -47,7 +48,8 @@ function getNodes(exoPart: string, endoPart: string): INode[] {
             y: 0,
             formula: formula.replace(/\sand\s/g, '&').replace(/\sor\s/g, '|'),
             id: name,
-            value: true
+            value: true,
+            isExogenousVariable: false
         }));
 
 

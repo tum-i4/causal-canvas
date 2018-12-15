@@ -1,6 +1,18 @@
 import * as React from 'react';
 import { INode } from '../../types/GraphTypes';
 import { ISelect, MoveType } from './Graph';
+import styled from './../../style/theme/styled-components';
+
+const NodeShape = styled.ellipse<React.SVGProps<SVGEllipseElement> & { selected: boolean, isExogenousVariable: boolean }>`
+    stroke: ${props => props.selected ? 'blue' : 'black'};
+    stroke-dasharray: ${props => props.isExogenousVariable ? props.theme.nodes.exogenousNodes.strokeDasharray : ''};
+    stroke-width: ${props => props.selected ? props.theme.nodes.strokeWidth.selected : props.theme.nodes.strokeWidth.default};
+`
+
+const NodeText = styled.text<React.SVGProps<SVGTextElement>>`
+    font-size: ${props => props.theme.nodes.font.size};
+    font-wight: ${props => props.theme.nodes.font.weight};
+`
 
 export interface INodeProps extends INode {
     selected: boolean;
@@ -10,7 +22,7 @@ export interface INodeProps extends INode {
     endNewEdge: (sourceID: string) => void;
 }
 
-export const Node: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragStart, startNewEdge, endNewEdge, title }) => {
+export const Node: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragStart, startNewEdge, endNewEdge, title, isExogenousVariable }) => {
     return (
         <g
             onMouseDown={
@@ -36,16 +48,16 @@ export const Node: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragSt
             }
             onClick={(ev) => select(ev, { nodes: [id], edges: [] })}
         >
-            <ellipse
+            <NodeShape
+                isExogenousVariable={isExogenousVariable}
+                selected={selected}
                 cx={x}
                 cy={y}
                 rx="80"
                 ry="30"
-                stroke={selected ? 'blue' : 'black'}
-                strokeWidth={2}
                 fill="lightgrey"
             />
-            <text textAnchor="middle" x={x} y={y} fill='#000000'>{title}</text>
+            <NodeText textAnchor="middle" x={x} y={y} fill='#000000'>{title}</NodeText>
         </g>
     )
 }

@@ -249,7 +249,8 @@ class Graph extends Component<IGraphProps, IGraphState> {
             y: ev.pageY - viewPos.y,
             title: id,
             value: true,
-            formula: ''
+            formula: '',
+            isExogenousVariable: false
         }
 
         this.setState({

@@ -3,8 +3,8 @@ import { INode } from '../../types/GraphTypes';
 import styled from './../../style/theme/styled-components';
 
 
+//background-color: ${props => props.theme.colors.primary};
 const FormularInputWrapper = styled.div`
-    background-color: ${props => props.theme.colors.primary};
     position: fixed;
     bottom: 0;
     left: 50%;
@@ -42,6 +42,7 @@ export class FormulaInput extends React.Component<IFormulaInputProps, IFormulaIn
     }
 
     inputChanged = (ev: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(ev.target.selectionStart)
         this.setState({
             formulaInput: ev.target.value
         })

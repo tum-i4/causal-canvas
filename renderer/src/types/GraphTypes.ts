@@ -11,6 +11,7 @@ export interface INode {
     title: string;
     value: boolean;
     id: string;
+    isExogenousVariable: boolean;
     formula: string;
 }
 
