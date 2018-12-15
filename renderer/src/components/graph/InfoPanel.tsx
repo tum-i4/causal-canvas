@@ -44,6 +44,10 @@ export class InfoPanel extends React.Component<IInfoPanelProps, IInfoPanelState>
     }
 
     toggelNodeValue = () => {
+        if (!this.props.node.isExogenousVariable) {
+            return;
+        }
+
         this.props.applyNodeChanges({
             ...this.props.node,
             value: !this.props.node.value

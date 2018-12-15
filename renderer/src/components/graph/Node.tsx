@@ -3,10 +3,17 @@ import { INode } from '../../types/GraphTypes';
 import { ISelect, MoveType } from './Graph';
 import styled from './../../style/theme/styled-components';
 
-const NodeShape = styled.ellipse<React.SVGProps<SVGEllipseElement> & { selected: boolean, isExogenousVariable: boolean }>`
-    stroke: ${props => props.selected ? 'blue' : 'black'};
+const NodeShape = styled.ellipse<React.SVGProps<SVGEllipseElement> & { selected: boolean, isExogenousVariable: boolean, markAsPartOfFormular: boolean }>`
+    stroke: ${
+    props => props.selected ? 'blue'
+        : props.markAsPartOfFormular ? 'red'
+            : 'black'
+    };
+    stroke-width: ${
+    props => props.selected || props.markAsPartOfFormular ? props.theme.nodes.strokeWidth.selected
+        : props.theme.nodes.strokeWidth.default
+    };
     stroke-dasharray: ${props => props.isExogenousVariable ? props.theme.nodes.exogenousNodes.strokeDasharray : ''};
-    stroke-width: ${props => props.selected ? props.theme.nodes.strokeWidth.selected : props.theme.nodes.strokeWidth.default};
 `
 
 const NodeText = styled.text<React.SVGProps<SVGTextElement>>`
@@ -15,6 +22,7 @@ const NodeText = styled.text<React.SVGProps<SVGTextElement>>`
 `
 
 export interface INodeProps extends INode {
+    markAsPartOfFormular: boolean;
     selected: boolean;
     select: (event: React.MouseEvent, selected: ISelect) => void;
     dragStart: (moveType: MoveType) => void;
@@ -22,7 +30,7 @@ export interface INodeProps extends INode {
     endNewEdge: (sourceID: string) => void;
 }
 
-export const Node: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragStart, startNewEdge, endNewEdge, title, isExogenousVariable }) => {
+export const Node: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragStart, startNewEdge, endNewEdge, title, isExogenousVariable, markAsPartOfFormular }) => {
     return (
         <g
             onMouseDown={
@@ -51,11 +59,12 @@ export const Node: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragSt
             <NodeShape
                 isExogenousVariable={isExogenousVariable}
                 selected={selected}
+                markAsPartOfFormular={markAsPartOfFormular}
                 cx={x}
                 cy={y}
                 rx="80"
                 ry="30"
-                fill="lightgrey"
+                fill="transparent"
             />
             <NodeText textAnchor="middle" x={x} y={y} fill='#000000'>{title}</NodeText>
         </g>

@@ -395,12 +395,24 @@ class Graph extends Component<IGraphProps, IGraphState> {
         })
     }
 
+    getFormularMarkedNodes() {
+        const { graph, selected } = this.state;
+
+        const set = new Set<string>()
+        graph.nodes.filter(node => selected.nodes.includes(node.id)).forEach(node => {
+            node.formula.replace(/!|\(|\)|&|\|/g, ' ').split(' ').forEach(id => set.add(id))
+        })
+
+        return set;
+    }
+
     render() {
 
         const { height, width } = this.props;
         const { graph, viewPos, selected, newEdge, areaSelect } = this.state;
 
         const drawGraph = graphToDrawGraph(graph);
+        const formularNodes = this.getFormularMarkedNodes();
 
         const nodes = drawGraph.nodes.map(
             (node, idx) => <Node
@@ -411,6 +423,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
                 dragStart={this.addMouseMoveEvent}
                 startNewEdge={this.startNewEdge}
                 endNewEdge={this.endNewEdge}
+                markAsPartOfFormular={formularNodes.has(node.id)}
             />
         )
 
@@ -460,7 +473,9 @@ class Graph extends Component<IGraphProps, IGraphState> {
                     selected.nodes.length > 0
                         ? <React.Fragment key={selectedNodes[0].id}>
                             <InfoPanel applyNodeChanges={this.updateNode} node={selectedNodes[0]} />
-                            <FormulaInput applyNodeChanges={this.updateNode} node={selectedNodes[0]} />
+                            {
+                                !selectedNodes[0].isExogenousVariable ? <FormulaInput applyNodeChanges={this.updateNode} node={selectedNodes[0]} /> : null
+                            }
                         </React.Fragment>
                         : null
                 }
