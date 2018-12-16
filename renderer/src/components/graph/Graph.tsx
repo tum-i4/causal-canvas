@@ -397,7 +397,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
             this.setState({
                 ...this.state,
                 areaSelect: { source: this.getResetPosition(), target: this.getResetPosition() },
-                selected: getSelectdFromArea(nodes, areaSelect, viewPos)
+                selected: getSelectdFromArea(nodes, areaSelect, viewPos, this.props.width, this.props.height)
             })
 
             return;
@@ -468,7 +468,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
         //         />
         //     )
 
-        const areaSelection = <AreaSelection {...areaSelect} viewPos={viewPos} />
+        const areaSelection = <AreaSelection {...areaSelect} viewPos={viewPos} sWidth={width} sHeight={height} />
 
         const selectedNodes = graph.nodes.filter(n => selected.nodes.includes(n.id));
         return (

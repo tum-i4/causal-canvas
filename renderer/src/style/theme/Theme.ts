@@ -2,6 +2,7 @@ export interface ITheme {
     colors: {
         background: string;
         primary: string;
+        secondary: string;
     };
     node: {
         rx: number;

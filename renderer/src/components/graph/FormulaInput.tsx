@@ -11,6 +11,23 @@ const FormularInputWrapper = styled.div`
     transform: translateX(-50%);
     height: 80px;
     width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+const FormularInputInput = styled.input`
+    width: 90%;
+    height: 50%;
+    text-align: center;
+    word-spacing: 5px;
+    font-size: 20px;
+    border: solid 2px ${props => props.theme.colors.primary};
+    outline: none;
+    &:focus{
+        outline: none;
+    }
+    border-radius: 5px;
 `
 
 interface IFormulaInputProps {
@@ -44,7 +61,7 @@ export class FormulaInput extends React.Component<IFormulaInputProps, IFormulaIn
     inputChanged = (ev: React.ChangeEvent<HTMLInputElement>) => {
         console.log(ev.target.selectionStart)
         this.setState({
-            formulaInput: ev.target.value
+            formulaInput: ev.target.value.replace(/\s/g, '')
         })
     }
 
@@ -61,17 +78,15 @@ export class FormulaInput extends React.Component<IFormulaInputProps, IFormulaIn
 
         const { formulaInput } = this.state;
 
+        const spacedText = formulaInput.replace(/&/g, ' & ').replace(/\|/g, ' | ')
         return <FormularInputWrapper>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                <input
-                    ref={this.textInput}
-                    type='text'
-                    value={formulaInput}
-                    style={{ width: '90%', height: '50%', textAlign: 'center' }}
-                    onChange={this.inputChanged}
-                    onKeyUp={this.applyNewFormula}
-                />
-            </div>
+            <FormularInputInput
+                ref={this.textInput}
+                type='text'
+                value={spacedText}
+                onChange={this.inputChanged}
+                onKeyUp={this.applyNewFormula}
+            />
         </FormularInputWrapper>
     }
 }

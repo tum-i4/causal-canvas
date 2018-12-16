@@ -1,13 +1,13 @@
 import { ISelect } from "../Graph";
 import { INode, IDrawEdge, IPoint } from "../../../types/GraphTypes";
 
-export function getSelectdFromArea(nodes: INode[], area: { source: IPoint, target: IPoint }, viewPos: IPoint): ISelect {
+export function getSelectdFromArea(nodes: INode[], area: { source: IPoint, target: IPoint }, viewPos: IPoint, sWidth: number, sHeight: number): ISelect {
 
-    let x = area.source.x - viewPos.x;
-    let y = area.source.y - viewPos.y;
+    let x = area.source.x - viewPos.x - sWidth / 2;
+    let y = area.source.y - viewPos.y - sHeight / 2;
 
-    let width = area.target.x - viewPos.x - x;
-    let height = area.target.y - viewPos.y - y;
+    let width = area.target.x - viewPos.x - x - sWidth / 2;
+    let height = area.target.y - viewPos.y - y - sHeight / 2;
 
     if (width < 0) {
         x += width;

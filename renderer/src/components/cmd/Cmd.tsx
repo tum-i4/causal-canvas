@@ -9,7 +9,7 @@ const CmdContainer = styled.div`
     left: 50%
     transform: translateX(-50%);
     width: 450px;
-    height: 45px;
+    height: 44px;
     background-color: ${props => props.theme.colors.primary};
     display: flex;
     justify-content: center;
@@ -17,7 +17,15 @@ const CmdContainer = styled.div`
 `
 
 const CmdInput = styled.input`
-    width: 90%;
+    padding: 3px;
+    padding-left: 10px;
+    width: 93%;
+    border: solid 1px ${props => props.theme.colors.secondary};
+    outline: none;
+    border-radius: 3px;
+    &:focus{
+        outline: none;
+    }
 `
 
 interface ICmdState {

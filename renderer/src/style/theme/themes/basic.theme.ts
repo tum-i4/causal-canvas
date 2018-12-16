@@ -3,11 +3,12 @@ import { ITheme } from "../Theme";
 export const BasicTheme: ITheme = {
     colors: {
         background: '#ffffff',
-        primary: '#3c3c3c',
+        primary: '#7c7c7c',
+        secondary: '#48dbfb'
     },
     node: {
         rx: 90,
-        ry: 25,
+        ry: 30,
         font: {
             size: '18',
             weight: '500'
@@ -22,7 +23,7 @@ export const BasicTheme: ITheme = {
         },
         strokeWidth: {
             default: '2',
-            selected: '4'
+            selected: '3'
         }
     },
     edge: {

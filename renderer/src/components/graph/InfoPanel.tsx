@@ -1,5 +1,35 @@
 import * as React from 'react';
 import { INode } from '../../types/GraphTypes';
+import styled from '../../style/theme/styled-components';
+
+const InfoPannelContainer = styled.div`
+    background-color: ${props => props.theme.colors.primary};
+    padding: 10px;
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    height: 200px;
+    width: 200px;
+    color: #ffffff;
+
+`
+
+const TitleWrapper = styled.div`
+    text-align: center;
+    margin-bottom: 10px;
+`
+
+const TitleInput = styled.input`
+
+    text-align: center;
+    border: solid 1px ${props => props.theme.colors.secondary};
+    outline: none;
+    &:focus{
+        outline: none;
+    }
+    border-radius: 3px;
+`
 
 export interface IInfoPanelProps {
     node: INode;
@@ -59,16 +89,16 @@ export class InfoPanel extends React.Component<IInfoPanelProps, IInfoPanelState>
         const { title, editTitle } = this.state;
 
         return (
-            <div style={{ backgroundColor: 'grey', position: 'fixed', top: '50%', right: 0, transform: 'translateY(-50%)', height: '200px', width: '200px' }}>
-                <div style={{ textAlign: 'center', marginTop: '10px' }}>
+            <InfoPannelContainer>
+                <TitleWrapper>
                     {
                         !editTitle
                             ? <label onClick={() => this.setState({ ...this.state, editTitle: true })}>{title}</label>
-                            : <input style={{ textAlign: 'center' }} type='text' value={title} onChange={this.onTitleChange} onKeyUp={this.applyNewName} />
+                            : <TitleInput type='text' value={title} onChange={this.onTitleChange} onKeyUp={this.applyNewName} />
                     }
-                </div>
+                </TitleWrapper>
                 <label onClick={this.toggelNodeValue}>value: {String(this.props.node.value)}</label>
-            </div>
+            </InfoPannelContainer>
         )
     }
 }
