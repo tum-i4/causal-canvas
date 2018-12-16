@@ -7,9 +7,9 @@ import { ITheme } from '../../style/theme/Theme';
 
 const NodeShape = styled.ellipse<React.SVGProps<SVGEllipseElement> & { selected: boolean, isExogenousVariable: boolean, markAsPartOfFormular: boolean }>`
     stroke: ${
-    props => props.selected ? 'blue'
-        : props.markAsPartOfFormular ? 'red'
-            : 'black'
+    props => props.selected ? props.theme.node.borderColor.selected
+        : props.markAsPartOfFormular ? props.theme.node.borderColor.formular
+            : props.theme.node.borderColor.default
     };
     stroke-width: ${
     props => props.selected || props.markAsPartOfFormular ? props.theme.node.strokeWidth.selected
@@ -34,6 +34,8 @@ export interface INodeProps extends INode {
 }
 
 const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragStart, startNewEdge, endNewEdge, title, isExogenousVariable, markAsPartOfFormular, theme }) => {
+
+    console.log('rerender node');
     return (
         <g
             onMouseDown={

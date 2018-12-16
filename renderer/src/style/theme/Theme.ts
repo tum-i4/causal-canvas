@@ -1,5 +1,6 @@
 export interface ITheme {
     colors: {
+        background: string;
         primary: string;
     };
     node: {
@@ -9,9 +10,10 @@ export interface ITheme {
             size: string;
             weight: string;
         };
-        colors: {
+        borderColor: {
             default: string;
             selected: string;
+            formular: string;
         };
         exogenousNodes: {
             strokeDasharray: string;

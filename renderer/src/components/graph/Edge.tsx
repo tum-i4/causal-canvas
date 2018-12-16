@@ -12,6 +12,7 @@ export interface IEdgeProps extends IDrawEdge {
 }
 
 const EdgeRender: React.SFC<IEdgeProps> = ({ source, target, select, selected, id, theme }) => {
+    console.log("recalc");
     const [sourcePoint, targetPoint] = intersectionPoint(source, target, theme);
     return (
         <g>
@@ -23,7 +24,7 @@ const EdgeRender: React.SFC<IEdgeProps> = ({ source, target, select, selected, i
             <path
                 stroke={selected ? 'blue' : "black"}
                 onClick={(ev) => select(ev, { nodes: [], edges: [id] })}
-                strokeWidth="2"
+                strokeWidth={theme.edge.width}
                 d={`M${sourcePoint.x},${sourcePoint.y}L${targetPoint.x},${targetPoint.y}`}
                 markerEnd={'url(#arrow)'}
             />

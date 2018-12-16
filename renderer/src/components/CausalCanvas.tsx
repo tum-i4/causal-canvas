@@ -4,6 +4,7 @@ import { IGraph, INode, IEdge } from '../types/GraphTypes';
 import _ from 'lodash';
 import { IpcRenderer } from 'electron';
 import { extracterReportToGraph } from '../converter/extracterReportToGraph';
+import { Cmd } from './cmd/Cmd';
 const electron = (window as any).require('electron');
 const fs = electron.remote.require('fs');
 const ipcRenderer: IpcRenderer = electron.ipcRenderer;
@@ -93,12 +94,16 @@ class CausalCanvas extends Component<any, ICausalCanvasState> {
 
         const { width, height, graph } = this.state;
 
-        return <Graph
-            ref={this.graphRef}
-            width={width}
-            height={height}
-            data={graph}
-        />
+        return <React.Fragment>
+            <Graph
+                ref={this.graphRef}
+                width={width}
+                height={height}
+                data={graph}
+            />
+            <Cmd />
+        </React.Fragment>
+
     }
 }
 
@@ -107,8 +112,8 @@ export default CausalCanvas;
 
 function getTestData(): IGraph {
     const nodeA: INode = {
-        x: 400,
-        y: 300,
+        x: 0,
+        y: 0,
         title: 'a',
         value: true,
         id: 'a',
@@ -117,8 +122,8 @@ function getTestData(): IGraph {
     }
 
     const nodeB: INode = {
-        x: 300,
-        y: 400,
+        x: 100,
+        y: 100,
         title: 'b',
         value: true,
         id: 'b',
@@ -127,8 +132,8 @@ function getTestData(): IGraph {
     }
 
     const nodeC: INode = {
-        x: 500,
-        y: 400,
+        x: -100,
+        y: 100,
         title: 'c',
         value: true,
         id: 'c',

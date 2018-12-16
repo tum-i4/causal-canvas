@@ -9,6 +9,8 @@ import { getSelectdFromArea } from './helper/areaSelection';
 import { InfoPanel } from './InfoPanel';
 import { FormulaInput } from './FormulaInput';
 import { graphToDrawGraph } from '../../graph-layout/graphToDrawGraph';
+import { cmdEvent, CmdTypes } from '../cmd/CmdEvent';
+import { cmd_goto } from '../cmd/cmd-actions/goto';
 
 export interface IGraphProps {
     data: IGraph;
@@ -72,12 +74,31 @@ class Graph extends Component<IGraphProps, IGraphState> {
         return this.state.graph;
     }
 
+    public applyCommand = (cmd: { type: CmdTypes, args: string[] }) => {
+
+        const { viewPos, graph: { nodes } } = this.state;
+        let changes: any;
+
+        switch (cmd.type) {
+            case CmdTypes.GOTO: changes = {
+                viewPos: cmd_goto(cmd.args, nodes, viewPos)
+            }; break;
+        }
+
+        this.setState({
+            ...this.state,
+            ...changes
+        });
+    }
+
     componentDidMount() {
         window.addEventListener('keyup', this.onKeyUp);
+        cmdEvent.on('cmd', this.applyCommand);
     }
 
     componentWillUnmount() {
 
+        cmdEvent.removeListener('cmd', this.applyCommand);
         window.removeEventListener('keyup', this.onKeyUp);
         this.removeMouseMoveEvent();
     }
@@ -416,7 +437,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
 
         const nodes = drawGraph.nodes.map(
             (node, idx) => <Node
-                key={idx}
+                key={node.id}
                 {...node}
                 select={this.select}
                 selected={selected.nodes.includes(node.id)}
@@ -429,7 +450,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
 
         const edges = drawGraph.edges.map(
             (edge, idx) => <Edge
-                key={idx}
+                key={edge.id}
                 {...edge}
                 select={this.select}
                 selected={false}
@@ -450,14 +471,13 @@ class Graph extends Component<IGraphProps, IGraphState> {
         const areaSelection = <AreaSelection {...areaSelect} viewPos={viewPos} />
 
         const selectedNodes = graph.nodes.filter(n => selected.nodes.includes(n.id));
-
         return (
             <React.Fragment>
                 <svg
                     ref={this.svgRef}
                     width={width}
                     height={height}
-                    viewBox={`${0} ${0} ${width} ${height}`}
+                    viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`}
                     onMouseDown={this.onMouseDown}
                     onMouseUp={this.onMouseUp}
                 >

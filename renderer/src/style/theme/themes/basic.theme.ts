@@ -2,7 +2,8 @@ import { ITheme } from "../Theme";
 
 export const BasicTheme: ITheme = {
     colors: {
-        primary: 'red',
+        background: '#ffffff',
+        primary: '#3c3c3c',
     },
     node: {
         rx: 90,
@@ -11,20 +12,21 @@ export const BasicTheme: ITheme = {
             size: '18',
             weight: '500'
         },
-        colors: {
+        borderColor: {
             default: 'black',
-            selected: 'blue'
+            selected: 'blue',
+            formular: 'red'
         },
         exogenousNodes: {
-            strokeDasharray: "6 3"
+            strokeDasharray: "8 8"
         },
         strokeWidth: {
             default: '2',
-            selected: '3'
+            selected: '4'
         }
     },
     edge: {
         lineNodeSpace: 10,
-        width: '2'
+        width: '3'
     }
 }
