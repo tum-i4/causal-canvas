@@ -10,7 +10,11 @@ export interface ITheme {
         font: {
             size: string;
             weight: string;
+            color: string;
         };
+        backgroundColor: {
+            default: string;
+        }
         borderColor: {
             default: string;
             selected: string;

@@ -10,13 +10,17 @@ export const BasicTheme: ITheme = {
         rx: 90,
         ry: 30,
         font: {
-            size: '18',
-            weight: '500'
+            size: '25',
+            weight: '700',
+            color: '#000000'
+        },
+        backgroundColor: {
+            default: '#ffffff'
         },
         borderColor: {
             default: 'black',
-            selected: 'blue',
-            formular: 'red'
+            selected: '#2ed573',
+            formular: '#ff793f'
         },
         exogenousNodes: {
             strokeDasharray: "8 8"

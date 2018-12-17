@@ -11,6 +11,13 @@ import { FormulaInput } from './FormulaInput';
 import { graphToDrawGraph } from '../../graph-layout/graphToDrawGraph';
 import { cmdEvent, CmdTypes } from '../cmd/CmdEvent';
 import { cmd_goto } from '../cmd/cmd-actions/goto';
+import styled from '../../style/theme/styled-components';
+import { get_sub_tree } from '../cmd/cmd-actions/get-sub-tree';
+
+const SVG = styled.svg`
+    background-color: ${props => props.theme.colors.background}
+`
+
 
 export interface IGraphProps {
     data: IGraph;
@@ -416,24 +423,13 @@ class Graph extends Component<IGraphProps, IGraphState> {
         })
     }
 
-    getFormularMarkedNodes() {
-        const { graph, selected } = this.state;
-
-        const set = new Set<string>()
-        graph.nodes.filter(node => selected.nodes.includes(node.id)).forEach(node => {
-            node.formula.replace(/!|\(|\)|&|\|/g, ' ').split(' ').forEach(id => set.add(id))
-        })
-
-        return set;
-    }
-
     render() {
 
         const { height, width } = this.props;
         const { graph, viewPos, selected, newEdge, areaSelect } = this.state;
 
         const drawGraph = graphToDrawGraph(graph);
-        const formularNodes = this.getFormularMarkedNodes();
+        const formularNodes = get_sub_tree(graph.nodes, selected.nodes);
 
         const nodes = drawGraph.nodes.map(
             (node, idx) => <Node
@@ -471,9 +467,10 @@ class Graph extends Component<IGraphProps, IGraphState> {
         const areaSelection = <AreaSelection {...areaSelect} viewPos={viewPos} sWidth={width} sHeight={height} />
 
         const selectedNodes = graph.nodes.filter(n => selected.nodes.includes(n.id));
+        console.log(viewPos.x, width, viewPos.x % width);
         return (
             <React.Fragment>
-                <svg
+                <SVG
                     ref={this.svgRef}
                     width={width}
                     height={height}
@@ -481,6 +478,17 @@ class Graph extends Component<IGraphProps, IGraphState> {
                     onMouseDown={this.onMouseDown}
                     onMouseUp={this.onMouseUp}
                 >
+                    <pattern id="simple-dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <circle fill="#9c9c9c" cx="10" cy="10" r="1" />
+                    </pattern>
+                    <rect
+                        x={-width}
+                        y={-height}
+                        transform={`translate(${viewPos.x % width / 2},${viewPos.y % height / 2})`}
+                        style={{ pointerEvents: "none" }}
+                        width={width * 2} height={height * 2}
+                        fill="url(#simple-dots)"
+                    />
                     <g
                         transform={`translate(${viewPos.x},${viewPos.y})`}
                     >
@@ -488,7 +496,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
                         {nodes}
                         {areaSelection}
                     </g>
-                </svg>
+                </SVG>
                 {
                     selected.nodes.length === 1
                         ? <React.Fragment key={selectedNodes[0].id}>

@@ -19,8 +19,7 @@ const NodeShape = styled.ellipse<React.SVGProps<SVGEllipseElement> & { selected:
 `
 
 const NodeText = styled.text<React.SVGProps<SVGTextElement>>`
-    font-size: ${props => props.theme.node.font.size};
-    font-wight: ${props => props.theme.node.font.weight};
+    user-select: none;
 `
 
 export interface INodeProps extends INode {
@@ -35,7 +34,7 @@ export interface INodeProps extends INode {
 
 const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragStart, startNewEdge, endNewEdge, title, isExogenousVariable, markAsPartOfFormular, theme }) => {
 
-    console.log('rerender node');
+    //console.log('rerender node');
     return (
         <g
             onMouseDown={
@@ -69,9 +68,16 @@ const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragSta
                 cy={y}
                 rx={theme.node.rx}
                 ry={theme.node.ry}
-                fill="transparent"
+                fill={theme.node.backgroundColor.default}
             />
-            <NodeText textAnchor="middle" x={x} y={y} fill='#000000'>{title}</NodeText>
+            <NodeText
+                fontWeight={theme.node.font.weight}
+                fontSize={theme.node.font.size}
+                textAnchor="middle"
+                x={x}
+                y={y}
+                fill={theme.node.font.color}
+            >{title}</NodeText>
         </g>
     )
 }

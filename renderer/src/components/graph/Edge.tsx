@@ -12,7 +12,7 @@ export interface IEdgeProps extends IDrawEdge {
 }
 
 const EdgeRender: React.SFC<IEdgeProps> = ({ source, target, select, selected, id, theme }) => {
-    console.log("recalc");
+    //console.log("recalc");
     const [sourcePoint, targetPoint] = intersectionPoint(source, target, theme);
     return (
         <g>
