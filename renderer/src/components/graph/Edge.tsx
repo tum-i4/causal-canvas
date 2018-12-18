@@ -4,16 +4,18 @@ import { ISelect } from './Graph';
 const kld = require('kld-intersections');
 import { withTheme } from 'styled-components';
 import { ITheme } from '../../style/theme/Theme';
+import { onlyUpdateForKeys } from 'recompose';
 
 export interface IEdgeProps extends IDrawEdge {
     selected: boolean;
     select: (event: React.MouseEvent, selected: ISelect) => void;
     theme: ITheme;
+    isNewEge?: boolean;
 }
 
-const EdgeRender: React.SFC<IEdgeProps> = ({ source, target, select, selected, id, theme }) => {
-    //console.log("recalc");
-    const [sourcePoint, targetPoint] = intersectionPoint(source, target, theme);
+const EdgeRender: React.SFC<IEdgeProps> = ({ source, target, select, selected, id, theme, isNewEge }) => {
+    console.log("edge render");
+    const [sourcePoint, targetPoint] = isNewEge ? [source, target] : intersectionPoint(source, target, theme);
     return (
         <g>
             <defs>
@@ -86,4 +88,6 @@ function intersectionPoint(source: INode, target: INode, theme: ITheme): IPoint[
     return [result1.points[0] || source, result2.points[0] || target];
 }
 
-export const Edge = withTheme(EdgeRender);
+export const Edge = onlyUpdateForKeys([
+    'source', 'target'
+])(withTheme(EdgeRender));

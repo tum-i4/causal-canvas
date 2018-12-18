@@ -12,7 +12,8 @@ import { graphToDrawGraph } from '../../graph-layout/graphToDrawGraph';
 import { cmdEvent, CmdTypes } from '../cmd/CmdEvent';
 import { cmd_goto } from '../cmd/cmd-actions/goto';
 import styled from '../../style/theme/styled-components';
-import { get_sub_tree } from '../cmd/cmd-actions/get-sub-tree';
+import { getSubTree } from '../cmd/cmd-actions/getSubTree';
+import { cmd_hightligt } from '../cmd/cmd-actions/highlight';
 
 const SVG = styled.svg`
     background-color: ${props => props.theme.colors.background}
@@ -33,6 +34,9 @@ export interface IGraphState {
     areaSelect: {
         source: IPoint;
         target: IPoint;
+    },
+    filter: {
+        highlight: string[]
     }
 }
 
@@ -72,9 +76,17 @@ class Graph extends Component<IGraphProps, IGraphState> {
             areaSelect: {
                 source: this.getResetPosition(),
                 target: this.getResetPosition()
-            }
+            },
+            filter: this.getInitFilter()
+
         }
 
+    }
+
+    private getInitFilter() {
+        return {
+            highlight: []
+        }
     }
 
     public getCurrentGraph(): IGraph {
@@ -89,6 +101,15 @@ class Graph extends Component<IGraphProps, IGraphState> {
         switch (cmd.type) {
             case CmdTypes.GOTO: changes = {
                 viewPos: cmd_goto(cmd.args, nodes, viewPos)
+            }; break;
+            case CmdTypes.HIGHLIGHT: changes = {
+                filter: {
+                    ...this.state.filter,
+                    highlight: cmd_hightligt(cmd.args, nodes)
+                }
+            }; break;
+            case CmdTypes.RESET: changes = {
+                filter: this.getInitFilter()
             }; break;
         }
 
@@ -201,8 +222,8 @@ class Graph extends Component<IGraphProps, IGraphState> {
                 ...newEdge!,
                 target: {
                     ...newEdge!.target,
-                    x: event.pageX - viewPos.x,
-                    y: event.pageY - viewPos.y
+                    x: event.pageX - viewPos.x - this.props.width / 2,
+                    y: event.pageY - viewPos.y - this.props.height / 2
                 }
             }
         })
@@ -273,8 +294,8 @@ class Graph extends Component<IGraphProps, IGraphState> {
         const id = uuid.v4().substring(0, 3);
         const newNode: INode = {
             id,
-            x: ev.pageX - viewPos.x,
-            y: ev.pageY - viewPos.y,
+            x: ev.pageX - viewPos.x - this.props.width / 2,
+            y: ev.pageY - viewPos.y - this.props.height / 2,
             title: id,
             value: true,
             formula: '',
@@ -334,23 +355,22 @@ class Graph extends Component<IGraphProps, IGraphState> {
             return;
         }
 
-        // const sourceID = newEdge!.source.id;
-        // console.log("newEdge?");
+        console.log('newEdge', newEdge.source.id, targetID);
 
-        // const id = `${sourceID}-${targetID}`;
-        // if( sourceID !== targetID && !graph.edges.map(edge=>edge.id).includes(id)){
-        //     console.log("yes?");
-
-        //     this.setState({
-        //         graph: {
-        //             ...graph,
-        //             edges: [...graph.edges,{source:sourceID,target:targetID,id}]
-        //         },
-        //         newEdge:null
-        //     })
-
-        //     return this.removeMouseMoveEvent(false);
-        // }
+        if (newEdge.source.id !== targetID) {
+            const nodes = graph.nodes.map(node => node.id === newEdge.source.id && !node.isExogenousVariable ? {
+                ...node,
+                formula: node.formula === '' ? targetID : node.formula + '|' + targetID
+            } : node)
+            this.setState({
+                ...this.state,
+                graph: {
+                    ...graph,
+                    nodes
+                }
+            })
+            return this.removeMouseMoveEvent(false);
+        }
 
         this.removeMouseMoveEvent();
     }
@@ -425,12 +445,12 @@ class Graph extends Component<IGraphProps, IGraphState> {
 
     render() {
 
+        console.log('graph render');
         const { height, width } = this.props;
-        const { graph, viewPos, selected, newEdge, areaSelect } = this.state;
+        const { graph, viewPos, selected, newEdge, areaSelect, filter: { highlight } } = this.state;
 
         const drawGraph = graphToDrawGraph(graph);
-        const formularNodes = get_sub_tree(graph.nodes, selected.nodes);
-
+        const formularNodes = getSubTree(graph.nodes, selected.nodes);
         const nodes = drawGraph.nodes.map(
             (node, idx) => <Node
                 key={node.id}
@@ -441,33 +461,25 @@ class Graph extends Component<IGraphProps, IGraphState> {
                 startNewEdge={this.startNewEdge}
                 endNewEdge={this.endNewEdge}
                 markAsPartOfFormular={formularNodes.has(node.id)}
+                isNotHighlight={highlight.length === 0 ? false : !highlight.includes(node.id)}
             />
         )
 
-        const edges = drawGraph.edges.map(
-            (edge, idx) => <Edge
-                key={edge.id}
-                {...edge}
-                select={this.select}
-                selected={false}
-            />
-        )
+        const edges = drawGraph.edges
+            .map(
+                (edge, idx) => <Edge
+                    key={edge.id}
+                    {...edge}
+                    select={this.select}
+                    selected={false}
+                />
+            )
 
-        // const edges = graph.edges
-        //     .map(this.makeDrawEdges)
-        //     .concat(newEdge!==null?[newEdge]:[])
-        //     .map((edge,idx)=><Edge
-        //             key={idx}
-        //             {...edge}
-        //             select={this.select}
-        //             selected={selected.edges.includes(edge.id)}
-        //         />
-        //     )
+        const newEdgeComponent = newEdge === null ? null : <Edge isNewEge={true} key={newEdge.id} {...newEdge} select={this.select} selected={false} />
 
         const areaSelection = <AreaSelection {...areaSelect} viewPos={viewPos} sWidth={width} sHeight={height} />
 
         const selectedNodes = graph.nodes.filter(n => selected.nodes.includes(n.id));
-        console.log(viewPos.x, width, viewPos.x % width);
         return (
             <React.Fragment>
                 <SVG
@@ -495,6 +507,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
                         {edges}
                         {nodes}
                         {areaSelection}
+                        {newEdgeComponent}
                     </g>
                 </SVG>
                 {

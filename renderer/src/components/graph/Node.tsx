@@ -4,6 +4,7 @@ import { ISelect, MoveType } from './Graph';
 import styled from './../../style/theme/styled-components';
 import { withTheme } from 'styled-components';
 import { ITheme } from '../../style/theme/Theme';
+import { onlyUpdateForKeys } from 'recompose';
 
 const NodeShape = styled.ellipse<React.SVGProps<SVGEllipseElement> & { selected: boolean, isExogenousVariable: boolean, markAsPartOfFormular: boolean }>`
     stroke: ${
@@ -22,7 +23,12 @@ const NodeText = styled.text<React.SVGProps<SVGTextElement>>`
     user-select: none;
 `
 
+const StyledNodeGroupe = styled.g<{ isNotHighlight: boolean }>`
+    opacity: ${props => props.isNotHighlight ? 0.25 : 1}
+`
+
 export interface INodeProps extends INode {
+    isNotHighlight: boolean;
     markAsPartOfFormular: boolean;
     selected: boolean;
     select: (event: React.MouseEvent, selected: ISelect) => void;
@@ -32,11 +38,12 @@ export interface INodeProps extends INode {
     theme: ITheme;
 }
 
-const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragStart, startNewEdge, endNewEdge, title, isExogenousVariable, markAsPartOfFormular, theme }) => {
+const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragStart, startNewEdge, endNewEdge, title, isExogenousVariable, markAsPartOfFormular, theme, isNotHighlight }) => {
 
-    //console.log('rerender node');
+    console.log('node redner');
     return (
-        <g
+        <StyledNodeGroupe
+            isNotHighlight={isNotHighlight}
             onMouseDown={
                 (ev) => {
                     ev.stopPropagation();
@@ -78,8 +85,10 @@ const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragSta
                 y={y}
                 fill={theme.node.font.color}
             >{title}</NodeText>
-        </g>
+        </StyledNodeGroupe>
     )
 }
 
-export const Node = withTheme(NodeRender)
+export const Node = onlyUpdateForKeys([
+    'x', 'y', 'selected', 'title', 'markAsPartOfFormular', 'isNotHighlight'
+])(withTheme(NodeRender))

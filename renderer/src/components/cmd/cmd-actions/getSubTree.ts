@@ -1,6 +1,6 @@
 import { INode } from "../../../types/GraphTypes";
 
-export function get_sub_tree(nodes: INode[], startNodes: string[]) {
+export function getSubTree(nodes: INode[], startNodes: string[]) {
 
     const getNodeByID = (id: string) => nodes.find(node => node.id === id);
     let returnSet = new Set<string>();

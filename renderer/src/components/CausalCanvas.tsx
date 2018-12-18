@@ -94,6 +94,10 @@ class CausalCanvas extends Component<any, ICausalCanvasState> {
 
         const { width, height, graph } = this.state;
 
+        if (width === 0) {
+            return null;
+        }
+
         return <React.Fragment>
             <Graph
                 ref={this.graphRef}
