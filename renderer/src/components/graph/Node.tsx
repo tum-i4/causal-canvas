@@ -40,7 +40,6 @@ export interface INodeProps extends INode {
 
 const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragStart, startNewEdge, endNewEdge, title, isExogenousVariable, markAsPartOfFormular, theme, isNotHighlight }) => {
 
-    console.log('node redner');
     return (
         <StyledNodeGroupe
             isNotHighlight={isNotHighlight}

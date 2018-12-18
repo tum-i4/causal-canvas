@@ -445,7 +445,6 @@ class Graph extends Component<IGraphProps, IGraphState> {
 
     render() {
 
-        console.log('graph render');
         const { height, width } = this.props;
         const { graph, viewPos, selected, newEdge, areaSelect, filter: { highlight } } = this.state;
 
@@ -472,10 +471,20 @@ class Graph extends Component<IGraphProps, IGraphState> {
                     {...edge}
                     select={this.select}
                     selected={false}
+                    isNotHighlight={highlight.length === 0 ? false : !highlight.includes(edge.source.id) && !highlight.includes(edge.target.id)}
                 />
             )
 
-        const newEdgeComponent = newEdge === null ? null : <Edge isNewEge={true} key={newEdge.id} {...newEdge} select={this.select} selected={false} />
+        const newEdgeComponent = newEdge === null
+            ? null
+            : <Edge
+                isNotHighlight={false}
+                isNewEge={true}
+                key={newEdge.id}
+                {...newEdge}
+                select={this.select}
+                selected={false}
+            />
 
         const areaSelection = <AreaSelection {...areaSelect} viewPos={viewPos} sWidth={width} sHeight={height} />
 

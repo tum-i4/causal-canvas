@@ -5,19 +5,27 @@ const kld = require('kld-intersections');
 import { withTheme } from 'styled-components';
 import { ITheme } from '../../style/theme/Theme';
 import { onlyUpdateForKeys } from 'recompose';
+import styled from './../../style/theme/styled-components';
+
 
 export interface IEdgeProps extends IDrawEdge {
     selected: boolean;
     select: (event: React.MouseEvent, selected: ISelect) => void;
     theme: ITheme;
     isNewEge?: boolean;
+    isNotHighlight: boolean;
 }
 
-const EdgeRender: React.SFC<IEdgeProps> = ({ source, target, select, selected, id, theme, isNewEge }) => {
-    console.log("edge render");
+const StyledEdgeGroupe = styled.g<{ isNotHighlight: boolean }>`
+    opacity: ${props => props.isNotHighlight ? 0.25 : 1}
+`
+
+const EdgeRender: React.SFC<IEdgeProps> = ({ source, target, select, selected, id, theme, isNewEge, isNotHighlight }) => {
     const [sourcePoint, targetPoint] = isNewEge ? [source, target] : intersectionPoint(source, target, theme);
     return (
-        <g>
+        <StyledEdgeGroupe
+            isNotHighlight={isNotHighlight}
+        >
             <defs>
                 <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
                     <path d="M0,0 L0,6 L9,3 z" fill="#000000" />
@@ -30,23 +38,9 @@ const EdgeRender: React.SFC<IEdgeProps> = ({ source, target, select, selected, i
                 d={`M${sourcePoint.x},${sourcePoint.y}L${targetPoint.x},${targetPoint.y}`}
                 markerEnd={'url(#arrow)'}
             />
-            {/* <circle
-                r={5}
-                cx={sourcePoint.x}
-                cy={sourcePoint.y}
-                fill="red"
-            />
-            <circle
-                r={5}
-                cx={targetPoint.x}
-                cy={targetPoint.y}
-                fill="red"
-            /> */}
-        </g>
+        </StyledEdgeGroupe>
     )
 }
-
-
 
 function intersectionPoint(source: INode, target: INode, theme: ITheme): IPoint[] {
     const Point2D = kld.Point2D;
@@ -89,5 +83,5 @@ function intersectionPoint(source: INode, target: INode, theme: ITheme): IPoint[
 }
 
 export const Edge = onlyUpdateForKeys([
-    'source', 'target'
+    'source', 'target', 'isNotHighlight'
 ])(withTheme(EdgeRender));
