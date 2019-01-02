@@ -63,6 +63,7 @@ export class Cmd extends Component<ICmdProps, ICmdState> {
         'goto',
         'highlight',
         'reset',
+        'set'
     ]
 
     private usedArrow = false;

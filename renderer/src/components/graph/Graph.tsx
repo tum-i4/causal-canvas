@@ -14,6 +14,8 @@ import { cmd_goto } from '../cmd/cmd-actions/goto';
 import styled from '../../style/theme/styled-components';
 import { getSubTree } from '../cmd/cmd-actions/getSubTree';
 import { cmd_hightligt } from '../cmd/cmd-actions/highlight';
+import { cmd_set } from '../cmd/cmd-actions/set';
+import { IFilter, FilterList } from './FilterList';
 
 const SVG = styled.svg`
     background-color: ${props => props.theme.colors.background}
@@ -36,7 +38,7 @@ export interface IGraphState {
         target: IPoint;
     },
     filter: {
-        highlight: string[]
+        highlight: IFilter[]
     }
 }
 
@@ -105,7 +107,13 @@ class Graph extends Component<IGraphProps, IGraphState> {
             case CmdTypes.HIGHLIGHT: changes = {
                 filter: {
                     ...this.state.filter,
-                    highlight: cmd_hightligt(cmd.args, nodes)
+                    highlight: [...this.state.filter.highlight, cmd_hightligt(cmd.args, nodes)].filter(h => h !== undefined)
+                }
+            }; break;
+            case CmdTypes.SET: changes = {
+                graph: {
+                    ...this.state.graph,
+                    nodes: cmd_set(cmd.args, nodes)
                 }
             }; break;
             case CmdTypes.RESET: changes = {
@@ -443,6 +451,16 @@ class Graph extends Component<IGraphProps, IGraphState> {
         })
     }
 
+    removeFilter = (id: string) => {
+        this.setState({
+            ...this.state,
+            filter: {
+                ...this.state.filter,
+                highlight: this.state.filter.highlight.filter(h => h.id !== id)
+            }
+        })
+    }
+
     render() {
 
         const { height, width } = this.props;
@@ -450,6 +468,10 @@ class Graph extends Component<IGraphProps, IGraphState> {
 
         const drawGraph = graphToDrawGraph(graph);
         const formularNodes = getSubTree(graph.nodes, selected.nodes);
+
+        const highlightSet = new Set<string>();
+        highlight.forEach(h => h.applyTo.forEach(a => highlightSet.add(a)));
+
         const nodes = drawGraph.nodes.map(
             (node, idx) => <Node
                 key={node.id}
@@ -460,7 +482,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
                 startNewEdge={this.startNewEdge}
                 endNewEdge={this.endNewEdge}
                 markAsPartOfFormular={formularNodes.has(node.id)}
-                isNotHighlight={highlight.length === 0 ? false : !highlight.includes(node.id)}
+                isNotHighlight={highlight.length === 0 ? false : !highlightSet.has(node.id)}
             />
         )
 
@@ -471,7 +493,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
                     {...edge}
                     select={this.select}
                     selected={false}
-                    isNotHighlight={highlight.length === 0 ? false : !highlight.includes(edge.source.id) && !highlight.includes(edge.target.id)}
+                    isNotHighlight={highlight.length === 0 ? false : !highlightSet.has(edge.source.id) && !highlightSet.has(edge.target.id)}
                 />
             )
 
@@ -529,6 +551,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
                         </React.Fragment>
                         : null
                 }
+                <FilterList filters={highlight} removeFilter={this.removeFilter} />
             </React.Fragment>
         )
     }
