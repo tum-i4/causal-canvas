@@ -16,6 +16,7 @@ import { getSubTree } from '../cmd/cmd-actions/getSubTree';
 import { cmd_hightligt } from '../cmd/cmd-actions/highlight';
 import { cmd_set } from '../cmd/cmd-actions/set';
 import { IFilter, FilterList } from './FilterList';
+import { Cmd } from '../cmd/Cmd';
 
 const SVG = styled.svg`
     background-color: ${props => props.theme.colors.background}
@@ -552,6 +553,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
                         : null
                 }
                 <FilterList filters={highlight} removeFilter={this.removeFilter} />
+                <Cmd nodes={graph.nodes.map(n => n.title)} />
             </React.Fragment>
         )
     }

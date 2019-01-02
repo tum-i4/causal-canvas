@@ -1,6 +1,7 @@
 import React, { Component, createRef } from 'react';
 import styled from '../../style/theme/styled-components';
 import { cmdEvent } from './CmdEvent';
+import { INode } from '../../types/GraphTypes';
 
 
 const CmdContainer = styled.div`
@@ -54,6 +55,7 @@ interface ICmdState {
 }
 
 interface ICmdProps {
+    nodes: string[];
 }
 
 export class Cmd extends Component<ICmdProps, ICmdState> {
@@ -66,7 +68,7 @@ export class Cmd extends Component<ICmdProps, ICmdState> {
         'set'
     ]
 
-    private usedArrow = false;
+    private list: string[] = this.commands;
 
     constructor(props: ICmdProps) {
         super(props);
@@ -74,7 +76,7 @@ export class Cmd extends Component<ICmdProps, ICmdState> {
         this.state = {
             open: false,
             cmdValue: '',
-            selected: -1
+            selected: -1,
         }
     }
 
@@ -111,10 +113,10 @@ export class Cmd extends Component<ICmdProps, ICmdState> {
 
     keyUpHandlerInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.keyCode === 13) {
-            if (this.usedArrow) {
-                this.usedArrow = false;
+            if (this.state.selected !== -1) {
                 this.setState({
-                    cmdValue: this.commands[this.state.selected]
+                    selected: -1,
+                    cmdValue: this.state.cmdValue.split(' ').length > 1 ? this.state.cmdValue + this.list[this.state.selected] + " " : this.list[this.state.selected] + " ",
                 })
                 return;
             }
@@ -123,18 +125,17 @@ export class Cmd extends Component<ICmdProps, ICmdState> {
                 cmdValue: '',
                 selected: -1
             })
+            this.list = this.commands;
             this.executeCommand();
         }
         if (event.keyCode === 38) {
-            this.usedArrow = true;
             this.setState({
-                selected: this.state.selected <= 0 ? this.commands.length - 1 : (this.state.selected - 1)
+                selected: this.state.selected <= 0 ? this.list.length - 1 : (this.state.selected - 1)
             })
         }
         if (event.keyCode === 40) {
-            this.usedArrow = true;
             this.setState({
-                selected: (this.state.selected + 1) % this.commands.length
+                selected: (this.state.selected + 1) % this.list.length
             })
         }
     }
@@ -156,6 +157,11 @@ export class Cmd extends Component<ICmdProps, ICmdState> {
             return null;
         }
 
+        const split = cmdValue.split(' ');
+        if (split.length > 1) {
+            this.list = this.props.nodes;
+        }
+
         return (
             <CmdContainer>
                 <CmdInput
@@ -166,13 +172,15 @@ export class Cmd extends Component<ICmdProps, ICmdState> {
                 />
                 <CmdList>
                     {
-                        this.commands.map((c, idx) => (
-                            <CmdListItem
-                                key={idx}
-                                selected={selected === idx}
-                            >
-                                {c}
-                            </CmdListItem>
+                        this.list.map((c, idx) => (
+                            c.includes(split[split.length - 1]) || split.length === 1 || split[split.length - 1] === ''
+                                ? <CmdListItem
+                                    key={idx}
+                                    selected={selected === idx}
+                                >
+                                    {c}
+                                </CmdListItem>
+                                : null
                         ))
                     }
                 </CmdList>

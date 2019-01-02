@@ -105,7 +105,6 @@ class CausalCanvas extends Component<any, ICausalCanvasState> {
                 height={height}
                 data={graph}
             />
-            <Cmd />
         </React.Fragment>
 
     }
