@@ -2,10 +2,18 @@ import React, { Component, createRef } from 'react';
 import Graph from './graph/Graph';
 import { IGraph } from '../types/GraphTypes';
 import { Cmd } from './cmd/Cmd';
+import styled from '../style/theme/styled-components';
+import { QueryContainer } from './query-ui/QueryContainer';
+
+enum CanvasModus {
+    Edit,
+    Query
+}
 
 interface ICausalCanvasState {
     width: number;
     height: number;
+    modus: CanvasModus;
 }
 
 interface ICausalCanvasProps {
@@ -14,9 +22,21 @@ interface ICausalCanvasProps {
     graph: IGraph;
 }
 
+const CanvasModusToggelButton = styled.div<{ bottom: number, right: number }>`
+    display: inline-block;
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    bottom: ${props => props.bottom + 10}px;
+    right: ${props => props.right + 10}px;
+    background-color: red;
+`
+
 class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
 
     private graphRef = createRef<Graph>();
+    private queryWidth = 350;
+    private queryHeight = 230;
 
     constructor(props: ICausalCanvasProps) {
         super(props);
@@ -24,6 +44,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
         this.state = {
             width: 0,
             height: 0,
+            modus: CanvasModus.Edit
         }
 
     }
@@ -42,9 +63,17 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
         }
     }
 
+    public toggelModus = () => {
+        this.setState({
+            ...this.state,
+            modus: this.state.modus === CanvasModus.Edit ? CanvasModus.Query : CanvasModus.Edit
+        })
+    }
+
 
     render() {
 
+        const { modus } = this.state;
         const { width, height, graph } = this.props;
 
         if (width === 0) {
@@ -58,11 +87,25 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
         return <React.Fragment>
             <Graph
                 ref={this.graphRef}
-                width={width}
-                height={height}
+                width={width - this.queryWidth * modus}
+                height={height - this.queryHeight * modus}
                 data={graph}
             />
             {cmd}
+            <CanvasModusToggelButton
+                right={this.queryWidth * modus}
+                bottom={this.queryHeight * modus}
+                onClick={this.toggelModus}
+            />
+            {
+                modus === CanvasModus.Query && this.graphRef.current !== null
+                    ? <QueryContainer
+                        width={this.queryWidth}
+                        height={this.queryHeight}
+                        graph={this.graphRef.current}
+                    />
+                    : null
+            }
         </React.Fragment>
 
     }
