@@ -2,9 +2,10 @@ import { app, BrowserWindow, Menu, ipcMain, dialog } from 'electron'
 import { fileMenuTemplate } from './menu/file';
 import { helpMenuTemplate } from './menu/help';
 import * as fs from 'fs-extra';
+import { HP2SAT } from './java-tools-wrapper/hp2sat-server';
 let mainWindow: Electron.BrowserWindow
 let currentPath = '';
-function onReady() {
+async function onReady() {
 	mainWindow = new BrowserWindow({
 		width: 1200,
 		height: 900
@@ -43,6 +44,8 @@ function onReady() {
 			fs.writeFile(fileName, jsonData.data, (err) => console.log(err));
 		})
 	})
+
+	const hp2sat = await HP2SAT.create();
 }
 
 app.on('ready', () => onReady());
