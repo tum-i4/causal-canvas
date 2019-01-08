@@ -2,6 +2,7 @@ import React, { Component, createRef } from 'react';
 import styled from '../../style/theme/styled-components';
 import { cmdEvent } from './CmdEvent';
 import { INode } from '../../types/GraphTypes';
+import Graph from '../graph/Graph';
 
 
 const CmdContainer = styled.div`
@@ -55,7 +56,7 @@ interface ICmdState {
 }
 
 interface ICmdProps {
-    nodes: string[];
+    graphRef: Graph;
 }
 
 export class Cmd extends Component<ICmdProps, ICmdState> {
@@ -159,7 +160,7 @@ export class Cmd extends Component<ICmdProps, ICmdState> {
 
         const split = cmdValue.split(' ');
         if (split.length > 1) {
-            this.list = this.props.nodes;
+            this.list = this.props.graphRef.getCurrentGraph().nodes.map(n => n.title);
         }
 
         return (
