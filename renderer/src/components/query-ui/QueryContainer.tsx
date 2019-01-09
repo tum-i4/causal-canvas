@@ -27,6 +27,7 @@ export class QueryContainer extends Component<IQueryContainerProps, IQueryContai
             />
             <QueryResult
                 height={height}
+                width={width}
             />
         </React.Fragment>
     }

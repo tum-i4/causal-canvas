@@ -5,6 +5,7 @@
 
 *{
   font-family: 'OpenSans';
+  box-sizing: border-box;
 }
 
 html,body {

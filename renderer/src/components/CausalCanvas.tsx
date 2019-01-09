@@ -22,7 +22,7 @@ interface ICausalCanvasProps {
     graph: IGraph;
 }
 
-const CanvasModusToggelButton = styled.div<{ bottom: number, right: number }>`
+const CanvasModusToggelButton = styled.div<any>`
     display: inline-block;
     position: fixed;
     width: 50px;
