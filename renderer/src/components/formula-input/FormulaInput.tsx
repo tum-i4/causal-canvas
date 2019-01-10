@@ -80,7 +80,7 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
         const cursorPos = event.currentTarget.selectionStart || 0;
         const { formula } = this.state;
         const currentWord = this.getWordAtPos(cursorPos, formula) || '';
-
+        console.log(currentWord);
         this.setState({
             ...this.state,
             cursorPos,
@@ -104,12 +104,13 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
 
         let sum = 0;
         let split = formula.split(" ");
+        console.log({ split, cursorPos });
         if (cursorPos === formula.length) {
             return split[split.length - 1];
         }
-        if (formula.charAt(cursorPos) === " ") {
-            return "";
-        }
+        // if (formula.charAt(cursorPos) === " ") {
+        //     return "";
+        // }
         for (const word of split) {
             sum += word.length;
             if (sum >= cursorPos) {
@@ -125,16 +126,24 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
 
             const replaceWordAtPos = () => {
                 let split = formula.split(' ');
-                let sum = 0;
-                for (const i in split) {
-                    sum += split[i].length;
-                    if (sum >= cursorPos) {
-                        split[i] = suggestionList[selectedIdx];
-                        return split.join(' ');
+
+                let idx = 0;
+
+                if (cursorPos === formula.length) {
+                    idx = split.length - 1;
+                } else {
+                    let sum = 0;
+                    for (let i = 0; i < split.length; i++) {
+                        sum += split[i].length;
+                        if (sum >= cursorPos) {
+                            idx = i;
+                            break;
+                        }
                     }
                 }
 
-                return formula;
+                split[idx] = suggestionList[selectedIdx];
+                return split.join(' ');
             }
 
             this.setState({
