@@ -547,12 +547,12 @@ class Graph extends Component<IGraphProps, IGraphState> {
                     selected.nodes.length === 1
                         ? <React.Fragment key={selectedNodes[0].id}>
                             <InfoPanel applyNodeChanges={this.updateNode} node={selectedNodes[0]} />
-                            {
-                                !selectedNodes[0].isExogenousVariable ? <FormulaInput applyNodeChanges={this.updateNode} node={selectedNodes[0]} /> : null
-                            }
                             {/* {
-                                !selectedNodes[0].isExogenousVariable ? <NewFormulaInput formula={selectedNodes[0].formula} /> : null
+                                !selectedNodes[0].isExogenousVariable ? <FormulaInput applyNodeChanges={this.updateNode} node={selectedNodes[0]} /> : null
                             } */}
+                            {
+                                !selectedNodes[0].isExogenousVariable ? <NewFormulaInput formula={selectedNodes[0].formula} /> : null
+                            }
                         </React.Fragment>
                         : null
                 }
