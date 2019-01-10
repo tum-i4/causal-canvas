@@ -120,24 +120,27 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
 
     private onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
 
-        const { selectedIdx, suggestionList, formula } = this.state;
+        const { selectedIdx, suggestionList, formula, cursorPos } = this.state;
         if (event.keyCode === 13 && selectedIdx !== -1) {
 
             const replaceWordAtPos = () => {
-                let split = formula.split(" ");
+                let split = formula.split(' ');
                 let sum = 0;
                 for (const i in split) {
                     sum += split[i].length;
                     if (sum >= cursorPos) {
-                        return i;
+                        split[i] = suggestionList[selectedIdx];
+                        return split.join(' ');
                     }
                 }
+
+                return formula;
             }
 
             this.setState({
                 ...this.state,
                 selectedIdx: -1,
-
+                formula: replaceWordAtPos()
             })
         }
         if (event.keyCode === 38) {
