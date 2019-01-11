@@ -551,7 +551,15 @@ class Graph extends Component<IGraphProps, IGraphState> {
                                 !selectedNodes[0].isExogenousVariable ? <FormulaInput applyNodeChanges={this.updateNode} node={selectedNodes[0]} /> : null
                             } */}
                             {
-                                !selectedNodes[0].isExogenousVariable ? <NewFormulaInput formula={selectedNodes[0].formula} /> : null
+                                !selectedNodes[0].isExogenousVariable
+                                    ? <NewFormulaInput
+                                        nodes={graph.nodes}
+                                        formula={selectedNodes[0].formula}
+                                        onChange={
+                                            (formula => this.updateNode({ ...selectedNodes[0], formula }))
+                                        }
+                                    />
+                                    : null
                             }
                         </React.Fragment>
                         : null

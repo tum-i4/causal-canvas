@@ -36,7 +36,7 @@ class App extends Component<any, ICausalCanvasState> {
         this.state = {
             width: 0,
             height: 0,
-            graph: getTestData()
+            graph: susiExample()
         }
 
         this.updateWindowDimensions = _.debounce(this.updateWindowDimensions, 200);
@@ -149,5 +149,41 @@ function getTestData(): IGraph {
         directed: true,
         title: 'test',
         nodes: [nodeA, nodeB, nodeC],
+    }
+}
+
+function susiExample() {
+    const Exo_Suzi_Throws = createNode(-200, -200, 'Exo_Suzi_Throws', true, '', true);
+    const Exo_Billy_Throws = createNode(200, -200, 'Exo_Billy_Throws', true, '', true);
+
+    const Suzi_Throws = createNode(-200, 0, 'Suzi_Throws', true, 'Exo_Suzi_Throws', false);
+    const Billy_Throws = createNode(200, 0, 'Billy_Throws', true, 'Exo_Billy_Throws', false);
+
+    const Suzi_Hits = createNode(-150, 150, 'Suzi_Hits', true, 'Suzi_Throws', false);
+    const Billy_Hits = createNode(150, 150, 'Billy_Hits', true, '!Suzi_Hits&Billy_Throws', false);
+
+    const Bottel_Broken = createNode(0, 300, 'Bottel_Broken', true, 'Suzi_Hits|Billy_Hits', false);
+
+    return {
+        directed: true,
+        title: 'Bottel',
+        nodes: [
+            Exo_Suzi_Throws, Exo_Billy_Throws,
+            Suzi_Throws, Billy_Throws,
+            Billy_Hits, Suzi_Hits,
+            Bottel_Broken
+        ],
+    }
+}
+
+function createNode(x: number, y: number, title: string, value: boolean, formula: string, isExo: boolean): INode {
+    return {
+        x,
+        y,
+        title,
+        value,
+        id: title,
+        formula,
+        isExogenousVariable: isExo
     }
 }

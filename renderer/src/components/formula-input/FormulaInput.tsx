@@ -1,6 +1,7 @@
 import React, { Component, createRef } from 'react';
 import styled from './../../style/theme/styled-components';
 import { SuggestionBox } from './SuggestionBox';
+import { INode } from '../../types/GraphTypes';
 
 const FormulaContainer = styled.div`
     position: fixed;
@@ -45,11 +46,9 @@ export interface IFormulaInputState {
 
 export interface IFormulaInputProps {
     formula: string;
+    nodes: INode[];
+    onChange: (formula: string) => void;
 }
-
-const test = [
-    'yolonese', 'test123', 'abcd', 'aabcd', 'aaabcd', 'aaaabcd'
-]
 
 export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInputState> {
 
@@ -61,7 +60,7 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
             formula: props.formula.replace(/&/g, ' & ').replace(/\|/g, ' | '),
             cursorPos: 0,
             selectedIdx: -1,
-            suggestionList: test
+            suggestionList: props.nodes.map(n => n.title)
         }
     }
 
@@ -78,16 +77,32 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
 
     onSelect = (event: React.SyntheticEvent<HTMLInputElement>) => {
         const cursorPos = event.currentTarget.selectionStart || 0;
-        const { formula } = this.state;
-        const currentWord = this.getWordAtPos(cursorPos, formula) || '';
-        console.log(currentWord);
         this.setState({
             ...this.state,
             cursorPos,
-            suggestionList: test.filter(suggestion => suggestion.startsWith(currentWord)),
+            suggestionList: this.makeSuggestionList(cursorPos),
             selectedIdx: -1
         });
     };
+
+    private makeSuggestionList(cursorPos): string[] {
+        const { formula } = this.state;
+        let currentWord = this.getWordAtPos(cursorPos, formula) || '';
+        currentWord = currentWord.replace(/\!|\(|\)/g, '');
+
+        return this.props.nodes
+            .map(n => n.title)
+            .filter(suggestion => suggestion.startsWith(currentWord))
+    }
+
+    private makeBetterSuggestionList() {
+        const formulaWords = [];
+        const currentWordIdx = 0;
+        const currentWord = formulaWords[currentWordIdx];
+
+        const isPreviousVariable = false;
+        const isNextVariable = false;
+    }
 
     private calcSuggestionBoxPos = () => {
 
@@ -122,6 +137,11 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
     private onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
 
         const { selectedIdx, suggestionList, formula, cursorPos } = this.state;
+
+        if (event.keyCode === 13 && selectedIdx === -1) {
+            console.log('yoloo ');
+            this.props.onChange(formula.replace(/\s/g, ''));
+        }
         if (event.keyCode === 13 && selectedIdx !== -1) {
 
             const replaceWordAtPos = () => {
