@@ -2,7 +2,7 @@ import React, { Component, createRef } from 'react';
 import styled from './../../style/theme/styled-components';
 import { SuggestionBox } from './SuggestionBox';
 import { INode } from '../../types/GraphTypes';
-import { makeSuggestionList } from './makeSuggetions';
+import { makeSuggestionList, replaceWordAtPos } from './makeSuggetions';
 
 const FormulaContainer = styled.div`
     position: fixed;
@@ -35,8 +35,6 @@ const FormulaRelativContainer = styled.div`
     height: 100%;
     width: 100%;
 `
-
-
 
 export interface IFormulaInputState {
     formula: string;
@@ -86,7 +84,6 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
         });
     };
 
-
     private calcSuggestionBoxPos = () => {
 
         const currentRef = this.inputRef.current;
@@ -108,32 +105,10 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
         }
         if (event.keyCode === 13 && selectedIdx !== -1) {
 
-            const replaceWordAtPos = () => {
-                let split = formula.split(' ');
-
-                let idx = 0;
-
-                if (cursorPos === formula.length) {
-                    idx = split.length - 1;
-                } else {
-                    let sum = 0;
-                    for (let i = 0; i < split.length; i++) {
-                        sum += split[i].length;
-                        if (sum >= cursorPos) {
-                            idx = i;
-                            break;
-                        }
-                    }
-                }
-
-                split[idx] = suggestionList[selectedIdx];
-                return split.join(' ');
-            }
-
             this.setState({
                 ...this.state,
                 selectedIdx: -1,
-                formula: replaceWordAtPos()
+                formula: replaceWordAtPos(cursorPos, formula, suggestionList[selectedIdx])
             })
         }
         if (event.keyCode === 38) {

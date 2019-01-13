@@ -2,6 +2,7 @@
 enum WordType {
     Variable,
     Operator,
+    Brace,
     Nothing
 }
 
@@ -40,8 +41,26 @@ export function makeSuggestionList(cursorPos: number, formula: string, _baseSugg
         .filter(suggestion => suggestion.startsWith(currentWord))
 }
 
+export function replaceWordAtPos(cursorPos: number, formula: string, newWord: string): string {
+    const idx = getWordIdx(cursorPos, formula);
+
+    const split = formula.split(' ');
+
+    split[idx] = newWord;
+
+    return split.join(' ');
+}
+
 const isOperator = (word: string) => /&|\|/.test(word);
-const getWordType = (word: string) => word === undefined ? WordType.Nothing : isOperator(word) ? WordType.Operator : WordType.Variable;
+const isBrace = (word: string) => /\(|\)/.test(word);
+const getWordType = (word: string) =>
+    word === undefined
+        ? WordType.Nothing
+        : isOperator(word)
+            ? WordType.Operator
+            : isBrace(word)
+                ? WordType.Brace
+                : WordType.Variable;
 
 function getWordIdx(cursorPos: number, formula: string): number {
 
