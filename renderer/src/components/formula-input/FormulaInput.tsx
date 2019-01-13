@@ -3,31 +3,20 @@ import styled from './../../style/theme/styled-components';
 import { SuggestionBox } from './SuggestionBox';
 import { INode } from '../../types/GraphTypes';
 import { makeSuggestionList, replaceWordAtPos } from './makeSuggetions';
-
-const FormulaContainer = styled.div`
-    position: fixed;
-    bottom: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 80px;
-    width: 90%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`
+import ReactDOM from 'react-dom';
 
 const FormularInputInput = styled.input`
-    width: 90%;
-    height: 50%;
+    width: 100%;
+    height: 100%;
     text-align: center;
     //word-spacing: 5px;
     font-size: 20px;
-    border: solid 2px ${props => props.theme.colors.primary};
+    border: solid 1px ${props => props.theme.colors.primary};
     outline: none;
     &:focus{
         outline: none;
     }
-    border-radius: 5px;
+    border-radius: 3px;
 `
 
 const FormulaRelativContainer = styled.div`
@@ -41,12 +30,14 @@ export interface IFormulaInputState {
     cursorPos: number;
     selectedIdx: number;
     suggestionList: string[];
+    isFocused: boolean;
 }
 
 export interface IFormulaInputProps {
     formula: string;
     nodes: INode[];
     onChange: (formula: string) => void;
+    autoFocus?: boolean;
 }
 
 export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInputState> {
@@ -59,7 +50,8 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
             formula: props.formula.replace(/&/g, ' & ').replace(/\|/g, ' | '),
             cursorPos: 0,
             selectedIdx: -1,
-            suggestionList: props.nodes.map(n => n.title)
+            suggestionList: props.nodes.map(n => n.title),
+            isFocused: false
         }
     }
 
@@ -131,29 +123,47 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
         }
     }
 
+    private onFocus = () => {
+        this.setState({
+            ...this.state,
+            isFocused: true
+        })
+    }
+
+    private onBlur = () => {
+        this.setState({
+            ...this.state,
+            isFocused: false
+        })
+    }
+
     public render() {
 
-        const { formula, selectedIdx, suggestionList } = this.state;
+        const { formula, selectedIdx, suggestionList, isFocused } = this.state;
+        const { autoFocus } = this.props;
 
-        return <FormulaContainer>
-            <FormulaRelativContainer>
-                <FormularInputInput
-                    autoFocus
-                    ref={this.inputRef}
-                    type={'text'}
-                    value={formula}
-                    onChange={this.onFormulaChange}
-                    onSelect={this.onSelect}
-                    onKeyUp={this.onKeyUp}
-                    onKeyDown={this.onKeyDown}
-                />
-                <SuggestionBox
-                    position={this.calcSuggestionBoxPos()}
-                    suggestions={suggestionList}
-                    selectedIdx={selectedIdx}
-                />
-            </FormulaRelativContainer>
-        </FormulaContainer>;
+        return <FormulaRelativContainer>
+            <FormularInputInput
+                autoFocus={autoFocus || false}
+                ref={this.inputRef}
+                type={'text'}
+                value={formula}
+                onChange={this.onFormulaChange}
+                onSelect={this.onSelect}
+                onKeyUp={this.onKeyUp}
+                onKeyDown={this.onKeyDown}
+                onFocus={this.onFocus}
+                onBlur={this.onBlur}
+            />
+            {
+                isFocused ?
+                    <SuggestionBox
+                        position={this.calcSuggestionBoxPos()}
+                        suggestions={suggestionList}
+                        selectedIdx={selectedIdx}
+                    /> : null
+            }
+        </FormulaRelativContainer>
     }
 
 }

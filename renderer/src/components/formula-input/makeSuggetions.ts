@@ -16,14 +16,14 @@ export function makeSuggestionList(cursorPos: number, formula: string, _baseSugg
     const nextWordType = getWordType(formulaWords[currentWordIdx + 1]);
 
     let baseSuggestions = _baseSuggestions;
-    console.log({
-        cursorPos,
-        currentWordIdx,
-        currentWord,
-        wordType,
-        previousWord: previousWordType,
-        nextWord: nextWordType
-    })
+    // console.log({
+    //     cursorPos,
+    //     currentWordIdx,
+    //     currentWord,
+    //     wordType,
+    //     previousWord: previousWordType,
+    //     nextWord: nextWordType
+    // })
 
     if (wordType === WordType.Operator) {
         return [];

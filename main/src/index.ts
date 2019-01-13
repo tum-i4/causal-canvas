@@ -2,7 +2,7 @@ import { app, BrowserWindow, Menu, ipcMain, dialog } from 'electron'
 import { fileMenuTemplate } from './menu/file';
 import { helpMenuTemplate } from './menu/help';
 import * as fs from 'fs-extra';
-import { HP2SAT } from './java-tools-wrapper/hp2sat-server';
+import { HP2SATConnector } from './hp2satConnector';
 let mainWindow: Electron.BrowserWindow
 let currentPath = '';
 async function onReady() {
@@ -10,6 +10,8 @@ async function onReady() {
 		width: 1200,
 		height: 900
 	})
+
+	const hp2satConnector = await HP2SATConnector.create();
 
 	// mainWindow.webContents.toggleDevTools();
 
@@ -45,7 +47,7 @@ async function onReady() {
 		})
 	})
 
-	const hp2sat = await HP2SAT.create();
+
 }
 
 app.on('ready', () => onReady());

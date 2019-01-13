@@ -1,10 +1,8 @@
 import React, { Component, createRef } from 'react';
-import Graph from './graph/Graph';
-import { IGraph, INode, IEdge } from '../types/GraphTypes';
+import { IGraph, INode } from '../types/GraphTypes';
 import _ from 'lodash';
 import { IpcRenderer } from 'electron';
 import { extracterReportToGraph } from '../converter/extracterReportToGraph';
-import { Cmd } from './cmd/Cmd';
 import CausalCanvas from './CausalCanvas';
 const electron = (window as any).require('electron');
 const fs = electron.remote.require('fs');

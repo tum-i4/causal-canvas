@@ -7,7 +7,6 @@ import * as uuid from 'uuid';
 import { AreaSelection } from './SelectionArea';
 import { getSelectdFromArea } from './helper/areaSelection';
 import { InfoPanel } from './InfoPanel';
-import { FormulaInput } from './FormulaInput';
 import { graphToDrawGraph } from '../../graph-layout/graphToDrawGraph';
 import { cmdEvent, CmdTypes } from '../cmd/CmdEvent';
 import { cmd_goto } from '../cmd/cmd-actions/goto';
@@ -16,13 +15,22 @@ import { getSubTree } from '../cmd/cmd-actions/getSubTree';
 import { cmd_hightligt } from '../cmd/cmd-actions/highlight';
 import { cmd_set } from '../cmd/cmd-actions/set';
 import { IFilter, FilterList } from './FilterList';
-import { Cmd } from '../cmd/Cmd';
 import { NewFormulaInput } from '../formula-input/FormulaInput';
 
 const SVG = styled.svg`
     background-color: ${props => props.theme.colors.background}
 `
-
+const FormulaContainer = styled.div`
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 40px;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
 
 export interface IGraphProps {
     data: IGraph;
@@ -547,18 +555,18 @@ class Graph extends Component<IGraphProps, IGraphState> {
                     selected.nodes.length === 1
                         ? <React.Fragment key={selectedNodes[0].id}>
                             <InfoPanel applyNodeChanges={this.updateNode} node={selectedNodes[0]} />
-                            {/* {
-                                !selectedNodes[0].isExogenousVariable ? <FormulaInput applyNodeChanges={this.updateNode} node={selectedNodes[0]} /> : null
-                            } */}
                             {
                                 !selectedNodes[0].isExogenousVariable
-                                    ? <NewFormulaInput
-                                        nodes={graph.nodes}
-                                        formula={selectedNodes[0].formula}
-                                        onChange={
-                                            (formula => this.updateNode({ ...selectedNodes[0], formula }))
-                                        }
-                                    />
+                                    ? <FormulaContainer>
+                                        <NewFormulaInput
+                                            autoFocus
+                                            nodes={graph.nodes}
+                                            formula={selectedNodes[0].formula}
+                                            onChange={
+                                                (formula => this.updateNode({ ...selectedNodes[0], formula }))
+                                            }
+                                        />
+                                    </FormulaContainer>
                                     : null
                             }
                         </React.Fragment>

@@ -20,6 +20,7 @@ interface IQueryResultState {
 interface IQueryResultProps {
     height: number;
     width: number;
+    result: string;
 }
 
 export class QueryResult extends Component<IQueryResultProps, IQueryResultState> {
@@ -32,7 +33,7 @@ export class QueryResult extends Component<IQueryResultProps, IQueryResultState>
             height={height}
             width={width}
         >
-
+            {JSON.stringify(this.props.result, null, 2)}
         </QueryResultContainer>
     }
 }

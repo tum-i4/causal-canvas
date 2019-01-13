@@ -1,7 +1,6 @@
 import * as net from 'net';
 import * as child_process from 'child_process';
 import * as path from 'path';
-import { existsSync } from 'fs-extra';
 
 const PATH_TO_JAR = path.join(__dirname, '..', 'java-tools', 'hp2sat', 'hp2sat.server-1.jar');
 

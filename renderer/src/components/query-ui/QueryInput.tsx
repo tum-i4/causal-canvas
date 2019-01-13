@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import styled from '../../style/theme/styled-components';
 import Graph from '../graph/Graph';
 import { Button, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText } from '@material-ui/core';
+import { NewFormulaInput } from '../formula-input/FormulaInput';
+import { IQueryData } from './QueryContainer';
+import { forumlaToJavaFormula } from '../util';
 
 const QueryInputContainer = styled.div<{ width: number }>`
     position: fixed;
@@ -20,13 +23,20 @@ const ButtonContainer = styled.div`
     width: 100%;
 `
 
+const PhiContainer = styled.div`
+    width: 90%;
+    height: 40px;
+`
+
 interface IQueryInputState {
     solvingStrategy: string;
+    phi: string;
 }
 
 interface IQueryInputProps {
     width: number;
     graph: Graph;
+    query: (query: IQueryData) => void;
 }
 
 const SolvingStrategys = [
@@ -50,7 +60,8 @@ export class QueryInput extends Component<IQueryInputProps, IQueryInputState> {
         super(props);
 
         this.state = {
-            solvingStrategy: SolvingStrategys[0]
+            solvingStrategy: SolvingStrategys[0],
+            phi: ''
         }
     }
 
@@ -62,9 +73,29 @@ export class QueryInput extends Component<IQueryInputProps, IQueryInputState> {
         })
     }
 
+    onPhiUpdate = (phi: string) => {
+        this.setState({
+            ...this.state,
+            phi
+        })
+    }
+
+    onQueryClick = () => {
+
+        const { phi, solvingStrategy } = this.state;
+        const graph = this.props.graph.getCurrentGraph();
+
+        this.props.query({
+            phi: forumlaToJavaFormula(phi),
+            solvingStrategy,
+            cause: [{ name: 'Suzi_Throws', value: true }],
+            context: graph.nodes.filter(n => n.isExogenousVariable).map(n => ({ name: n.title, value: n.value }))
+        });
+    }
+
     public render() {
 
-        const { solvingStrategy } = this.state;
+        const { solvingStrategy, phi } = this.state;
         const { width } = this.props;
 
         return <QueryInputContainer
@@ -79,10 +110,21 @@ export class QueryInput extends Component<IQueryInputProps, IQueryInputState> {
                 >
                     {SolvingStrategys.map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}
                 </Select>
-                <FormHelperText>Some important helper text</FormHelperText>
             </FormControl>
+            <PhiContainer>
+                <NewFormulaInput
+                    formula={phi}
+                    onChange={this.onPhiUpdate}
+                    nodes={this.props.graph.getCurrentGraph().nodes}
+                />
+            </PhiContainer>
+
             <ButtonContainer>
-                <Button variant="contained" color="primary">
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.onQueryClick}
+                >
                     Query
                 </Button>
             </ButtonContainer>
