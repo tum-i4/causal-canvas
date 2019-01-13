@@ -19,7 +19,7 @@ export interface ISuggestionBox {
 
 export const SuggestionBox: React.SFC<ISuggestionBox> = ({ suggestions, selectedIdx, position }) => {
 
-    if (position === null) {
+    if (position === null || suggestions.length === 0) {
         return null;
     }
 

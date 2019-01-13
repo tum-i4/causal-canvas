@@ -2,6 +2,7 @@ import React, { Component, createRef } from 'react';
 import styled from './../../style/theme/styled-components';
 import { SuggestionBox } from './SuggestionBox';
 import { INode } from '../../types/GraphTypes';
+import { makeSuggestionList } from './makeSuggetions';
 
 const FormulaContainer = styled.div`
     position: fixed;
@@ -80,29 +81,11 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
         this.setState({
             ...this.state,
             cursorPos,
-            suggestionList: this.makeSuggestionList(cursorPos),
+            suggestionList: makeSuggestionList(cursorPos, this.state.formula, this.props.nodes.map(n => n.title)),
             selectedIdx: -1
         });
     };
 
-    private makeSuggestionList(cursorPos): string[] {
-        const { formula } = this.state;
-        let currentWord = this.getWordAtPos(cursorPos, formula) || '';
-        currentWord = currentWord.replace(/\!|\(|\)/g, '');
-
-        return this.props.nodes
-            .map(n => n.title)
-            .filter(suggestion => suggestion.startsWith(currentWord))
-    }
-
-    private makeBetterSuggestionList() {
-        const formulaWords = [];
-        const currentWordIdx = 0;
-        const currentWord = formulaWords[currentWordIdx];
-
-        const isPreviousVariable = false;
-        const isNextVariable = false;
-    }
 
     private calcSuggestionBoxPos = () => {
 
@@ -114,25 +97,6 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
 
         return currentRef.offsetLeft + currentRef.offsetWidth / 2 + (cursorPos - formula.length / 2) * 9.53;
     }
-
-    private getWordAtPos = (cursorPos: number, formula: string) => {
-
-        let sum = 0;
-        let split = formula.split(" ");
-        console.log({ split, cursorPos });
-        if (cursorPos === formula.length) {
-            return split[split.length - 1];
-        }
-        // if (formula.charAt(cursorPos) === " ") {
-        //     return "";
-        // }
-        for (const word of split) {
-            sum += word.length;
-            if (sum >= cursorPos) {
-                return word;
-            }
-        }
-    };
 
     private onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
 
