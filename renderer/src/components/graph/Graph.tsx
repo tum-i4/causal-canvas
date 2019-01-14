@@ -22,7 +22,7 @@ const SVG = styled.svg`
 `
 const FormulaContainer = styled.div`
     position: fixed;
-    bottom: 50px;
+    top: 50px;
     left: 50%;
     transform: translateX(-50%);
     height: 40px;

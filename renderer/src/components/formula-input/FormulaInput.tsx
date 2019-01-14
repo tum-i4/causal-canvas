@@ -50,7 +50,7 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
             cursorPos: 0,
             selectedIdx: -1,
             suggestionList: props.nodes.map(n => n.title),
-            isFocused: false
+            isFocused: this.props.autoFocus || false
         }
     }
 
@@ -83,7 +83,7 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
             return null;
         }
 
-        return currentRef.offsetLeft + currentRef.offsetWidth / 2 + (cursorPos - formula.length / 2) * 9.53;
+        return currentRef.offsetLeft + currentRef.offsetWidth / 2 + (cursorPos - formula.length / 2) * 9.55;
     }
 
     private onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -123,6 +123,7 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
     }
 
     private onFocus = () => {
+        console.log('focus');
         this.setState({
             ...this.state,
             isFocused: true
@@ -140,7 +141,6 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
 
         const { formula, selectedIdx, suggestionList, isFocused } = this.state;
         const { autoFocus } = this.props;
-
         return <FormulaRelativContainer>
             <FormularInputInput
                 autoFocus={autoFocus || false}
