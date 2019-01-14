@@ -12,7 +12,7 @@ async function onReady() {
 	})
 
 	const hp2satConnector = await HP2SATConnector.create();
-
+	mainWindow.maximize();
 	// mainWindow.webContents.toggleDevTools();
 
 

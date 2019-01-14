@@ -114,6 +114,7 @@ export class QueryResult extends Component<IQueryResultProps, IQueryResultState>
                         src={results[idx] || {}}
                         collapsed={1}
                         displayDataTypes={false}
+                        enableClipboard={false}
                     />
                 </Scrollbars>
                 {
