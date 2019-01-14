@@ -35,6 +35,7 @@ const StepperIdxContainer = styled.div`
 const StepItem = styled.div`
     display: inline-block;
     font-size: 30px;
+    cursor: pointer;
 `
 
 interface IQueryResultState {

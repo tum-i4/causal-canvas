@@ -13,10 +13,12 @@ const CauseListItemName = styled.div`
 
 const CauseListItemValue = styled.div`
     width: 50px;
+    cursor: pointer;
 `
 
 const CauseListItemDelete = styled.div`
     width: 25px;
+    cursor: pointer;
 `
 
 export interface ICauseListItemProps {

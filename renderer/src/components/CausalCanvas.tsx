@@ -25,11 +25,13 @@ interface ICausalCanvasProps {
 const CanvasModusToggelButton = styled.div<any>`
     display: inline-block;
     position: fixed;
-    width: 50px;
-    height: 50px;
-    bottom: ${props => props.bottom + 10}px;
-    right: ${props => props.right + 10}px;
-    background-color: red;
+    width: 40px;
+    height: 40px;
+    bottom: ${props => props.bottom + 5}px;
+    right: ${props => props.right + 5}px;
+    opacity: ${props => props.modus === CanvasModus.Query ? 1 : 0.65};
+    font-size: 30px;
+    cursor: pointer;
 `
 
 class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
@@ -44,7 +46,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
         this.state = {
             width: 0,
             height: 0,
-            modus: CanvasModus.Query
+            modus: CanvasModus.Edit
         }
 
     }
@@ -95,8 +97,11 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
             <CanvasModusToggelButton
                 right={this.queryWidth * modus}
                 bottom={this.queryHeight * modus}
+                modus={modus}
                 onClick={this.toggelModus}
-            />
+            >
+                ✎
+            </CanvasModusToggelButton>
             {
                 modus === CanvasModus.Query && this.graphRef.current !== null
                     ? <QueryContainer

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from '../../style/theme/styled-components';
 import Graph from '../graph/Graph';
-import { Button, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText, TextField } from '@material-ui/core';
+import { Button, Select, Input, MenuItem } from '@material-ui/core';
 import { NewFormulaInput } from '../formula-input/FormulaInput';
 import { IQueryData } from './QueryContainer';
 import { forumlaToJavaFormula } from '../util';
@@ -21,7 +21,7 @@ const QueryInputContainer = styled.div<{ width: number }>`
 
 const ButtonContainer = styled.div`
     text-align: center;
-    margin-top: 10px;
+    margin-top: 15px;
     width: 100%;
 `
 
@@ -232,7 +232,6 @@ export class QueryInput extends Component<IQueryInputProps, IQueryInputState> {
             <ButtonContainer>
                 <Button
                     variant="contained"
-                    color="primary"
                     onClick={this.onQueryClick}
                 >
                     Query
