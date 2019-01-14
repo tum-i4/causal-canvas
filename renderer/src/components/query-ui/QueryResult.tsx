@@ -3,6 +3,7 @@ import styled from '../../style/theme/styled-components';
 import ReactJson from 'react-json-view';
 import { Scrollbars } from 'react-custom-scrollbars';
 import _ from 'lodash';
+import { IQueryData } from './QueryContainer';
 
 const QueryResultContainer = styled.div<{ height: number, width: number }>`
     position: fixed;
@@ -40,6 +41,16 @@ const StepItem = styled.div`
     cursor: pointer;
 `
 
+const ReSetBtn = styled.div`
+    position: absolute;
+    top: 0px;
+    left: calc(50% - 38px);
+    font-size: 27px;
+    display: inline-block;
+    cursor: pointer;
+    z-index: 100;
+`
+
 interface IQueryResultState {
     idx: number;
     query: {
@@ -52,6 +63,7 @@ interface IQueryResultProps {
     height: number;
     width: number;
     result: object;
+    reSetQuery: (query: IQueryData) => void;
 }
 
 export class QueryResult extends Component<IQueryResultProps, IQueryResultState> {
@@ -110,6 +122,11 @@ export class QueryResult extends Component<IQueryResultProps, IQueryResultState>
         })
     }
 
+    onReSetClicked = () => {
+        const { idx, query } = this.state;
+        this.props.reSetQuery(query[idx].query as any)
+    }
+
     public render() {
 
         const { height, width } = this.props;
@@ -127,6 +144,11 @@ export class QueryResult extends Component<IQueryResultProps, IQueryResultState>
             width={width}
         >
             <RelativeContainer>
+                <ReSetBtn
+                    onClick={this.onReSetClicked}
+                >
+                    ↻
+                </ReSetBtn>
                 <Scrollbars style={{ width: '50%', height: '100%' }}>
                     <ReactJson
                         src={query[idx].query || {}}

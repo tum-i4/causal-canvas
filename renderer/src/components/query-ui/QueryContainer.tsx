@@ -44,6 +44,7 @@ interface IQueryContainerProps {
 export class QueryContainer extends Component<IQueryContainerProps, IQueryContainerState> {
 
     private queryResultRef = createRef<QueryResult>();
+    private queryInputRef = createRef<QueryInput>();
     private lastIdx = -1;
 
     constructor(props: IQueryContainerProps) {
@@ -76,7 +77,6 @@ export class QueryContainer extends Component<IQueryContainerProps, IQueryContai
     }
 
     private onQueryResult = (event, result) => {
-        console.log(result);
         if (this.queryResultRef.current !== null) {
             this.queryResultRef.current.addResult(this.lastIdx, result);
         }
@@ -93,6 +93,12 @@ export class QueryContainer extends Component<IQueryContainerProps, IQueryContai
         ipcRenderer.send('setModel', model);
     }
 
+    private resetQuery = (data: IQueryData) => {
+        if (this.queryInputRef.current !== null) {
+            this.queryInputRef.current.setQuery(data);
+        }
+    }
+
     public render() {
 
         const { width, height, graph } = this.props;
@@ -102,12 +108,14 @@ export class QueryContainer extends Component<IQueryContainerProps, IQueryContai
                 query={this.sendQuery}
                 width={width}
                 graph={graph}
+                ref={this.queryInputRef}
             />
             <QueryResult
                 ref={this.queryResultRef}
                 result={this.state.result}
                 height={height}
                 width={width}
+                reSetQuery={this.resetQuery}
             />
         </React.Fragment>
     }

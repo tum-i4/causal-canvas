@@ -58,6 +58,15 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
         this.setState(this.state)
     }
 
+    componentDidUpdate = (oldProps: IFormulaInputProps) => {
+        if (oldProps.formula !== this.props.formula) {
+            this.setState({
+                ...this.state,
+                formula: this.props.formula.replace(/&/g, ' & ').replace(/\|/g, ' | ')
+            });
+        }
+    }
+
     onFormulaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({
             ...this.state,
@@ -91,7 +100,6 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
         const { selectedIdx, suggestionList, formula, cursorPos } = this.state;
 
         if (event.keyCode === 13 && selectedIdx === -1) {
-            console.log('yoloo ');
             this.props.onChange(formula.replace(/\s/g, ''));
         }
         if (event.keyCode === 13 && selectedIdx !== -1) {
@@ -123,7 +131,6 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
     }
 
     private onFocus = () => {
-        console.log('focus');
         this.setState({
             ...this.state,
             isFocused: true
