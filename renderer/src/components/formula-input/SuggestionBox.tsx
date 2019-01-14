@@ -3,11 +3,16 @@ import styled from './../../style/theme/styled-components';
 
 const SuggestionContainer = styled.div`
     border: 1px solid black;
-    padding: 4px;
+    border-top: 0;
     position: absolute;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    z-index: 100;
+    background-color: ${props => props.theme.colors.background}
 `
 
 const SuggestionItem = styled.div<{ selected: boolean }>`
+    padding: 4px;
     background-color: ${props => props.selected ? props.theme.colors.primary : props.theme.colors.background}
 `
 
