@@ -7,6 +7,7 @@ import { IQueryData } from './QueryContainer';
 import { forumlaToJavaFormula } from '../util';
 import { CauseListItem } from './CauseListItem';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { QueryNodeInput } from './QueryNodeInput';
 
 const QueryInputContainer = styled.div<{ width: number }>`
     position: fixed;
@@ -120,24 +121,22 @@ export class QueryInput extends Component<IQueryInputProps, IQueryInputState> {
         })
     }
 
-    onCauseSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onCauseSearchChange = (value: string) => {
         this.setState({
             ...this.state,
-            causeSearch: event.target.value
+            causeSearch: value
         })
     }
 
-    onCauseSearchKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.keyCode === 13) {
-            this.setState({
-                ...this.state,
-                cause: [{
-                    name: this.state.causeSearch,
-                    value: true
-                }, ...this.state.cause],
-                causeSearch: ''
-            })
-        }
+    onCauseSearchSubmit = () => {
+        this.setState({
+            ...this.state,
+            causeSearch: '',
+            cause: [{
+                name: this.state.causeSearch,
+                value: true
+            }, ...this.state.cause],
+        })
     }
 
     removeCauseItem = (idx: number) => {
@@ -194,10 +193,11 @@ export class QueryInput extends Component<IQueryInputProps, IQueryInputState> {
             <Label>
                 Cause
             </Label>
-            <CauseSearchInput
+            <QueryNodeInput
                 value={causeSearch}
                 onChange={this.onCauseSearchChange}
-                onKeyUp={this.onCauseSearchKeyUp}
+                onSubmit={this.onCauseSearchSubmit}
+                suggsestions={this.props.graph.getCurrentGraph().nodes.filter(n => !n.isExogenousVariable).map(n => n.title)}
             />
             <CauseContainer>
                 <Scrollbars style={{ width: '100%', height: '100%' }}>

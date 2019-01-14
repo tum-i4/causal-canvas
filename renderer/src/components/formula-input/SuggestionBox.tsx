@@ -2,7 +2,7 @@ import React from 'react';
 import styled from './../../style/theme/styled-components';
 
 const SuggestionContainer = styled.div`
-    border: 1px solid black;
+    border: 1px solid ${props => props.theme.colors.primary};
     border-top: 0;
     position: absolute;
     border-bottom-left-radius: 3px;

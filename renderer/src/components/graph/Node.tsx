@@ -81,7 +81,7 @@ const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragSta
                 fontSize={theme.node.font.size}
                 textAnchor="middle"
                 x={x}
-                y={y}
+                y={y + 7}
                 fill={theme.node.font.color}
             >{title}</NodeText>
         </StyledNodeGroupe>

@@ -7,8 +7,8 @@ export const BasicTheme: ITheme = {
         secondary: '#48dbfb'
     },
     node: {
-        rx: 90,
-        ry: 30,
+        rx: 95,
+        ry: 35,
         font: {
             size: '25',
             weight: '700',
