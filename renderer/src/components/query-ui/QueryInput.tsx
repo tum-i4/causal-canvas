@@ -51,7 +51,7 @@ const CauseSearchInput = styled.input`
 
 const Label = styled.div`
     font-size: 20px;
-    margin: 10px 0;
+    margin: 5px 0;
 `
 
 interface IQueryInputState {

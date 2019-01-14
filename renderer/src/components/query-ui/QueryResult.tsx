@@ -12,12 +12,14 @@ const QueryResultContainer = styled.div<{ height: number, width: number }>`
     width: calc(100% - ${props => props.width}px);
     background-color: ${props => props.theme.colors.background};
     border-top: 1px solid ${props => props.theme.colors.primary};
+    padding: 3px;
 `
 
 const RelativeContainer = styled.div`
     position: relative;
     height: 100%;
     width: 100%;
+    display: flex;
 `
 
 const StepperContainer = styled.div`
@@ -40,7 +42,10 @@ const StepItem = styled.div`
 
 interface IQueryResultState {
     idx: number;
-    results: object[];
+    query: {
+        query: object;
+        result: object | null;
+    }[];
 }
 
 interface IQueryResultProps {
@@ -56,23 +61,36 @@ export class QueryResult extends Component<IQueryResultProps, IQueryResultState>
 
         this.state = {
             idx: 0,
-            results: []
+            query: []
         }
     }
 
     componentDidUpdate(prevProps: IQueryResultProps) {
-        if (!_.isMatch(prevProps.result, this.props.result)) {
+
+    }
+
+    public addQuery(query: any) {
+        this.setState({
+            ...this.state,
+            query: [...this.state.query, { query, result: null }],
+            idx: this.state.query.length
+        })
+
+        return this.state.query.length;
+    }
+
+    public addResult(idx: number, result: any) {
+        setTimeout(() => {
             this.setState({
                 ...this.state,
-                results: [this.props.result, ...this.state.results],
-                idx: this.state.results.length
+                query: this.state.query.map((q, i) => i === idx ? { ...q, result } : q)
             })
-        }
+        }, 500)
     }
 
     private incIdx = () => {
         const newIdx = this.state.idx + 1
-        if (newIdx >= this.state.results.length) {
+        if (newIdx >= this.state.query.length) {
             return;
         }
         this.setState({
@@ -95,9 +113,9 @@ export class QueryResult extends Component<IQueryResultProps, IQueryResultState>
     public render() {
 
         const { height, width } = this.props;
-        const { results, idx } = this.state;
+        const { query, idx } = this.state;
 
-        if (results.length === 0) {
+        if (query.length === 0) {
             return <QueryResultContainer
                 height={height}
                 width={width}
@@ -109,23 +127,37 @@ export class QueryResult extends Component<IQueryResultProps, IQueryResultState>
             width={width}
         >
             <RelativeContainer>
-                <Scrollbars style={{ width: '100%', height: '100%' }}>
+                <Scrollbars style={{ width: '50%', height: '100%' }}>
                     <ReactJson
-                        src={results[idx] || {}}
+                        src={query[idx].query || {}}
                         collapsed={1}
                         displayDataTypes={false}
                         enableClipboard={false}
+                        name={'query'}
                     />
                 </Scrollbars>
+                <Scrollbars style={{ width: '50%', height: '100%' }}>
+                    {
+                        query[idx].result === null
+                            ? 'Loading...'
+                            : <ReactJson
+                                src={query[idx].result || {}}
+                                collapsed={1}
+                                displayDataTypes={false}
+                                enableClipboard={false}
+                                name={'result'}
+                            />
+                    }
+                </Scrollbars>
                 {
-                    results.length > 1
+                    query.length > 1
                         ? <React.Fragment>
                             <StepperContainer>
                                 <StepItem onClick={this.decIdx}>🠸</StepItem>
                                 <StepItem onClick={this.incIdx}>🠺</StepItem>
                             </StepperContainer>
                             <StepperIdxContainer>
-                                {`${idx + 1}/${results.length}`}
+                                {`${idx + 1}/${query.length}`}
                             </StepperIdxContainer>
                         </React.Fragment>
                         : null

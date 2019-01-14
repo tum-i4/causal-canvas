@@ -22,11 +22,7 @@ export class HP2SATConnector {
     public query = async (event, data) => {
         console.log(data);
         const result = await this.hp2sat.query(data);
-        BrowserWindow.getFocusedWindow().webContents.send('query-result', {
-            time: new Date().toISOString(),
-            query: data,
-            result,
-        })
+        BrowserWindow.getFocusedWindow().webContents.send('query-result', JSON.parse(result))
     }
 
 }

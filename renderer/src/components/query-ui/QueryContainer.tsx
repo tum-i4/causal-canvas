@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import { QueryInput } from './QueryInput';
 import { QueryResult } from './QueryResult';
 import Graph from '../graph/Graph';
@@ -43,6 +43,8 @@ interface IQueryContainerProps {
 
 export class QueryContainer extends Component<IQueryContainerProps, IQueryContainerState> {
 
+    private queryResultRef = createRef<QueryResult>();
+    private lastIdx = -1;
 
     constructor(props: IQueryContainerProps) {
         super(props);
@@ -75,14 +77,16 @@ export class QueryContainer extends Component<IQueryContainerProps, IQueryContai
 
     private onQueryResult = (event, result) => {
         console.log(result);
-        this.setState({
-            ...this.state,
-            result,
-        })
+        if (this.queryResultRef.current !== null) {
+            this.queryResultRef.current.addResult(this.lastIdx, result);
+        }
     }
 
     private sendQuery = (query: IQueryData) => {
-        ipcRenderer.send('query', query)
+        if (this.queryResultRef.current !== null) {
+            ipcRenderer.send('query', query)
+            this.lastIdx = this.queryResultRef.current.addQuery(query);
+        }
     }
 
     private setModel = (model: INewModelData) => {
@@ -100,6 +104,7 @@ export class QueryContainer extends Component<IQueryContainerProps, IQueryContai
                 graph={graph}
             />
             <QueryResult
+                ref={this.queryResultRef}
                 result={this.state.result}
                 height={height}
                 width={width}
