@@ -32,7 +32,7 @@ export interface IQueryData {
 }
 
 interface IQueryContainerState {
-    result: string;
+    result: object;
 }
 
 interface IQueryContainerProps {
@@ -48,7 +48,7 @@ export class QueryContainer extends Component<IQueryContainerProps, IQueryContai
         super(props);
 
         this.state = {
-            result: ''
+            result: {}
         }
     }
 

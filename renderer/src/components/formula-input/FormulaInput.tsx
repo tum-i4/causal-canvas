@@ -3,7 +3,6 @@ import styled from './../../style/theme/styled-components';
 import { SuggestionBox } from './SuggestionBox';
 import { INode } from '../../types/GraphTypes';
 import { makeSuggestionList, replaceWordAtPos } from './makeSuggetions';
-import ReactDOM from 'react-dom';
 
 const FormularInputInput = styled.input`
     width: 100%;
