@@ -30,9 +30,9 @@ export const AreaSelection: React.SFC<IAreaSelectionProps> = ({ source, target, 
         <g>
             <rect
                 x={x} y={y} width={Math.abs(width)} height={Math.abs(height)}
-                stroke="blue"
+                stroke="#2c82c9"
                 strokeWidth="2"
-                fill="blue"
+                fill="#2c82c9"
                 opacity="0.4"
             />
         </g>
