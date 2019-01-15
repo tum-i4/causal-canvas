@@ -7,18 +7,20 @@ export const BasicTheme: ITheme = {
         secondary: '#48dbfb'
     },
     node: {
-        rx: 95,
-        ry: 35,
+        rx: 5,
+        ry: 5,
+        height: 46,
+        width: 220,
         font: {
             size: '25',
-            weight: '700',
+            weight: '500',
             color: '#000000'
         },
         backgroundColor: {
             default: '#ffffff'
         },
         borderColor: {
-            default: 'black',
+            default: '#7c7c7c',
             selected: '#2ed573',
             formular: '#ff793f'
         },
@@ -26,12 +28,16 @@ export const BasicTheme: ITheme = {
             strokeDasharray: "8 8"
         },
         strokeWidth: {
-            default: '2',
-            selected: '3'
+            default: '1',
+            selected: '2'
         }
     },
     edge: {
         lineNodeSpace: 10,
-        width: '3'
+        width: '2',
+        color: {
+            default: 'black',
+            selected: '#2ed573'
+        }
     }
 }

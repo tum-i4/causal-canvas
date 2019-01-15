@@ -6,7 +6,7 @@ import { withTheme } from 'styled-components';
 import { ITheme } from '../../style/theme/Theme';
 import { onlyUpdateForKeys } from 'recompose';
 
-const NodeShape = styled.ellipse<React.SVGProps<SVGEllipseElement> & { selected: boolean, isExogenousVariable: boolean, markAsPartOfFormular: boolean }>`
+const NodeShape = styled.rect<React.SVGProps<SVGRect> & { selected: boolean, isExogenousVariable: boolean, markAsPartOfFormular: boolean }>`
     stroke: ${
     props => props.selected ? props.theme.node.borderColor.selected
         : props.markAsPartOfFormular ? props.theme.node.borderColor.formular
@@ -70,10 +70,12 @@ const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragSta
                 isExogenousVariable={isExogenousVariable}
                 selected={selected}
                 markAsPartOfFormular={markAsPartOfFormular}
-                cx={x}
-                cy={y}
+                x={x - theme.node.width / 2}
+                y={y - theme.node.height / 2}
                 rx={theme.node.rx}
                 ry={theme.node.ry}
+                height={theme.node.height}
+                width={theme.node.width}
                 fill={theme.node.backgroundColor.default}
             />
             <NodeText

@@ -25,30 +25,33 @@ const RelativeContainer = styled.div`
 
 const StepperContainer = styled.div`
     position: absolute;
-    right: 10px;
+    right: 5px;
     top: 10px;
 `
 
 const StepperIdxContainer = styled.div`
     position: absolute;
-    right: 13px;
+    right: 9px;
     top: 3px;
+    color: ${props => props.theme.colors.primary};
 `
 
 const StepItem = styled.div`
     display: inline-block;
     font-size: 30px;
     cursor: pointer;
+    color: ${props => props.theme.colors.primary};
 `
 
 const ReSetBtn = styled.div`
     position: absolute;
     top: 0px;
-    left: calc(50% - 38px);
+    left: calc(50% - 30px);
     font-size: 27px;
     display: inline-block;
     cursor: pointer;
     z-index: 100;
+    color: ${props => props.theme.colors.primary};
 `
 
 interface IQueryResultState {

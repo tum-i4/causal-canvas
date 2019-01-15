@@ -7,6 +7,8 @@ export interface ITheme {
     node: {
         rx: number;
         ry: number;
+        height: number;
+        width: number;
         font: {
             size: string;
             weight: string;
@@ -31,5 +33,9 @@ export interface ITheme {
     edge: {
         width: string;
         lineNodeSpace: number;
+        color: {
+            default: string;
+            selected: string;
+        };
     }
 }

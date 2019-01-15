@@ -28,11 +28,11 @@ const EdgeRender: React.SFC<IEdgeProps> = ({ source, target, select, selected, i
         >
             <defs>
                 <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-                    <path d="M0,0 L0,6 L9,3 z" fill="#000000" />
+                    <path d="M0,0 L0,6 L9,3 z" fill={theme.edge.color.default} />
                 </marker>
             </defs>
             <path
-                stroke={selected ? 'blue' : "black"}
+                stroke={selected ? theme.edge.color.selected : theme.edge.color.default}
                 onClick={(ev) => select(ev, { nodes: [], edges: [id] })}
                 strokeWidth={theme.edge.width}
                 d={`M${sourcePoint.x},${sourcePoint.y}L${targetPoint.x},${targetPoint.y}`}
@@ -55,29 +55,30 @@ function intersectionPoint(source: INode, target: INode, theme: ITheme): IPoint[
     };
 
     // define rotated ellipse
-    const ellipseSource = {
-        center: new Point2D(source.x, source.y),
-        radiusX: rx,
-        radiusY: ry,
-        angle: 0
+    const rectangelSource = {
+        topLeft: new Point2D(
+            source.x - theme.node.width / 2 - theme.edge.lineNodeSpace,
+            source.y - theme.node.height / 2 - theme.edge.lineNodeSpace
+        ),
+        bottomRight: new Point2D(
+            source.x + theme.node.width / 2 + theme.edge.lineNodeSpace,
+            source.y + theme.node.height / 2 + theme.edge.lineNodeSpace
+        )
     };
 
-    const ellipseTarget = {
-        center: new Point2D(target.x, target.y),
-        radiusX: rx,
-        radiusY: ry,
-        angle: 0
+    const rectangelTarget = {
+        topLeft: new Point2D(
+            target.x - theme.node.width / 2 - theme.edge.lineNodeSpace,
+            target.y - theme.node.height / 2 - theme.edge.lineNodeSpace
+        ),
+        bottomRight: new Point2D(
+            target.x + theme.node.width / 2 + theme.edge.lineNodeSpace,
+            target.y + theme.node.height / 2 + theme.edge.lineNodeSpace
+        )
     };
 
-    const result1 = Intersection.intersectEllipseLine(
-        ellipseSource.center, ellipseSource.radiusX, ellipseSource.radiusY,
-        line.p1, line.p2
-    );
-
-    const result2 = Intersection.intersectEllipseLine(
-        ellipseTarget.center, ellipseTarget.radiusX, ellipseTarget.radiusY,
-        line.p1, line.p2
-    );
+    const result1 = Intersection.intersectLineRectangle(line.p1, line.p2, rectangelSource.topLeft, rectangelSource.bottomRight);
+    const result2 = Intersection.intersectLineRectangle(line.p1, line.p2, rectangelTarget.topLeft, rectangelTarget.bottomRight);
 
     return [result1.points[0] || source, result2.points[0] || target];
 }
