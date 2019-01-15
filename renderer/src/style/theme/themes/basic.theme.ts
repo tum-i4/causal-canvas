@@ -3,6 +3,7 @@ import { ITheme } from "../Theme";
 export const BasicTheme: ITheme = {
     colors: {
         background: '#ffffff',
+        highlightBackground: '#EBEBEB',
         primary: '#7c7c7c',
         secondary: '#48dbfb'
     },

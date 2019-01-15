@@ -22,9 +22,21 @@ const QueryInputContainer = styled.div<{ width: number }>`
 
 const ButtonContainer = styled.div`
     text-align: center;
-    margin-top: 15px;
+    margin-top: 22px;
     width: 100%;
 `
+
+const QueryButton = styled.div`
+    text-align: cetner;
+    padding: 5px 10px;
+    border: 1px solid ${props => props.theme.colors.primary};
+    border-radius: 3px;
+    cursor: pointer;
+    width: 120px;
+    display: inline-block;
+    background-color: ${props => props.theme.colors.highlightBackground};
+`
+
 
 const PhiContainer = styled.div`
     width: 100%;
@@ -34,25 +46,19 @@ const PhiContainer = styled.div`
 const CauseContainer = styled.div`
     height: 180px;
     width: 100%;
-`
-
-const CauseSearchInput = styled.input`
-    width: 100%;
-    height: 40px;
-    text-align: left;
-    //word-spacing: 5px;
-    font-size: 20px;
-    border: solid 1px ${props => props.theme.colors.primary};
-    outline: none;
-    &:focus{
-        outline: none;
-    }
+    background-color: ${props => props.theme.colors.highlightBackground};
+    margin-top: 3px;
     border-radius: 3px;
 `
 
 const Label = styled.div`
     font-size: 20px;
-    margin: 5px 0;
+    margin: 7px 0;
+`
+
+const FirstLabel = styled.div`
+    font-size: 20px;
+    margin-bottom: 7px;
 `
 
 interface IQueryInputState {
@@ -186,9 +192,9 @@ export class QueryInput extends Component<IQueryInputProps, IQueryInputState> {
         return <QueryInputContainer
             width={width}
         >
-            <Label>
+            <FirstLabel>
                 Context
-            </Label>
+            </FirstLabel>
             <CauseContainer>
                 <Scrollbars style={{ width: '100%', height: '100%' }}>
                     {
@@ -236,12 +242,11 @@ export class QueryInput extends Component<IQueryInputProps, IQueryInputState> {
                 {SolvingStrategys.map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}
             </Select>
             <ButtonContainer>
-                <Button
-                    variant="contained"
+                <QueryButton
                     onClick={this.onQueryClick}
                 >
                     Query
-                </Button>
+                </QueryButton>
             </ButtonContainer>
         </QueryInputContainer>
     }
