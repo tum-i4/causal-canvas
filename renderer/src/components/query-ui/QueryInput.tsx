@@ -107,7 +107,6 @@ export class QueryInput extends Component<IQueryInputProps, IQueryInputState> {
     }
 
     public setQuery = (data: IQueryData) => {
-        console.log(data);
         this.setState({
             ...data
         })

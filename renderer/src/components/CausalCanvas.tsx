@@ -46,7 +46,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
         this.state = {
             width: 0,
             height: 0,
-            modus: CanvasModus.Query
+            modus: CanvasModus.Edit
         }
 
     }
