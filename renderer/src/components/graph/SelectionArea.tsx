@@ -14,11 +14,11 @@ export const AreaSelection: React.SFC<IAreaSelectionProps> = ({ source, target, 
         return null;
     }
 
-    let x = source.x - viewPos.x - sWidth / 2;
-    let y = source.y - viewPos.y - sHeight / 2;
+    let x = source.x// - viewPos.x - sWidth / 2;
+    let y = source.y// - viewPos.y - sHeight / 2;
 
-    const width = target.x - viewPos.x - x - sWidth / 2;
-    const height = target.y - viewPos.y - y - sHeight / 2;
+    const width = target.x - x// - viewPos.x - x - sWidth / 2;
+    const height = target.y - y// - viewPos.y - y - sHeight / 2;
 
     if (width < 0) {
         x += width;
