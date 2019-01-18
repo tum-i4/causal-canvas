@@ -21,17 +21,6 @@ import * as d3 from 'd3';
 const SVG = styled.svg`
     background-color: ${props => props.theme.colors.background}
 `
-const FormulaContainer = styled.div`
-    position: fixed;
-    top: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 40px;
-    width: 90%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`
 
 export interface IGraphProps {
     data: IGraph;
@@ -582,7 +571,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
                         {newEdgeComponent}
                     </g>
                 </SVG>
-                {
+                {/* {
                     selected.nodes.length === 1
                         ? <React.Fragment key={selectedNodes[0].id}>
                             <InfoPanel applyNodeChanges={this.updateNode} node={selectedNodes[0]} />
@@ -602,7 +591,12 @@ class Graph extends Component<IGraphProps, IGraphState> {
                             }
                         </React.Fragment>
                         : null
-                }
+                } */}
+                <InfoPanel
+                    selectedNodes={selectedNodes}
+                    applyNodeChanges={this.updateNode}
+                    nodes={graph.nodes}
+                />
                 <FilterList filters={highlight} removeFilter={this.removeFilter} />
             </React.Fragment>
         )

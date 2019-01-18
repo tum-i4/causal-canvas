@@ -1,38 +1,54 @@
 import * as React from 'react';
 import { INode } from '../../types/GraphTypes';
 import styled from '../../style/theme/styled-components';
+import { NewFormulaInput } from '../formula-input/FormulaInput';
+import _ from 'lodash';
 
 const InfoPannelContainer = styled.div`
-    background-color: ${props => props.theme.colors.primary};
-    padding: 10px;
-    position: fixed;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    height: 200px;
-    width: 200px;
-    color: #ffffff;
-
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: ${props => props.theme.colors.background};
+    border-bottom: 1px solid ${props => props.theme.colors.primary};
+    padding-bottom: 10px;
 `
 
 const TitleWrapper = styled.div`
     text-align: center;
     margin-bottom: 10px;
+    width: 100%;
+    font-size: 25px;
+    margin-top: 15px;
 `
 
 const TitleInput = styled.input`
-
+    width: 300px;
+    height: 40px;
     text-align: center;
-    border: solid 1px ${props => props.theme.colors.secondary};
+    font-size: 20px;
+    border: solid 1px ${props => props.theme.colors.primary};
     outline: none;
     &:focus{
         outline: none;
     }
     border-radius: 3px;
+    margin-left: 50%;
+    transform: translate(-50%);
+    margin-top: 15px;
+`
+
+const FormulaContainer = styled.div`
+    height: 40px;
+    width: 90%;
+    margin-top: 20px;
+    margin-left: 50%;
+    transform: translate(-50%);
 `
 
 export interface IInfoPanelProps {
-    node: INode;
+    selectedNodes: INode[];
+    nodes: INode[];
     applyNodeChanges: (updatedNode: INode) => void;
 }
 
@@ -47,9 +63,26 @@ export class InfoPanel extends React.Component<IInfoPanelProps, IInfoPanelState>
         super(props);
 
         this.state = {
-            title: props.node.title,
+            title: '',
             editTitle: false
         }
+    }
+
+    componentDidUpdate(prevProps: IInfoPanelProps) {
+        if (!_.isEqual(prevProps.selectedNodes, this.props.selectedNodes)) {
+            this.setState({
+                ...this.state,
+                editTitle: false
+            })
+        }
+    }
+
+    onTitleClick = (ev: React.MouseEvent<HTMLInputElement>) => {
+        this.setState({
+            ...this.state,
+            editTitle: true,
+            title: this.props.selectedNodes[0].title
+        })
     }
 
     onTitleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,45 +92,62 @@ export class InfoPanel extends React.Component<IInfoPanelProps, IInfoPanelState>
         })
     }
 
-    applyNewName = (ev: React.KeyboardEvent<HTMLInputElement>) => {
-        if (ev.key === 'Enter') {
-            this.props.applyNodeChanges({
-                ...this.props.node,
-                title: this.state.title
-            })
+    onTitleInputBlur = () => {
+        this.props.applyNodeChanges({
+            ...this.props.selectedNodes[0],
+            title: this.state.title
+        })
 
-            this.setState({
-                ...this.state,
-                editTitle: false
-            })
-        }
+        this.setState({
+            ...this.state,
+            editTitle: false
+        })
     }
 
-    toggelNodeValue = () => {
-        if (!this.props.node.isExogenousVariable) {
-            return;
+    onKeyUp = (ev: React.KeyboardEvent<HTMLInputElement>) => {
+        if (ev.key === 'Enter') {
+            this.onTitleInputBlur();
         }
-
-        this.props.applyNodeChanges({
-            ...this.props.node,
-            value: !this.props.node.value
-        })
     }
 
     render() {
 
-        const { title, editTitle } = this.state;
+        const { selectedNodes, nodes } = this.props;
+        const { editTitle, title } = this.state;
+
+        if (selectedNodes.length === 0) {
+            return null;
+        }
+
+        const node = selectedNodes[0];
 
         return (
             <InfoPannelContainer>
-                <TitleWrapper>
-                    {
-                        !editTitle
-                            ? <label onClick={() => this.setState({ ...this.state, editTitle: true })}>{title}</label>
-                            : <TitleInput type='text' value={title} onChange={this.onTitleChange} onKeyUp={this.applyNewName} />
-                    }
-                </TitleWrapper>
-                <label onClick={this.toggelNodeValue}>value: {String(this.props.node.value)}</label>
+                {
+                    editTitle
+                        ? <TitleInput
+                            onChange={this.onTitleChange}
+                            onKeyUp={this.onKeyUp}
+                            value={title}
+                            onBlur={this.onTitleInputBlur}
+                        />
+                        : <TitleWrapper
+                            onClick={this.onTitleClick}
+                        >
+                            {node.title}
+                        </TitleWrapper>
+                }
+
+                <FormulaContainer>
+                    <NewFormulaInput
+                        autoFocus
+                        nodes={nodes}
+                        formula={node.formula}
+                        onChange={
+                            (formula => this.props.applyNodeChanges({ ...node, formula }))
+                        }
+                    />
+                </FormulaContainer>
             </InfoPannelContainer>
         )
     }
