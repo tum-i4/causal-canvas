@@ -249,7 +249,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
     }
 
     moveView = (delta: IPoint) => {
-        const { viewPos, zoomTransform } = this.state;
+        const { viewPos } = this.state;
         this.setState({
             ...this.state,
             viewPos: {
@@ -260,15 +260,15 @@ class Graph extends Component<IGraphProps, IGraphState> {
     }
 
     moveNewEdge = (event: MouseEvent) => {
-        const { newEdge, viewPos } = this.state;
+        const { newEdge, viewPos, zoomTransform } = this.state;
         this.setState({
             ...this.state,
             newEdge: {
                 ...newEdge!,
                 target: {
                     ...newEdge!.target,
-                    x: event.pageX - viewPos.x - this.props.width / 2,
-                    y: event.pageY - viewPos.y - this.props.height / 2
+                    x: (event.pageX - zoomTransform.x - viewPos.x - this.props.width / 2) / zoomTransform.k,
+                    y: (event.pageY - zoomTransform.y - viewPos.y - this.props.height / 2) / zoomTransform.k,
                 }
             }
         })
@@ -549,7 +549,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
                 selected={false}
             />
 
-        const areaSelection = <AreaSelection {...areaSelect} viewPos={viewPos} sWidth={width} sHeight={height} />
+        const areaSelection = <AreaSelection {...areaSelect} />
 
         const selectedNodes = graph.nodes.filter(n => selected.nodes.includes(n.id));
         return (
