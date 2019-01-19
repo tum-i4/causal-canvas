@@ -4,6 +4,7 @@ export interface ITheme {
         highlightBackground: string;
         primary: string;
         secondary: string;
+        error: string;
     };
     node: {
         rx: number;

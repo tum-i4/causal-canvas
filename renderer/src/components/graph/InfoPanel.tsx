@@ -16,7 +16,7 @@ const InfoPannelContainer = styled.div`
 
 const TitleWrapper = styled.div`
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     width: 100%;
     font-size: 25px;
     margin-top: 15px;
@@ -41,9 +41,20 @@ const TitleInput = styled.input`
 const FormulaContainer = styled.div`
     height: 40px;
     width: 90%;
-    margin-top: 20px;
+    margin-top: 6px;
     margin-left: 50%;
     transform: translate(-50%);
+`
+
+const TitleSpan = styled.span<{ isNotClick?: boolean }>`
+    cursor: ${props => props.isNotClick ? 'auto' : 'pointer'};
+    color: ${props => props.isNotClick ? props.theme.colors.error : props.theme.colors.primary};
+`
+
+const NodeTypeWrapper = styled.div`
+    text-align: center;
+    color: ${props => props.theme.colors.primary};
+    font-size: 10px;
 `
 
 export interface IInfoPanelProps {
@@ -110,6 +121,24 @@ export class InfoPanel extends React.Component<IInfoPanelProps, IInfoPanelState>
         }
     }
 
+    toggelNodeType = () => {
+        let node = this.props.selectedNodes[0];
+        console.log('yolo');
+        if (node.isExogenousVariable) {
+            this.props.applyNodeChanges({
+                ...node,
+                formula: '',
+                isExogenousVariable: false
+            })
+        }
+        else if (!node.isExogenousVariable && node.formula === '') {
+            this.props.applyNodeChanges({
+                ...node,
+                isExogenousVariable: true
+            })
+        }
+    }
+
     render() {
 
         const { selectedNodes, nodes } = this.props;
@@ -120,7 +149,7 @@ export class InfoPanel extends React.Component<IInfoPanelProps, IInfoPanelState>
         }
 
         const node = selectedNodes[0];
-
+        console.log(node);
         return (
             <InfoPannelContainer>
                 {
@@ -130,14 +159,20 @@ export class InfoPanel extends React.Component<IInfoPanelProps, IInfoPanelState>
                             onKeyUp={this.onKeyUp}
                             value={title}
                             onBlur={this.onTitleInputBlur}
+                            autoFocus
                         />
-                        : <TitleWrapper
-                            onClick={this.onTitleClick}
-                        >
-                            {node.title}
+                        : <TitleWrapper>
+                            <TitleSpan onClick={this.onTitleClick}>{node.title}</TitleSpan>
                         </TitleWrapper>
                 }
-
+                <NodeTypeWrapper>
+                    <TitleSpan
+                        isNotClick={!(!node.isExogenousVariable && node.formula === '' || node.isExogenousVariable)}
+                        onClick={!node.isExogenousVariable && node.formula === '' || node.isExogenousVariable ? this.toggelNodeType : undefined}
+                    >
+                        change to {node.isExogenousVariable ? 'Endogenous' : 'Exogenous'}
+                    </TitleSpan>
+                </NodeTypeWrapper>
                 <FormulaContainer>
                     <NewFormulaInput
                         autoFocus

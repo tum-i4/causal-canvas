@@ -91,5 +91,5 @@ const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragSta
 }
 
 export const Node = onlyUpdateForKeys([
-    'x', 'y', 'selected', 'title', 'markAsPartOfFormular', 'isNotHighlight'
+    'x', 'y', 'selected', 'title', 'markAsPartOfFormular', 'isNotHighlight', 'isExogenousVariable'
 ])(withTheme(NodeRender))

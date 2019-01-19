@@ -100,7 +100,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
                 modus={modus}
                 onClick={this.toggelModus}
             >
-                ✎
+                {modus === CanvasModus.Edit ? '✎' : '×'}
             </CanvasModusToggelButton>
             {
                 modus === CanvasModus.Query && this.graphRef.current !== null
