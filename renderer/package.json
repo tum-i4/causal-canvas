@@ -6,6 +6,7 @@
   "dependencies": {
     "@material-ui/core": "3.7.1",
     "@types/d3": "^5.0.1",
+    "@types/dagre": "^0.7.40",
     "@types/jest": "23.3.10",
     "@types/lodash": "^4.14.118",
     "@types/node": "10.12.10",
@@ -15,6 +16,7 @@
     "@types/styled-components": "4.1.2",
     "@types/uuid": "^3.4.4",
     "d3": "^5.7.0",
+    "dagre": "^0.8.4",
     "electron": "^3.0.11",
     "kld-intersections": "^0.4.3",
     "lodash": "^4.17.11",

@@ -149,7 +149,6 @@ export class InfoPanel extends React.Component<IInfoPanelProps, IInfoPanelState>
         }
 
         const node = selectedNodes[0];
-        console.log(node);
         return (
             <InfoPannelContainer>
                 {

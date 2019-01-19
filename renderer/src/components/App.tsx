@@ -78,9 +78,10 @@ class App extends Component<any, ICausalCanvasState> {
     handelGraphImport = async (data: IGraphImportData) => {
 
         let graph: IGraph | null = null;
+        const { width, height } = this.state;
 
         switch (data.type) {
-            case GraphImportType.Extracter: graph = await extracterReportToGraph(data.src); break;
+            case GraphImportType.Extracter: graph = await extracterReportToGraph(data.src, width, height); break;
             case GraphImportType.CausalModel: graph = JSON.parse(data.src); break;
         }
 
