@@ -62,6 +62,8 @@ class Graph extends Component<IGraphProps, IGraphState> {
     private lastPos: IPoint = { x: -1, y: -1 };
     private moveType: MoveType = MoveType.None;
 
+    private zoomBehavior: d3.ZoomBehavior<SVGSVGElement, any> = null as any;
+
     constructor(props: any) {
         super(props);
 
@@ -132,7 +134,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
         window.addEventListener('keyup', this.onKeyUp);
         cmdEvent.on('cmd', this.applyCommand);
 
-        const zoom = d3.zoom<any, any>()
+        this.zoomBehavior = d3.zoom<any, any>()
             .filter(this.filterZoom)
             //.translateExtent([[0, 0], [this.props.width, this.props.height]])
             .scaleExtent([-5, 5])
@@ -140,7 +142,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
 
         if (this.svgRef.current !== null) {
             d3.select(this.svgRef.current)
-                .call(zoom);
+                .call(this.zoomBehavior);
         }
     }
 
@@ -230,8 +232,8 @@ class Graph extends Component<IGraphProps, IGraphState> {
             areaSelect: {
                 ...areaSelect,
                 target: {
-                    x: (event.pageX - zoomTransform.x - viewPos.x - this.props.width / 2) / zoomTransform.k,
-                    y: (event.pageY - zoomTransform.y - viewPos.y - this.props.height / 2) / zoomTransform.k,
+                    x: (event.pageX - zoomTransform.x - this.props.width / 2) / zoomTransform.k,
+                    y: (event.pageY - zoomTransform.y - this.props.height / 2) / zoomTransform.k,
                 }
             }
         })
@@ -239,6 +241,8 @@ class Graph extends Component<IGraphProps, IGraphState> {
 
     moveView = (delta: IPoint) => {
         const { viewPos } = this.state;
+
+        this.zoomBehavior.translateBy(d3.select(this.svgRef.current!), -delta.x, -delta.y);
         this.setState({
             ...this.state,
             viewPos: {
@@ -249,15 +253,15 @@ class Graph extends Component<IGraphProps, IGraphState> {
     }
 
     moveNewEdge = (event: MouseEvent) => {
-        const { newEdge, viewPos, zoomTransform } = this.state;
+        const { newEdge, zoomTransform } = this.state;
         this.setState({
             ...this.state,
             newEdge: {
                 ...newEdge!,
                 target: {
                     ...newEdge!.target,
-                    x: (event.pageX - zoomTransform.x - viewPos.x - this.props.width / 2) / zoomTransform.k,
-                    y: (event.pageY - zoomTransform.y - viewPos.y - this.props.height / 2) / zoomTransform.k,
+                    x: (event.pageX - zoomTransform.x - this.props.width / 2) / zoomTransform.k,
+                    y: (event.pageY - zoomTransform.y - this.props.height / 2) / zoomTransform.k,
                 }
             }
         })
@@ -427,11 +431,11 @@ class Graph extends Component<IGraphProps, IGraphState> {
             return;
         }
 
-        const { zoomTransform, viewPos } = this.state;
+        const { zoomTransform } = this.state;
 
         const point = {
-            x: (ev.pageX - zoomTransform.x - viewPos.x - this.props.width / 2) / zoomTransform.k,
-            y: (ev.pageY - zoomTransform.y - viewPos.y - this.props.height / 2) / zoomTransform.k,
+            x: (ev.pageX - zoomTransform.x - this.props.width / 2) / zoomTransform.k,
+            y: (ev.pageY - zoomTransform.y - this.props.height / 2) / zoomTransform.k,
         }
 
         this.setState({
@@ -555,15 +559,16 @@ class Graph extends Component<IGraphProps, IGraphState> {
                         <circle fill="#9c9c9c" cx="10" cy="10" r="1" />
                     </pattern>
                     <rect
-                        x={-width}
-                        y={-height}
-                        transform={`translate(${viewPos.x % width / 2},${viewPos.y % height / 2})`}
+                        x={-width / zoomTransform.k}
+                        y={-height / zoomTransform.k}
+                        transform={`translate(${zoomTransform.x % width / 2},${zoomTransform.y % height / 2}) scale(${zoomTransform.k})`}
                         style={{ pointerEvents: "none" }}
-                        width={width * 2} height={height * 2}
+                        width={width * 2 / zoomTransform.k} height={height * 2 / zoomTransform.k}
                         fill="url(#simple-dots)"
                     />
                     <g
-                        transform={`translate(${viewPos.x + zoomTransform.x},${viewPos.y + zoomTransform.y}) scale(${zoomTransform.k})`}
+                        //transform={`translate(${viewPos.x + zoomTransform.x},${viewPos.y + zoomTransform.y}) scale(${zoomTransform.k})`}
+                        transform={`translate(${zoomTransform.x},${zoomTransform.y}) scale(${zoomTransform.k})`}
                     >
                         {edges}
                         {nodes}
