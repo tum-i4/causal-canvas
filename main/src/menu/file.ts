@@ -18,6 +18,24 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
         label: 'File',
         submenu: [
             {
+                label: 'New File',
+                click: () => newFile()
+            },
+            {
+                type: "separator"
+            },
+            {
+                label: 'Save',
+                click: menuHandlerSave
+            },
+            {
+                label: 'Save as',
+                click: menuHandlerSaveAs
+            },
+            {
+                type: "separator"
+            },
+            {
                 label: 'Import',
                 submenu: [
                     {
@@ -53,12 +71,7 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
                 ]
             },
             {
-                label: 'Save',
-                click: menuHandlerSave
-            },
-            {
-                label: 'Save as',
-                click: menuHandlerSaveAs
+                type: "separator"
             },
             {
                 label: 'Exit',
@@ -67,6 +80,10 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
         ]
     }
 ]
+
+function newFile() {
+    BrowserWindow.getFocusedWindow().webContents.send('new-file');
+}
 
 function openFile(properties: Electron.OpenDialogOptions) {
     return new Promise<string | undefined>((resolve, reject) => {

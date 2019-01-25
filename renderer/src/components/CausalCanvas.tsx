@@ -1,9 +1,13 @@
 import React, { Component, createRef } from 'react';
-import Graph from './graph/Graph';
-import { IGraph } from '../types/GraphTypes';
+import Graph, { ISelect } from './graph/Graph';
+import { IGraph, IPoint } from '../types/GraphTypes';
 import { Cmd } from './cmd/Cmd';
 import styled from '../style/theme/styled-components';
 import { QueryContainer } from './query-ui/QueryContainer';
+import { TabBar } from './TabBar';
+import * as _ from 'lodash';
+import { IFilter } from './graph/FilterList';
+import { zoomIdentity } from 'd3';
 
 enum CanvasModus {
     Edit,
@@ -11,9 +15,24 @@ enum CanvasModus {
 }
 
 interface ICausalCanvasState {
-    width: number;
-    height: number;
     modus: CanvasModus;
+    graphs: IGraphData[];
+    selected: number;
+}
+
+export interface IGraphData {
+    graph: IGraph;
+    changed: boolean;
+    areaSelect: {
+        source: IPoint;
+        target: IPoint;
+    },
+    filter: {
+        highlight: IFilter[]
+    },
+    zoomTransform: d3.ZoomTransform;
+    selected: ISelect;
+
 }
 
 interface ICausalCanvasProps {
@@ -44,9 +63,9 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
         super(props);
 
         this.state = {
-            width: 0,
-            height: 0,
-            modus: CanvasModus.Edit
+            modus: CanvasModus.Edit,
+            graphs: [this.makeNewGraphState(props.graph)],
+            selected: 0
         }
 
     }
@@ -57,6 +76,48 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
     }
 
     componentWillUnmount() {
+    }
+
+    componentDidUpdate(lastProps: ICausalCanvasProps) {
+        if (!_.isMatch(lastProps.graph, this.props.graph)) {
+            this.setState({
+                ...this.state,
+                graphs: [...this.state.graphs, this.makeNewGraphState(this.props.graph)],
+                selected: this.state.graphs.length
+            })
+        }
+    }
+
+    private makeNewGraphState(graph: IGraph) {
+        return {
+            graph,
+            selected: {
+                nodes: [],
+                edges: []
+            },
+            newEdge: null,
+            areaSelect: {
+                source: { x: -1, y: -1 },
+                target: { x: -1, y: -1 }
+            },
+            filter: {
+                highlight: []
+            },
+            zoomTransform: zoomIdentity,
+            changed: false,
+        }
+    }
+
+    public makeNewEmptyTab = () => {
+        this.setState({
+            ...this.state,
+            graphs: [...this.state.graphs, this.makeNewGraphState({
+                directed: true,
+                nodes: [],
+                title: 'new-graph-' + this.state.graphs.length
+            })],
+            selected: this.state.graphs.length
+        })
     }
 
     public getCurrentGraph = () => {
@@ -72,11 +133,41 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
         })
     }
 
+    onTabChange = (idx: number) => {
+
+        if (this.graphRef.current === null) {
+            return;
+        }
+
+        if (idx === this.state.selected) {
+            return;
+        }
+
+        const graphs = this.state.graphs.map((g, _idx) => {
+            if (_idx === this.state.selected) {
+                return { ...this.graphRef.current!.getCurrentState(), changed: g.changed }
+            }
+            return g;
+        })
+
+        this.setState({
+            ...this.state,
+            selected: idx,
+            graphs,
+            modus: CanvasModus.Edit
+        })
+    }
+
+    onGraphChanged = () => {
+        this.setState({
+            graphs: this.state.graphs.map((g, idx) => idx === this.state.selected ? { ...g, changed: true } : g)
+        })
+    }
 
     render() {
 
-        const { modus } = this.state;
-        const { width, height, graph } = this.props;
+        const { modus, graphs, selected } = this.state;
+        const { width, height } = this.props;
 
         if (width === 0) {
             return null;
@@ -86,12 +177,21 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
             ? <Cmd graphRef={this.graphRef.current} />
             : null
 
+
+        const { changed, ...selectedGraph } = graphs[selected]
         return <React.Fragment>
+            <TabBar
+                graphs={graphs}
+                selected={selected}
+                onChange={this.onTabChange}
+                newGraph={this.makeNewEmptyTab}
+            />
             <Graph
                 ref={this.graphRef}
                 width={width - this.queryWidth * modus}
                 height={height - this.queryHeight * modus}
-                data={graph}
+                data={selectedGraph}
+                graphChanged={this.onGraphChanged}
             />
             {cmd}
             <CanvasModusToggelButton

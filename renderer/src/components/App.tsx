@@ -34,13 +34,13 @@ class App extends Component<any, ICausalCanvasState> {
         this.state = {
             width: 0,
             height: 0,
-            graph: susiExample()
+            graph: susiExample(),
         }
-
         this.updateWindowDimensions = _.debounce(this.updateWindowDimensions, 200);
     }
 
     componentDidMount() {
+
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
 
@@ -63,6 +63,12 @@ class App extends Component<any, ICausalCanvasState> {
                     type: 'saveas',
                     data: JSON.stringify(graph, null, 2)
                 }));
+            }
+        })
+
+        ipcRenderer.on('new-file', () => {
+            if (this.canvasRef.current !== null) {
+                this.canvasRef.current.makeNewEmptyTab();
             }
         })
     }

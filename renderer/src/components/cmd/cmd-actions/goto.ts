@@ -1,18 +1,19 @@
 import { INode, IPoint } from "../../../types/GraphTypes";
 
-export function cmd_goto(args: string[], nodes: INode[], viewPos: IPoint): IPoint {
+export function cmd_goto(args: string[], nodes: INode[], zoomTransform: any): IPoint {
 
     if (args.length === 0) {
-        return viewPos;
+        return zoomTransform;
     }
 
     const node = nodes.find(node => node.title === args[0]);
-
+    console.log({ args, node });
     if (node === undefined) {
-        return viewPos;
+        return zoomTransform;
     }
 
-    const newPos = { x: -node.x, y: -node.y }
+    zoomTransform.x = -node.x;
+    zoomTransform.y = -node.x;
 
-    return newPos;
+    return zoomTransform;
 }

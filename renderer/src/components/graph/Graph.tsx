@@ -15,22 +15,22 @@ import { getSubTree } from '../cmd/cmd-actions/getSubTree';
 import { cmd_hightligt } from '../cmd/cmd-actions/highlight';
 import { cmd_set } from '../cmd/cmd-actions/set';
 import { IFilter, FilterList } from './FilterList';
-import { NewFormulaInput } from '../formula-input/FormulaInput';
 import * as d3 from 'd3';
+import { IGraphData } from '../CausalCanvas';
 
 const SVG = styled.svg`
     background-color: ${props => props.theme.colors.background}
 `
-
+type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
 export interface IGraphProps {
-    data: IGraph;
+    data: Omit<IGraphData, 'changed'>;
     height: number;
     width: number;
+    graphChanged: () => void;
 }
 
 export interface IGraphState {
     graph: IGraph;
-    viewPos: IPoint;
     selected: ISelect;
     newEdge: IDrawEdge | null;
     areaSelect: {
@@ -68,22 +68,8 @@ class Graph extends Component<IGraphProps, IGraphState> {
         super(props);
 
         this.state = {
-            graph: _.cloneDeep(this.props.data),
-            viewPos: {
-                x: 0,
-                y: 0
-            },
-            selected: {
-                nodes: [],
-                edges: []
-            },
-            newEdge: null,
-            areaSelect: {
-                source: this.getResetPosition(),
-                target: this.getResetPosition()
-            },
-            filter: this.getInitFilter(),
-            zoomTransform: d3.zoomIdentity
+            ..._.cloneDeep(this.props.data),
+            newEdge: null
         }
 
     }
@@ -98,14 +84,18 @@ class Graph extends Component<IGraphProps, IGraphState> {
         return this.state.graph;
     }
 
+    public getCurrentState() {
+        return this.state;
+    }
+
     public applyCommand = (cmd: { type: CmdTypes, args: string[] }) => {
 
-        const { viewPos, graph: { nodes } } = this.state;
+        const { zoomTransform, graph: { nodes } } = this.state;
         let changes: any;
 
         switch (cmd.type) {
             case CmdTypes.GOTO: changes = {
-                viewPos: cmd_goto(cmd.args, nodes, viewPos)
+                zoomTransform: cmd_goto(cmd.args, nodes, zoomTransform)
             }; break;
             case CmdTypes.HIGHLIGHT: changes = {
                 filter: {
@@ -153,24 +143,17 @@ class Graph extends Component<IGraphProps, IGraphState> {
         this.removeMouseMoveEvent();
     }
 
-    componentDidUpdate(prevProps: IGraphProps) {
-        if (prevProps.data !== this.props.data) {
+    componentDidUpdate(prevProps: IGraphProps, prevState: IGraphState) {
+        if (!_.isMatch(prevProps.data, this.props.data)) {
+            console.log('yolo');
             this.setState({
-                graph: _.cloneDeep(this.props.data),
-                viewPos: {
-                    x: 0,
-                    y: 0
-                },
-                selected: {
-                    nodes: [],
-                    edges: []
-                },
-                newEdge: null,
-                areaSelect: {
-                    source: this.getResetPosition(),
-                    target: this.getResetPosition()
-                }
+                ..._.cloneDeep(this.props.data),
             })
+            return;
+        }
+
+        if (!_.isMatch(prevState.graph, this.state.graph)) {
+            this.props.graphChanged();
         }
     }
 
@@ -215,7 +198,6 @@ class Graph extends Component<IGraphProps, IGraphState> {
     onMouseMove = (event: MouseEvent) => {
 
         const delta = this.calcMouseDelta(event);
-
         switch (this.moveType) {
             case MoveType.View: return this.moveView(delta);
             case MoveType.Selection: return this.moveSelection(delta);
@@ -226,7 +208,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
     }
 
     moveAreaSelection = (event: MouseEvent) => {
-        const { areaSelect, zoomTransform, viewPos } = this.state;
+        const { areaSelect, zoomTransform } = this.state;
         this.setState({
             ...this.state,
             areaSelect: {
@@ -240,16 +222,8 @@ class Graph extends Component<IGraphProps, IGraphState> {
     }
 
     moveView = (delta: IPoint) => {
-        const { viewPos } = this.state;
-
         this.zoomBehavior.translateBy(d3.select(this.svgRef.current!), -delta.x, -delta.y);
-        this.setState({
-            ...this.state,
-            viewPos: {
-                x: viewPos.x - delta.x,
-                y: viewPos.y - delta.y,
-            }
-        })
+        this.setState({ ...this.state })
     }
 
     moveNewEdge = (event: MouseEvent) => {
@@ -328,13 +302,13 @@ class Graph extends Component<IGraphProps, IGraphState> {
             return;
         }
 
-        const { graph, viewPos, zoomTransform } = this.state;
+        const { graph, zoomTransform } = this.state;
 
         const id = uuid.v4().substring(0, 3);
         const newNode: INode = {
             id,
-            x: (ev.pageX - zoomTransform.x - viewPos.x - this.props.width / 2) / zoomTransform.k,
-            y: (ev.pageY - zoomTransform.y - viewPos.y - this.props.height / 2) / zoomTransform.k,
+            x: (ev.pageX - zoomTransform.x - this.props.width / 2) / zoomTransform.k,
+            y: (ev.pageY - zoomTransform.y - this.props.height / 2) / zoomTransform.k,
             title: id,
             value: true,
             formula: '',
@@ -459,7 +433,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
         if (this.moveType === MoveType.AreaSelect) {
             this.removeMouseMoveEvent(false);
 
-            const { graph: { nodes }, areaSelect, viewPos } = this.state;
+            const { graph: { nodes }, areaSelect } = this.state;
 
             this.setState({
                 ...this.state,
@@ -498,7 +472,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
     render() {
 
         const { height, width } = this.props;
-        const { graph, viewPos, selected, newEdge, areaSelect, filter: { highlight }, zoomTransform } = this.state;
+        const { graph, selected, newEdge, areaSelect, filter: { highlight }, zoomTransform } = this.state;
 
         const drawGraph = graphToDrawGraph(graph);
         const formularNodes = getSubTree(graph.nodes, selected.nodes);
@@ -567,7 +541,6 @@ class Graph extends Component<IGraphProps, IGraphState> {
                         fill="url(#simple-dots)"
                     />
                     <g
-                        //transform={`translate(${viewPos.x + zoomTransform.x},${viewPos.y + zoomTransform.y}) scale(${zoomTransform.k})`}
                         transform={`translate(${zoomTransform.x},${zoomTransform.y}) scale(${zoomTransform.k})`}
                     >
                         {edges}

@@ -174,7 +174,6 @@ export class InfoPanel extends React.Component<IInfoPanelProps, IInfoPanelState>
                 </NodeTypeWrapper>
                 <FormulaContainer>
                     <NewFormulaInput
-                        autoFocus
                         nodes={nodes}
                         formula={node.formula}
                         onChange={
