@@ -4,7 +4,7 @@ import { helpMenuTemplate } from './menu/help';
 import * as fs from 'fs-extra';
 import { HP2SATConnector } from './hp2satConnector';
 let mainWindow: Electron.BrowserWindow
-let currentPath = '';
+let filePaths = new Map<string, string>();
 async function onReady() {
 	mainWindow = new BrowserWindow({
 		width: 1200,
@@ -31,6 +31,7 @@ async function onReady() {
 	ipcMain.on('saveToFile', (event: any, data: string) => {
 
 		const jsonData = JSON.parse(data);
+		const currentPath = filePaths.get(jsonData.id) || '';
 		if (jsonData.type === 'save' && currentPath !== '') {
 			fs.writeFile(currentPath, jsonData.data, (err) => console.log(err));
 			return;
@@ -42,11 +43,10 @@ async function onReady() {
 			if (fileName === undefined) {
 				return;
 			}
-			currentPath = fileName;
+			filePaths.set(jsonData.id, fileName);
 			fs.writeFile(fileName, jsonData.data, (err) => console.log(err));
 		})
 	})
-
 
 }
 
@@ -64,7 +64,3 @@ console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 // 		fs.writeFile(fileName, data, (err) => console.log(err));
 // 	})
 // })
-
-export function setCurrentPath(path: string) {
-	currentPath = path;
-}

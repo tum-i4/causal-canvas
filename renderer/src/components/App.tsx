@@ -51,6 +51,7 @@ class App extends Component<any, ICausalCanvasState> {
                 const graph = this.canvasRef.current.getCurrentGraph();
                 ipcRenderer.send('saveToFile', JSON.stringify({
                     type: 'save',
+                    id: this.canvasRef.current.getCurrentID(),
                     data: JSON.stringify(graph, null, 2)
                 }));
             }
@@ -61,6 +62,7 @@ class App extends Component<any, ICausalCanvasState> {
                 const graph = this.canvasRef.current.getCurrentGraph();
                 ipcRenderer.send('saveToFile', JSON.stringify({
                     type: 'saveas',
+                    id: this.canvasRef.current.getCurrentID(),
                     data: JSON.stringify(graph, null, 2)
                 }));
             }

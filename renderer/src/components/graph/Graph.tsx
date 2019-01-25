@@ -21,9 +21,19 @@ import { IGraphData } from '../CausalCanvas';
 const SVG = styled.svg`
     background-color: ${props => props.theme.colors.background}
 `
-type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
 export interface IGraphProps {
-    data: Omit<IGraphData, 'changed'>;
+    data: {
+        graph: IGraph;
+        selected: ISelect;
+        areaSelect: {
+            source: IPoint;
+            target: IPoint;
+        },
+        filter: {
+            highlight: IFilter[]
+        },
+        zoomTransform: d3.ZoomTransform;
+    }
     height: number;
     width: number;
     graphChanged: () => void;
@@ -63,6 +73,8 @@ class Graph extends Component<IGraphProps, IGraphState> {
     private moveType: MoveType = MoveType.None;
 
     private zoomBehavior: d3.ZoomBehavior<SVGSVGElement, any> = null as any;
+
+    private changedHelperFlag = false;
 
     constructor(props: any) {
         super(props);
@@ -145,15 +157,20 @@ class Graph extends Component<IGraphProps, IGraphState> {
 
     componentDidUpdate(prevProps: IGraphProps, prevState: IGraphState) {
         if (!_.isMatch(prevProps.data, this.props.data)) {
-            console.log('yolo');
             this.setState({
                 ..._.cloneDeep(this.props.data),
+                newEdge: null
             })
+            this.changedHelperFlag = true;
             return;
         }
 
         if (!_.isMatch(prevState.graph, this.state.graph)) {
-            this.props.graphChanged();
+            if (this.changedHelperFlag) {
+                this.changedHelperFlag = false;
+            } else {
+                this.props.graphChanged();
+            }
         }
     }
 

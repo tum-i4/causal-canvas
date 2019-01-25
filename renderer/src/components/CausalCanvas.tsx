@@ -8,6 +8,7 @@ import { TabBar } from './TabBar';
 import * as _ from 'lodash';
 import { IFilter } from './graph/FilterList';
 import { zoomIdentity } from 'd3';
+import uuid from 'uuid';
 
 enum CanvasModus {
     Edit,
@@ -21,6 +22,7 @@ interface ICausalCanvasState {
 }
 
 export interface IGraphData {
+    id: string;
     graph: IGraph;
     changed: boolean;
     areaSelect: {
@@ -90,6 +92,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
 
     private makeNewGraphState(graph: IGraph) {
         return {
+            id: uuid.v4(),
             graph,
             selected: {
                 nodes: [],
@@ -122,8 +125,15 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
 
     public getCurrentGraph = () => {
         if (this.graphRef.current !== null) {
+            this.setState({
+                graphs: this.state.graphs.map((g, idx) => idx === this.state.selected ? { ...g, changed: false } : g)
+            });
             return this.graphRef.current.getCurrentGraph();
         }
+    }
+
+    public getCurrentID = () => {
+        return this.state.graphs[this.state.selected].id;
     }
 
     public toggelModus = () => {
@@ -145,7 +155,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
 
         const graphs = this.state.graphs.map((g, _idx) => {
             if (_idx === this.state.selected) {
-                return { ...this.graphRef.current!.getCurrentState(), changed: g.changed }
+                return { ...g, ...this.graphRef.current!.getCurrentState(), changed: g.changed }
             }
             return g;
         })
@@ -178,7 +188,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
             : null
 
 
-        const { changed, ...selectedGraph } = graphs[selected]
+        const { changed, id, ...selectedGraph } = graphs[selected]
         return <React.Fragment>
             <TabBar
                 graphs={graphs}

@@ -1,7 +1,6 @@
 import { MenuItemConstructorOptions, dialog, BrowserWindow, ipcMain } from 'electron';
 import { extractr_atack, extractr_fault } from '../java-tools-wrapper/extractr';
 import * as fs from 'fs-extra';
-import { setCurrentPath } from '../index';
 
 export enum GraphImportType {
     Extracter,
@@ -19,17 +18,20 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
         submenu: [
             {
                 label: 'New File',
-                click: () => newFile()
+                click: () => newFile(),
+                accelerator: 'Ctrl+N'
             },
             {
                 type: "separator"
             },
             {
                 label: 'Save',
+                accelerator: 'Ctrl+S',
                 click: menuHandlerSave
             },
             {
                 label: 'Save as',
+                accelerator: 'Ctrl+Shift+S',
                 click: menuHandlerSaveAs
             },
             {
@@ -142,7 +144,6 @@ async function menuHandlerImportCausalModel() {
         type: GraphImportType.CausalModel,
         src: srcString.toString()
     }
-    setCurrentPath(modelSrcPath);
     BrowserWindow.getFocusedWindow().webContents.send('import', JSON.stringify(importDate))
 }
 
