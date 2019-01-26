@@ -10,7 +10,7 @@ import { IFilter } from './graph/FilterList';
 import { zoomIdentity } from 'd3';
 import uuid from 'uuid';
 
-enum CanvasModus {
+export enum CanvasModus {
     Edit,
     Query
 }
@@ -202,6 +202,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
                 height={height - this.queryHeight * modus}
                 data={selectedGraph}
                 graphChanged={this.onGraphChanged}
+                modus={modus}
             />
             {cmd}
             <CanvasModusToggelButton

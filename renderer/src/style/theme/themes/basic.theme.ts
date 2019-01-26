@@ -6,7 +6,8 @@ export const BasicTheme: ITheme = {
         highlightBackground: '#EBEBEB',
         primary: '#7c7c7c',
         secondary: '#48dbfb',
-        error: '#ff4757'
+        error: '#ff4757',
+        success: '#2ecc71'
     },
     node: {
         rx: 5,

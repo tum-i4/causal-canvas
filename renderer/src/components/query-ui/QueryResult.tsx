@@ -5,15 +5,21 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import _ from 'lodash';
 import { IQueryData } from './QueryContainer';
 
-const QueryResultContainer = styled.div<{ height: number, width: number }>`
+const QueryResultContainer = styled.div<{ height: number, width: number, success: boolean, done: boolean }>`
     position: fixed;
     left: 0;
     bottom: 0;
     height: ${props => props.height}px;
     width: calc(100% - ${props => props.width}px);
     background-color: ${props => props.theme.colors.background};
-    border-top: 1px solid ${props => props.theme.colors.primary};
     padding: 3px;
+    background-color: ${props =>
+        !props.done
+            ? props.theme.colors.background
+            : props.success
+                ? hexToRGB(props.theme.colors.success, 0.4)
+                : hexToRGB(props.theme.colors.error, 0.4)};
+    border-top: 1px solid ${props => props.theme.colors.primary};
 `
 
 const RelativeContainer = styled.div`
@@ -95,10 +101,19 @@ export class QueryResult extends Component<IQueryResultProps, IQueryResultState>
     }
 
     public addResult(idx: number, result: any) {
+
+        console.log(result);
+        let _result;
+        if (result.error !== null) {
+            _result = { error: result.error };
+        } else {
+            _result = result.result;
+        }
+
         setTimeout(() => {
             this.setState({
                 ...this.state,
-                query: this.state.query.map((q, i) => i === idx ? { ...q, result } : q)
+                query: this.state.query.map((q, i) => i === idx ? { ...q, result: _result } : q)
             })
         }, 500)
     }
@@ -139,12 +154,17 @@ export class QueryResult extends Component<IQueryResultProps, IQueryResultState>
             return <QueryResultContainer
                 height={height}
                 width={width}
+                done={false}
+                success={false}
             ></QueryResultContainer>
         }
 
+        const wasSuccess = (obj: any) => obj !== null && obj.error === undefined && obj.ac1 && obj.ac2 && obj.ac3
         return <QueryResultContainer
             height={height}
             width={width}
+            done={query[idx].result !== null}
+            success={wasSuccess(query[idx].result)}
         >
             <RelativeContainer>
                 <ReSetBtn
@@ -189,5 +209,17 @@ export class QueryResult extends Component<IQueryResultProps, IQueryResultState>
                 }
             </RelativeContainer>
         </QueryResultContainer>
+    }
+}
+
+function hexToRGB(hex, alpha) {
+    var r = parseInt(hex.slice(1, 3), 16),
+        g = parseInt(hex.slice(3, 5), 16),
+        b = parseInt(hex.slice(5, 7), 16);
+
+    if (alpha) {
+        return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+    } else {
+        return "rgb(" + r + ", " + g + ", " + b + ")";
     }
 }

@@ -16,7 +16,7 @@ import { cmd_hightligt } from '../cmd/cmd-actions/highlight';
 import { cmd_set } from '../cmd/cmd-actions/set';
 import { IFilter, FilterList } from './FilterList';
 import * as d3 from 'd3';
-import { IGraphData } from '../CausalCanvas';
+import { CanvasModus } from '../CausalCanvas';
 
 const SVG = styled.svg`
     background-color: ${props => props.theme.colors.background}
@@ -37,6 +37,7 @@ export interface IGraphProps {
     height: number;
     width: number;
     graphChanged: () => void;
+    modus: CanvasModus;
 }
 
 export interface IGraphState {
@@ -388,9 +389,9 @@ class Graph extends Component<IGraphProps, IGraphState> {
         console.log('newEdge', newEdge.source.id, targetID);
 
         if (newEdge.source.id !== targetID) {
-            const nodes = graph.nodes.map(node => node.id === newEdge.source.id && !node.isExogenousVariable ? {
+            const nodes = graph.nodes.map(node => node.id === targetID && !node.isExogenousVariable ? {
                 ...node,
-                formula: node.formula === '' ? targetID : node.formula + '|' + targetID
+                formula: node.formula === '' ? newEdge.source.id : node.formula + '|' + newEdge.source.id
             } : node)
             this.setState({
                 ...this.state,
@@ -488,7 +489,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
 
     render() {
 
-        const { height, width } = this.props;
+        const { height, width, modus } = this.props;
         const { graph, selected, newEdge, areaSelect, filter: { highlight }, zoomTransform } = this.state;
 
         const drawGraph = graphToDrawGraph(graph);
@@ -537,7 +538,9 @@ class Graph extends Component<IGraphProps, IGraphState> {
 
         const selectedNodes = graph.nodes.filter(n => selected.nodes.includes(n.id));
         return (
-            <React.Fragment>
+            <div style={{
+                pointerEvents: modus === CanvasModus.Edit ? 'all' : 'none'
+            }}>
                 <SVG
                     ref={this.svgRef}
                     width={width}
@@ -591,9 +594,10 @@ class Graph extends Component<IGraphProps, IGraphState> {
                     selectedNodes={selectedNodes}
                     applyNodeChanges={this.updateNode}
                     nodes={graph.nodes}
+                    canvasModus={this.props.modus}
                 />
                 <FilterList filters={highlight} removeFilter={this.removeFilter} />
-            </React.Fragment>
+            </div>
         )
     }
 }

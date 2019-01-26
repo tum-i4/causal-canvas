@@ -3,12 +3,13 @@ import { INode } from '../../types/GraphTypes';
 import styled from '../../style/theme/styled-components';
 import { NewFormulaInput } from '../formula-input/FormulaInput';
 import _ from 'lodash';
+import { CanvasModus } from '../CausalCanvas';
 
-const InfoPannelContainer = styled.div`
+const InfoPannelContainer = styled.div<{ modus: CanvasModus }>`
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: calc(100% - ${props => props.modus === CanvasModus.Edit ? 0 : 350}px);
     background-color: ${props => props.theme.colors.background};
     border-bottom: 1px solid ${props => props.theme.colors.primary};
     padding-bottom: 10px;
@@ -61,6 +62,7 @@ export interface IInfoPanelProps {
     selectedNodes: INode[];
     nodes: INode[];
     applyNodeChanges: (updatedNode: INode) => void;
+    canvasModus: CanvasModus;
 }
 
 export interface IInfoPanelState {
@@ -150,7 +152,9 @@ export class InfoPanel extends React.Component<IInfoPanelProps, IInfoPanelState>
 
         const node = selectedNodes[0];
         return (
-            <InfoPannelContainer>
+            <InfoPannelContainer
+                modus={this.props.canvasModus}
+            >
                 {
                     editTitle
                         ? <TitleInput

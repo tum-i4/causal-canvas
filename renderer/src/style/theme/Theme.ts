@@ -5,6 +5,7 @@ export interface ITheme {
         primary: string;
         secondary: string;
         error: string;
+        success: string;
     };
     node: {
         rx: number;
