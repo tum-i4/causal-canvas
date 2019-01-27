@@ -553,11 +553,11 @@ class Graph extends Component<IGraphProps, IGraphState> {
                         <circle fill="#9c9c9c" cx="10" cy="10" r="1" />
                     </pattern>
                     <rect
-                        x={-width / zoomTransform.k}
-                        y={-height / zoomTransform.k}
-                        transform={`translate(${zoomTransform.x % width / 2},${zoomTransform.y % height / 2}) scale(${zoomTransform.k})`}
+                        x={-width}
+                        y={-height}
+                        transform={`translate(${zoomTransform.x % width / 2},${zoomTransform.y % height / 2})`}
                         style={{ pointerEvents: "none" }}
-                        width={width * 2 / zoomTransform.k} height={height * 2 / zoomTransform.k}
+                        width={width * 2} height={height * 2}
                         fill="url(#simple-dots)"
                     />
                     <g

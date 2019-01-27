@@ -85,7 +85,10 @@ const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragSta
                 x={x}
                 y={y + 7}
                 fill={theme.node.font.color}
-            >{title}</NodeText>
+            >
+                {title.length > 14 ? title.substr(0, 14) + '...' : title}
+                <title>{title}</title>
+            </NodeText>
         </StyledNodeGroupe>
     )
 }

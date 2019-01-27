@@ -10,12 +10,12 @@ export const BasicTheme: ITheme = {
         success: '#2ecc71'
     },
     node: {
-        rx: 5,
-        ry: 5,
+        rx: 3,
+        ry: 3,
         height: 46,
         width: 220,
         font: {
-            size: '25',
+            size: '20',
             weight: '500',
             color: '#000000'
         },
