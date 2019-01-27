@@ -12,6 +12,9 @@ async function onReady() {
 	})
 
 	const hp2satConnector = await HP2SATConnector.create();
+	console.log(fs.readdirSync(__dirname));
+	console.log(__dirname);
+	console.log(app.getPath('appData'));
 	mainWindow.maximize();
 	// mainWindow.webContents.toggleDevTools();
 

@@ -4,14 +4,27 @@ import _ from 'lodash';
 import { IpcRenderer } from 'electron';
 import { extracterReportToGraph } from '../converter/extracterReportToGraph';
 import CausalCanvas from './CausalCanvas';
+import { Settings } from './settings/Settings';
+import { ThemeProvider } from '../style/theme/styled-components';
+import { BasicTheme } from '../style/theme/themes/basic.theme';
+import { ITheme } from '../style/theme/Theme';
 const electron = (window as any).require('electron');
 const fs = electron.remote.require('fs');
 const ipcRenderer: IpcRenderer = electron.ipcRenderer;
+
+enum AppView {
+    Graph,
+    Settings
+}
 
 interface ICausalCanvasState {
     width: number;
     height: number;
     graph: IGraph;
+    appView: AppView;
+    settings: {
+        style: ITheme;
+    }
 }
 
 export enum GraphImportType {
@@ -31,16 +44,26 @@ class App extends Component<any, ICausalCanvasState> {
     constructor(props) {
         super(props);
 
+        let style = _.cloneDeep(BasicTheme);
+        const savedStyle = window.localStorage.getItem('style');
+        if (savedStyle !== null) {
+            style = JSON.parse(savedStyle);
+        }
+
         this.state = {
             width: 0,
             height: 0,
             graph: susiExample(),
+            appView: AppView.Graph,
+            settings: {
+                style: style
+            }
         }
+
         this.updateWindowDimensions = _.debounce(this.updateWindowDimensions, 200);
     }
 
     componentDidMount() {
-
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
 
@@ -73,6 +96,13 @@ class App extends Component<any, ICausalCanvasState> {
                 this.canvasRef.current.makeNewEmptyTab();
             }
         })
+
+        ipcRenderer.on('settings', (event, data) => {
+            this.setState({
+                ...this.state,
+                appView: AppView.Settings
+            })
+        })
     }
 
     componentWillUnmount() {
@@ -98,21 +128,65 @@ class App extends Component<any, ICausalCanvasState> {
         }
     }
 
+    updateSettings = (key: string, obj: any) => {
+        this.setState({
+            ...this.state,
+            settings: {
+                ...this.state.settings,
+                [key]: obj
+            }
+        })
+    }
+
+    closeSettings = () => {
+        this.setState({
+            ...this.state,
+            appView: AppView.Graph
+        })
+    }
+
+    resetToDefaultStyle = () => {
+        this.setState({
+            ...this.state,
+            settings: {
+                ...this.state.settings,
+                style: _.cloneDeep(BasicTheme)
+            }
+        })
+    }
+
     render() {
 
-        const { width, height, graph } = this.state;
+        const { width, height, graph, appView, settings: { style } } = this.state;
 
         if (width === 0) {
             return null;
         }
 
-        return <React.Fragment>
-            <CausalCanvas
+        let body: any = null;
+
+        if (appView === AppView.Graph) {
+            body = <CausalCanvas
                 ref={this.canvasRef}
                 width={width}
                 height={height}
                 graph={graph}
             />
+        } else if (appView === AppView.Settings) {
+            body = <Settings
+                style={style}
+                onUpdate={this.updateSettings}
+                close={this.closeSettings}
+                resetToDefaultStyle={this.resetToDefaultStyle}
+            />
+        }
+
+        return <React.Fragment>
+            <ThemeProvider theme={style}>
+                {
+                    body
+                }
+            </ThemeProvider>
         </React.Fragment>
 
     }
