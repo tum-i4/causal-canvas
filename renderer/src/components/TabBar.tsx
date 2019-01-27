@@ -33,33 +33,103 @@ const TabBarBorder = styled.div`
     border-bottom: 1px solid ${props => props.theme.colors.primary};
 `
 
+const CauseSearchInput = styled.input`
+    width: 150px;
+    height: 31px;
+    text-align: left;
+    padding: 3px;
+    border: solid 1px ${props => props.theme.colors.primary};
+    outline: none;
+    &:focus{
+        outline: none;
+    }
+`
+
 export interface ITabBarProps {
     graphs: IGraphData[];
     selected: number;
     onChange: (idx: number) => void;
     newGraph: () => void;
     closeTab: (idx: number) => void;
+    onGraphChanged: (id: string, title: string) => void;
 }
 
-export const TabBar: React.SFC<ITabBarProps> = ({ onChange, selected, graphs, newGraph, closeTab }) => {
-    return <TabBarContainer>
-        {
-            graphs.map(
-                (g, idx) =>
-                    <TabBarItem
-                        key={`${g.graph.title}-${idx}`}
-                        onClick={() => onChange(idx)}
-                        selected={selected === idx}
-                    >
-                        {g.graph.title + (g.changed ? '*' : '')}
-                        <CloseTabBtn
-                            onClick={() => closeTab(idx)}
-                        >×</CloseTabBtn>
-                    </TabBarItem>
-            )
+interface ITabBarState {
+    selected: number;
+    value: string;
+}
+
+export class TabBar extends React.Component<ITabBarProps, ITabBarState>{
+
+    constructor(props: ITabBarProps) {
+        super(props);
+
+        this.state = {
+            selected: -1,
+            value: ''
         }
-        <TabBarBorder
-            onDoubleClick={newGraph}
-        />
-    </TabBarContainer>
+    }
+
+    selectItemToChange = (idx: number, value: string) => {
+        this.setState({
+            ...this.state,
+            selected: idx,
+            value
+        })
+    }
+
+    onTitleInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({
+            ...this.state,
+            value: event.target.value
+        })
+    }
+
+    updateParent = () => {
+        this.props.onGraphChanged(this.props.graphs[this.state.selected].id, this.state.value);
+        this.setState({
+            ...this.state,
+            selected: -1,
+            value: ''
+        })
+    }
+
+    onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.keyCode === 13) {
+            this.updateParent();
+        }
+    }
+
+    public render() {
+        const { onChange, selected, graphs, newGraph, closeTab } = this.props;
+        const { value, selected: selectedIdx } = this.state;
+        return <TabBarContainer>
+            {
+                graphs.map(
+                    (g, idx) =>
+                        idx === selectedIdx
+                            ? <CauseSearchInput
+                                value={value}
+                                onChange={this.onTitleInputChanged}
+                                onBlur={this.updateParent}
+                                onKeyUp={this.onKeyUp}
+                            />
+                            : <TabBarItem
+                                key={`${g.graph.title}-${idx}`}
+                                onClick={() => onChange(idx)}
+                                selected={selected === idx}
+                                onDoubleClick={() => this.selectItemToChange(idx, g.graph.title)}
+                            >
+                                {g.graph.title + (g.changed ? '*' : '')}
+                                <CloseTabBtn
+                                    onClick={() => closeTab(idx)}
+                                >×</CloseTabBtn>
+                            </TabBarItem>
+                )
+            }
+            <TabBarBorder
+                onDoubleClick={newGraph}
+            />
+        </TabBarContainer>
+    }
 }

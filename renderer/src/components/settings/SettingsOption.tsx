@@ -1,5 +1,6 @@
 import styled from "../../style/theme/styled-components";
 import * as React from 'react';
+import _ from "lodash";
 
 const SettingsOptionContainer = styled.div`
     display: flex;
@@ -11,7 +12,7 @@ const SettingsOptionName = styled.div`
 `
 
 const SettingsOptionValue = styled.input`
-    width: 200px;
+    width: 150px;
     height: 20px;
     text-align: left;
     font-size: 13px;
@@ -23,6 +24,7 @@ const SettingsOptionValue = styled.input`
     border-radius: 3px;
     margin-right: 20px;
     margin-left: auto;
+    padding: 4px;
 `
 
 export interface ISettingsOptionProps {
@@ -78,7 +80,7 @@ export class SettingsOption extends React.Component<ISettingsOptionProps, ISetti
         const { value } = this.state;
 
         return <SettingsOptionContainer>
-            <SettingsOptionName>{name}</SettingsOptionName>
+            <SettingsOptionName>{_.startCase(name)}</SettingsOptionName>
             <SettingsOptionValue
                 onChange={this.onSearchInputChanged}
                 value={value}

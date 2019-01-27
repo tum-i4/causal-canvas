@@ -196,6 +196,12 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
         })
     }
 
+    onGraphTitleChanged = (id: string, title: string) => {
+        this.setState({
+            graphs: this.state.graphs.map((g) => g.id === id ? { ...g, graph: { ...g.graph, title }, changed: true } : g)
+        })
+    }
+
     render() {
 
         const { modus, graphs, selected } = this.state;
@@ -222,6 +228,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
                 onChange={this.onTabChange}
                 newGraph={this.makeNewEmptyTab}
                 closeTab={this.closeTab}
+                onGraphChanged={this.onGraphTitleChanged}
             />
             <Graph
                 ref={this.graphRef}
