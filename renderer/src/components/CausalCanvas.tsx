@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { IFilter } from './graph/FilterList';
 import { zoomIdentity } from 'd3';
 import uuid from 'uuid';
+import { WelcomePage } from './WelcomePage';
 
 export enum CanvasModus {
     Edit,
@@ -143,6 +144,27 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
         })
     }
 
+    private closeTab = (idx: number) => {
+
+        let selected = this.state.selected;
+        const newGrapfs = this.state.graphs.filter((g, i) => i !== idx);
+        if (idx === selected) {
+            if (selected + 1 < newGrapfs.length) {
+                selected++;
+            } else if (selected - 1 > 0) {
+                selected--;
+            } else {
+                selected = 0;
+            }
+        }
+
+        this.setState({
+            ...this.state,
+            graphs: newGrapfs,
+            selected
+        });
+    }
+
     onTabChange = (idx: number) => {
 
         if (this.graphRef.current === null) {
@@ -183,6 +205,10 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
             return null;
         }
 
+        if (graphs.length === 0) {
+            return <WelcomePage />
+        }
+
         const cmd = this.graphRef.current !== null
             ? <Cmd graphRef={this.graphRef.current} />
             : null
@@ -195,6 +221,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
                 selected={selected}
                 onChange={this.onTabChange}
                 newGraph={this.makeNewEmptyTab}
+                closeTab={this.closeTab}
             />
             <Graph
                 ref={this.graphRef}

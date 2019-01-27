@@ -15,6 +15,17 @@ const TabBarItem = styled.div<{ selected: boolean }>`
     border-right: 1px solid ${props => props.theme.colors.primary};
     padding: 5px 20px;
     cursor: pointer;
+    &:hover{
+        padding: 5px 10px 5px 20px;
+    }
+`
+
+const CloseTabBtn = styled.div`
+    margin-left: 5px;
+    display: none;
+    ${TabBarItem}:hover & {
+        display: inline-block;
+    }
 `
 
 const TabBarBorder = styled.div`
@@ -27,9 +38,10 @@ export interface ITabBarProps {
     selected: number;
     onChange: (idx: number) => void;
     newGraph: () => void;
+    closeTab: (idx: number) => void;
 }
 
-export const TabBar: React.SFC<ITabBarProps> = ({ onChange, selected, graphs, newGraph }) => {
+export const TabBar: React.SFC<ITabBarProps> = ({ onChange, selected, graphs, newGraph, closeTab }) => {
     return <TabBarContainer>
         {
             graphs.map(
@@ -40,6 +52,9 @@ export const TabBar: React.SFC<ITabBarProps> = ({ onChange, selected, graphs, ne
                         selected={selected === idx}
                     >
                         {g.graph.title + (g.changed ? '*' : '')}
+                        <CloseTabBtn
+                            onClick={() => closeTab(idx)}
+                        >×</CloseTabBtn>
                     </TabBarItem>
             )
         }
