@@ -8,6 +8,7 @@ import { Settings } from './settings/Settings';
 import { ThemeProvider } from '../style/theme/styled-components';
 import { BasicTheme } from '../style/theme/themes/basic.theme';
 import { ITheme } from '../style/theme/Theme';
+import { IGeneralSettings, GeneralSettingsDefault } from './settings/GeneralSettings';
 const electron = (window as any).require('electron');
 const fs = electron.remote.require('fs');
 const ipcRenderer: IpcRenderer = electron.ipcRenderer;
@@ -24,6 +25,7 @@ interface ICausalCanvasState {
     appView: AppView;
     settings: {
         style: ITheme;
+        general: IGeneralSettings;
     }
 }
 
@@ -50,13 +52,20 @@ class App extends Component<any, ICausalCanvasState> {
             style = JSON.parse(savedStyle);
         }
 
+        let general = _.cloneDeep(GeneralSettingsDefault);
+        const savedGeneral = window.localStorage.getItem('general');
+        if (savedGeneral !== null) {
+            general = JSON.parse(savedGeneral);
+        }
+
         this.state = {
             width: 0,
             height: 0,
             graph: susiExample(),
             appView: AppView.Graph,
             settings: {
-                style: style
+                style: style,
+                general: general
             }
         }
 
@@ -116,10 +125,10 @@ class App extends Component<any, ICausalCanvasState> {
     handelGraphImport = async (data: IGraphImportData) => {
 
         let graph: IGraph | null = null;
-        const { width, height } = this.state;
+        const { width, height, settings: { general } } = this.state;
 
         switch (data.type) {
-            case GraphImportType.Extracter: graph = await extracterReportToGraph(data.src, width, height); break;
+            case GraphImportType.Extracter: graph = await extracterReportToGraph(data.src, general, width, height); break;
             case GraphImportType.CausalModel: graph = JSON.parse(data.src); break;
         }
 
@@ -145,19 +154,9 @@ class App extends Component<any, ICausalCanvasState> {
         })
     }
 
-    resetToDefaultStyle = () => {
-        this.setState({
-            ...this.state,
-            settings: {
-                ...this.state.settings,
-                style: _.cloneDeep(BasicTheme)
-            }
-        })
-    }
-
     render() {
 
-        const { width, height, graph, appView, settings: { style } } = this.state;
+        const { width, height, graph, appView, settings: { style, general } } = this.state;
 
         if (width === 0) {
             return null;
@@ -177,7 +176,7 @@ class App extends Component<any, ICausalCanvasState> {
                 style={style}
                 onUpdate={this.updateSettings}
                 close={this.closeSettings}
-                resetToDefaultStyle={this.resetToDefaultStyle}
+                general={general as any}
             />
         }
 

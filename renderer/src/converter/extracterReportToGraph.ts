@@ -2,9 +2,10 @@ import { IGraph, INode } from "../types/GraphTypes";
 import { graphToDrawGraph } from "../graph-layout/graphToDrawGraph";
 import { d3ForceGraphLayout } from "../graph-layout/d3ForceLayout";
 import { dagreLayout } from "../graph-layout/dagreLayout";
+import { IGeneralSettings, LayoutTypes } from "../components/settings/GeneralSettings";
 
 
-export async function extracterReportToGraph(src: string, width: number, height: number): Promise<IGraph> {
+export async function extracterReportToGraph(src: string, settings: IGeneralSettings, width: number, height: number): Promise<IGraph> {
 
     const parts = src.split('\n\n');
     const graph = {
@@ -13,9 +14,27 @@ export async function extracterReportToGraph(src: string, width: number, height:
         nodes: getNodes(parts[1], parts[2])
     }
     const drawGraph = graphToDrawGraph(graph);
-    //const layoutedDrawGraph = await d3ForceGraphLayout(drawGraph, width, height);
-    const layoutedDrawGraph = dagreLayout(drawGraph);
-    console.log('resolved graph:', layoutedDrawGraph);
+    let layoutedDrawGraph;
+
+    if (drawGraph.nodes.length > 50) {
+        if (settings.graphLayout.medium === LayoutTypes.Dagre) {
+            layoutedDrawGraph = dagreLayout(drawGraph);
+        } else {
+            layoutedDrawGraph = await d3ForceGraphLayout(drawGraph, width, height);
+        }
+    } else if (drawGraph.nodes.length > 200) {
+        if (settings.graphLayout.big === LayoutTypes.Dagre) {
+            layoutedDrawGraph = dagreLayout(drawGraph);
+        } else {
+            layoutedDrawGraph = await d3ForceGraphLayout(drawGraph, width, height);
+        }
+    } else {
+        if (settings.graphLayout.small === LayoutTypes.Dagre) {
+            layoutedDrawGraph = dagreLayout(drawGraph);
+        } else {
+            layoutedDrawGraph = await d3ForceGraphLayout(drawGraph, width, height);
+        }
+    }
 
     return {
         ...graph,

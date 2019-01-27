@@ -5,6 +5,8 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { SettingsOption } from "./SettingsOption";
 import { SettingsHead } from "./SettingsHead";
 import _ from "lodash";
+import { BasicTheme } from "../../style/theme/themes/basic.theme";
+import { GeneralSettingsDefault } from "./GeneralSettings";
 
 const SettingsWrapper = styled.div`
     height: 100%;
@@ -22,10 +24,12 @@ const SettingsActions = styled.div`
 
 `
 
-const SettingsTitle = styled.div`
-    font-size: 40px;
+const SettingsTitle = styled.div<{ selected: boolean }>`
+    font-size: ${props => props.selected ? 40 : 30}px;
     margin-bottom: 0px;
     display: inline-block;
+    margin-right: 15px;
+    cursor: pointer;
 `
 
 const SettingsBtn = styled.div<{ first?: boolean }>`
@@ -47,18 +51,22 @@ const SettingsSearchInput = styled.input`
     }
     border-radius: 3px;
 `
+enum SettingsType {
+    Style = 'style',
+    General = 'general'
+}
 
 export interface ISettingsPorps {
     style: ITheme;
     general: ISettings;
     onUpdate: (key: string, obj: any) => void;
     close: () => void;
-    resetToDefaultStyle: () => void;
 }
 
 export interface ISettingsState {
     searchValue: string;
-    selected: string;
+    selected: SettingsType;
+    setting: ISettings;
 }
 
 interface ISettings {
@@ -71,11 +79,33 @@ export class Settings extends React.Component<ISettingsPorps, ISettingsState> {
         super(props);
 
         this.state = {
-            searchValue: ''
-
+            searchValue: '',
+            selected: SettingsType.Style,
+            setting: _.cloneDeep(props.style) as any
         }
     }
 
+
+    componentDidUpdate(lastProps: ISettingsPorps) {
+        console.log({ lastProps, porps: this.props });
+        if (this.state.selected === SettingsType.Style) {
+            if (!_.isMatch(lastProps.style, this.props.style)) {
+                return this.setState({
+                    ...this.state,
+                    setting: _.cloneDeep(this.props.style as any)
+                })
+            }
+        }
+
+        if (this.state.selected === SettingsType.General) {
+            if (!_.isMatch(lastProps.general, this.props.general)) {
+                return this.setState({
+                    ...this.state,
+                    setting: _.cloneDeep(this.props.general as any)
+                })
+            }
+        }
+    }
     private onSearchInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({
             ...this.state,
@@ -84,9 +114,18 @@ export class Settings extends React.Component<ISettingsPorps, ISettingsState> {
     }
 
     private updateValue = (key: string, value: string | number) => {
-        const newObj = { ...this.props.style };
+        const newObj = _.cloneDeep(this.state.setting);
         _.update(newObj, key, () => value);
-        this.props.onUpdate('style', newObj);
+        this.props.onUpdate(this.state.selected, newObj);
+    }
+
+    private resetToDefault = () => {
+        if (this.state.selected === SettingsType.Style) {
+            return this.props.onUpdate(this.state.selected, _.cloneDeep(BasicTheme));
+        }
+        if (this.state.selected === SettingsType.General) {
+            return this.props.onUpdate(this.state.selected, _.cloneDeep(GeneralSettingsDefault));
+        }
     }
 
     private makeSettingsFromObj = (obj: ISettings, keyPrefix: string = '') => {
@@ -111,31 +150,49 @@ export class Settings extends React.Component<ISettingsPorps, ISettingsState> {
     }
 
     private saveSettings = () => {
-        window.localStorage.setItem('style', JSON.stringify(this.props.style));
+        window.localStorage.setItem(this.state.selected, JSON.stringify(this.state.setting));
+    }
+
+    private selectSetting = (setting: any, selected: SettingsType) => {
+        this.setState({
+            ...this.state,
+            setting: _.cloneDeep(setting),
+            selected
+        })
     }
 
     public render() {
 
-        const { searchValue } = this.state;
-        const { style, close, resetToDefaultStyle } = this.props;
+        const { searchValue, setting, selected } = this.state;
+        const { close, style, general } = this.props;
 
         return <SettingsWrapper>
             <SettingsHeader>
-                <SettingsTitle>Style</SettingsTitle>
+                <SettingsTitle
+                    selected={selected === SettingsType.Style}
+                    onClick={() => this.selectSetting(style, SettingsType.Style)}
+                >
+                    Style
+                </SettingsTitle>
+                <SettingsTitle
+                    selected={selected === SettingsType.General}
+                    onClick={() => this.selectSetting(general, SettingsType.General)}
+                >
+                    General
+                </SettingsTitle>
                 <SettingsActions>
                     <SettingsBtn first={true} onClick={close}>Close</SettingsBtn>
                     <SettingsBtn onClick={this.saveSettings}>Save</SettingsBtn>
-                    <SettingsBtn onClick={resetToDefaultStyle}>reset</SettingsBtn>
+                    <SettingsBtn onClick={this.resetToDefault}>reset</SettingsBtn>
                 </SettingsActions>
                 <SettingsSearchInput
                     onChange={this.onSearchInputChanged}
                     value={searchValue}
                 />
             </SettingsHeader>
-            <Scrollbars style={{ width: '100%', height: 'calc(100% - 120px)' }}>
-                <SettingsTitle>Style</SettingsTitle>
+            <Scrollbars style={{ width: '100%', height: 'calc(100% - 140px)' }}>
                 {
-                    this.makeSettingsFromObj(style as any, '')
+                    this.makeSettingsFromObj(setting, '')
                 }
             </Scrollbars>
         </SettingsWrapper>
