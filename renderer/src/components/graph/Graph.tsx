@@ -161,7 +161,10 @@ class Graph extends Component<IGraphProps, IGraphState> {
             this.setState({
                 ..._.cloneDeep(this.props.data),
                 newEdge: null
+            }, () => {
+                this.zoomBehavior.transform(d3.select(this.svgRef.current!), this.props.data.zoomTransform)
             })
+
             this.changedHelperFlag = true;
             return;
         }
