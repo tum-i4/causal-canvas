@@ -11,7 +11,7 @@ const SettingsOptionName = styled.div`
 
 `
 
-const SettingsOptionValue = styled.input`
+const SettingsOptionValue = styled.input<{ isColor: boolean }>`
     width: 150px;
     height: 20px;
     text-align: left;
@@ -23,8 +23,17 @@ const SettingsOptionValue = styled.input`
     }
     border-radius: 3px;
     margin-right: 20px;
-    margin-left: auto;
+    ${props => props.isColor ? '' : 'margin-left: auto;'}
     padding: 4px;
+`
+
+const ColorPreView = styled.div<{ color: string }>`
+    width: 150px;
+    height: 20px;
+    border-radius: 3px;
+    background-color: ${props => props.color};
+    margin-right: 10px;
+    margin-left: auto;
 `
 
 export interface ISettingsOptionProps {
@@ -79,9 +88,14 @@ export class SettingsOption extends React.Component<ISettingsOptionProps, ISetti
         const { name } = this.props;
         const { value } = this.state;
 
+        const isColor = typeof value === "string" && /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/.test(value);
         return <SettingsOptionContainer>
             <SettingsOptionName>{_.startCase(name)}</SettingsOptionName>
+            {
+                isColor ? <ColorPreView color={value as string} /> : null
+            }
             <SettingsOptionValue
+                isColor={isColor}
                 onChange={this.onSearchInputChanged}
                 value={value}
                 onBlur={this.updateParrent}
