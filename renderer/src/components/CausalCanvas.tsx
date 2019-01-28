@@ -82,7 +82,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
     }
 
     componentDidUpdate(lastProps: ICausalCanvasProps) {
-        if (!_.isMatch(lastProps.graph, this.props.graph)) {
+        if (!_.isEqual(lastProps.graph, this.props.graph)) {
             this.setState({
                 ...this.state,
                 graphs: [...this.state.graphs, this.makeNewGraphState(this.props.graph)],

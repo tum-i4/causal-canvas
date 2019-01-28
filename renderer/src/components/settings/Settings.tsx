@@ -89,7 +89,7 @@ export class Settings extends React.Component<ISettingsPorps, ISettingsState> {
     componentDidUpdate(lastProps: ISettingsPorps) {
         console.log({ lastProps, porps: this.props });
         if (this.state.selected === SettingsType.Style) {
-            if (!_.isMatch(lastProps.style, this.props.style)) {
+            if (!_.isEqual(lastProps.style, this.props.style)) {
                 return this.setState({
                     ...this.state,
                     setting: _.cloneDeep(this.props.style as any)
@@ -98,7 +98,7 @@ export class Settings extends React.Component<ISettingsPorps, ISettingsState> {
         }
 
         if (this.state.selected === SettingsType.General) {
-            if (!_.isMatch(lastProps.general, this.props.general)) {
+            if (!_.isEqual(lastProps.general, this.props.general)) {
                 return this.setState({
                     ...this.state,
                     setting: _.cloneDeep(this.props.general as any)

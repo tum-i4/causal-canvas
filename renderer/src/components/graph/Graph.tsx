@@ -94,11 +94,11 @@ class Graph extends Component<IGraphProps, IGraphState> {
     }
 
     public getCurrentGraph(): IGraph {
-        return this.state.graph;
+        return _.cloneDeep(this.state.graph);
     }
 
     public getCurrentState() {
-        return this.state;
+        return _.cloneDeep(this.state);
     }
 
     public applyCommand = (cmd: { type: CmdTypes, args: string[] }) => {
@@ -157,7 +157,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
     }
 
     componentDidUpdate(prevProps: IGraphProps, prevState: IGraphState) {
-        if (!_.isMatch(prevProps.data, this.props.data)) {
+        if (!_.isEqual(prevProps.data, this.props.data)) {
             this.setState({
                 ..._.cloneDeep(this.props.data),
                 newEdge: null
@@ -169,7 +169,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
             return;
         }
 
-        if (!_.isMatch(prevState.graph, this.state.graph)) {
+        if (!_.isEqual(prevState.graph, this.state.graph)) {
             if (this.changedHelperFlag) {
                 this.changedHelperFlag = false;
             } else {
