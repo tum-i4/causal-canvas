@@ -9,6 +9,8 @@ import { ThemeProvider } from '../style/theme/styled-components';
 import { BasicTheme } from '../style/theme/themes/basic.theme';
 import { ITheme } from '../style/theme/Theme';
 import { IGeneralSettings, GeneralSettingsDefault } from './settings/GeneralSettings';
+import { layoutGraph } from '../graph-layout/layoutGraph';
+import { dotToGraph } from '../converter/dotToGraph';
 const electron = (window as any).require('electron');
 const fs = electron.remote.require('fs');
 const ipcRenderer: IpcRenderer = electron.ipcRenderer;
@@ -31,6 +33,7 @@ interface ICausalCanvasState {
 
 export enum GraphImportType {
     Extracter,
+    Dot,
     CausalModel
 }
 
@@ -128,7 +131,10 @@ class App extends Component<any, ICausalCanvasState> {
         const { width, height, settings: { general } } = this.state;
 
         switch (data.type) {
-            case GraphImportType.Extracter: graph = await extracterReportToGraph(data.src, general, width, height); break;
+            case GraphImportType.Extracter:
+                graph = await layoutGraph(extracterReportToGraph(data.src), general, width, height); break;
+            case GraphImportType.Dot:
+                graph = await layoutGraph(dotToGraph(data.src), general, width, height); break;
             case GraphImportType.CausalModel: graph = JSON.parse(data.src); break;
         }
 

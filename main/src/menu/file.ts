@@ -4,6 +4,7 @@ import * as fs from 'fs-extra';
 
 export enum GraphImportType {
     Extracter,
+    Dot,
     CausalModel
 }
 
@@ -50,7 +51,7 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
                     },
                     {
                         label: 'dot-file',
-                        click: () => console.log('import causal-model')
+                        click: menuHandlerImportDot
                     },
                     {
                         label: 'causal-model',
@@ -142,6 +143,21 @@ async function menuHandlerImportCausalModel() {
 
     const importDate: IGraphImportData = {
         type: GraphImportType.CausalModel,
+        src: srcString.toString()
+    }
+    BrowserWindow.getFocusedWindow().webContents.send('import', JSON.stringify(importDate))
+}
+
+async function menuHandlerImportDot() {
+    const modelSrcPath = await openFile({ properties: ['openFile'], filters: [{ name: 'dot', extensions: ['dot'] }] });
+    if (modelSrcPath === undefined) {
+        return;
+    }
+
+    const srcString = await fs.readFile(modelSrcPath);
+
+    const importDate: IGraphImportData = {
+        type: GraphImportType.Dot,
         src: srcString.toString()
     }
     BrowserWindow.getFocusedWindow().webContents.send('import', JSON.stringify(importDate))
