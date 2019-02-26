@@ -27,7 +27,7 @@ export function dotToGraph(src: string): IGraph {
 
     return {
         directed: true,
-        title: '',
+        title: src.split('{')[0].split(' ')[2],
         nodes,
     };
 }

@@ -30,6 +30,20 @@ export async function layoutGraph(src: IGraph, settings: IGeneralSettings, width
         }
     }
 
+    // let sum = 0;
+    // for (let i = 0; i < 1; i++) {
+    //     console.log("start layout")
+    //     let start = Date.now();
+    //     console.time('layout')
+    //     layoutedDrawGraph = dagreLayout(drawGraph);
+    //     // layoutedDrawGraph = await d3ForceGraphLayout(drawGraph, width, height);
+    //     console.timeEnd('layout')
+    //     sum += Date.now() - start;
+    // }
+
+    // const avg = sum / 1;
+    // console.log(src.title, avg + "ms", avg / 1000 + "s");
+
     return {
         ...src,
         nodes: layoutedDrawGraph.nodes

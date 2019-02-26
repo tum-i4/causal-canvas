@@ -29,7 +29,6 @@ export function d3ForceGraphLayout(graphInput: IDrawGraph, width: number, height
             .force("center", d3.forceCenter(width / 2, height / 2))
             .force("charge", d3.forceManyBody().strength(-200))
             .on('tick', () => {
-                console.log('tick');
                 debounce();
             })
 
