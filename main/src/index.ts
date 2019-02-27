@@ -8,7 +8,7 @@ let filePaths = new Map<string, string>();
 async function onReady() {
 	mainWindow = new BrowserWindow({
 		width: 1200,
-		height: 900
+		height: 900,
 	})
 
 	const hp2satConnector = await HP2SATConnector.create();

@@ -24,7 +24,8 @@ function electronPackager() {
             overwrite: true,
             platform: 'win32',
             arch: 'x64',
-            name: 'causal-canvas'
+            name: 'causal-canvas',
+            icon: './logo.ico'
         })
             .then(appPaths => {
                 resolve();
