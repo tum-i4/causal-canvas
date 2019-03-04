@@ -16,7 +16,7 @@ async function onReady() {
 	console.log(__dirname);
 	console.log(app.getPath('appData'));
 	mainWindow.maximize();
-	// mainWindow.webContents.toggleDevTools();
+	mainWindow.webContents.toggleDevTools();
 
 
 	Menu.setApplicationMenu(

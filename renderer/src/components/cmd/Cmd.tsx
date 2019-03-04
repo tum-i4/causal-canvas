@@ -12,7 +12,8 @@ const CmdContainer = styled.div`
     transform: translateX(-50%);
     width: 450px;
     height: 44px;
-    background-color: ${props => props.theme.colors.primary};
+    background-color: ${props => props.theme.colors.background};
+    border: solid 1px ${props => props.theme.colors.primary};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,7 +38,8 @@ const CmdList = styled.div`
     transform: translateX(-50%);
     width: 450px;
     max-height: 200px;
-    background-color: ${props => props.theme.colors.primary};
+    background-color: ${props => props.theme.colors.background};
+    border: solid 1px ${props => props.theme.colors.primary};
     color: #ffffff;
     overflow: hidden;
 `
@@ -46,7 +48,8 @@ const CmdListItem = styled.div<{ selected: boolean }>`
     padding: 2px;
     padding-left: 10px;
     font-size: 12px;
-    background-color: ${props => props.selected ? '#34495e' : props.theme.colors.primary}
+    color: ${props => props.selected ? props.theme.colors.background : props.theme.colors.primary};
+    background-color: ${props => props.selected ? props.theme.colors.primary : props.theme.colors.background}
 `
 
 interface ICmdState {
