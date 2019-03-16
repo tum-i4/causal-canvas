@@ -1,5 +1,5 @@
 
-enum WordType {
+export enum WordType {
     Variable,
     Operator,
     Brace,
@@ -53,7 +53,7 @@ export function replaceWordAtPos(cursorPos: number, formula: string, newWord: st
 
 const isOperator = (word: string) => /&|\|/.test(word);
 const isBrace = (word: string) => /\(|\)/.test(word);
-const getWordType = (word: string) =>
+export const getWordType = (word: string) =>
     word === undefined
         ? WordType.Nothing
         : isOperator(word)
