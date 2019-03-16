@@ -3,6 +3,8 @@ import { fileMenuTemplate } from './menu/file';
 import { helpMenuTemplate } from './menu/help';
 import * as fs from 'fs-extra';
 import { HP2SATConnector } from './hp2satConnector';
+import { loadeExtensions } from './loadExtendsions';
+import { editMenuTemplate } from './menu/edit';
 let mainWindow: Electron.BrowserWindow
 let filePaths = new Map<string, string>();
 async function onReady() {
@@ -12,17 +14,22 @@ async function onReady() {
 	})
 
 	const hp2satConnector = await HP2SATConnector.create();
-	console.log(fs.readdirSync(__dirname));
-	console.log(__dirname);
-	console.log(app.getPath('appData'));
+	// console.log(fs.readdirSync(__dirname));
+	// console.log(__dirname);
+	// console.log(app.getPath('appData'));
 	mainWindow.maximize();
 	mainWindow.webContents.toggleDevTools();
 
 
+	// const extensions = await loadeExtensions();
+	// console.log(extensions);
+	// extensions[0].algorithm('yolo');
+
 	Menu.setApplicationMenu(
 		Menu.buildFromTemplate([
 			...fileMenuTemplate,
-			...helpMenuTemplate
+			...editMenuTemplate,
+			...helpMenuTemplate,
 		])
 	);
 

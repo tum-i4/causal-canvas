@@ -1,7 +1,6 @@
 import React, { Component, createRef } from 'react';
 import { IGraph, INode } from '../types/GraphTypes';
 import _ from 'lodash';
-import { IpcRenderer } from 'electron';
 import { extracterReportToGraph } from '../converter/extracterReportToGraph';
 import CausalCanvas from './CausalCanvas';
 import { Settings } from './settings/Settings';
@@ -11,6 +10,7 @@ import { ITheme } from '../style/theme/Theme';
 import { IGeneralSettings, GeneralSettingsDefault } from './settings/GeneralSettings';
 import { layoutGraph } from '../graph-layout/layoutGraph';
 import { dotToGraph } from '../converter/dotToGraph';
+import { IpcRenderer } from 'electron';
 const electron = (window as any).require('electron');
 const fs = electron.remote.require('fs');
 const ipcRenderer: IpcRenderer = electron.ipcRenderer;
@@ -119,6 +119,11 @@ class App extends Component<any, ICausalCanvasState> {
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
+        ipcRenderer.removeAllListeners('settings');
+        ipcRenderer.removeAllListeners('new-file');
+        ipcRenderer.removeAllListeners('saveas');
+        ipcRenderer.removeAllListeners('save');
+        ipcRenderer.removeAllListeners('import');
     }
 
     updateWindowDimensions = () => {

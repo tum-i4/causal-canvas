@@ -55,6 +55,10 @@ const CanvasModusToggelButton = styled.div<any>`
     font-size: 30px;
     cursor: pointer;
 `
+import { IpcRenderer } from 'electron';
+const electron = (window as any).require('electron');
+const fs = electron.remote.require('fs');
+const ipcRenderer: IpcRenderer = electron.ipcRenderer;
 
 class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
 
@@ -76,9 +80,11 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
     componentDidMount() {
         //trigger rerender after ref is created
         this.setState(this.state);
+        ipcRenderer.on('toggel-modus', () => this.toggelModus());
     }
 
     componentWillUnmount() {
+        ipcRenderer.removeAllListeners('toggel-modus');
     }
 
     componentDidUpdate(lastProps: ICausalCanvasProps) {

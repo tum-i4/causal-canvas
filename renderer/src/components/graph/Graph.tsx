@@ -18,6 +18,11 @@ import { IFilter, FilterList } from './FilterList';
 import * as d3 from 'd3';
 import { CanvasModus } from '../CausalCanvas';
 
+import { IpcRenderer } from 'electron';
+const electron = (window as any).require('electron');
+const fs = electron.remote.require('fs');
+const ipcRenderer: IpcRenderer = electron.ipcRenderer;
+
 const SVG = styled.svg`
     background-color: ${props => props.theme.colors.background}
 `
@@ -137,6 +142,18 @@ class Graph extends Component<IGraphProps, IGraphState> {
         window.addEventListener('keyup', this.onKeyUp);
         cmdEvent.on('cmd', this.applyCommand);
 
+        ipcRenderer.on('delete-node', () => {
+            this.deleteSelected();
+        })
+
+        ipcRenderer.on('create-node', () => {
+            this.createNewNode({
+                shiftKey: true,
+                pageX: this.props.width / 2,
+                pageY: this.props.height / 2,
+            } as any)
+        })
+
         this.zoomBehavior = d3.zoom<any, any>()
             .filter(this.filterZoom)
             //.translateExtent([[0, 0], [this.props.width, this.props.height]])
@@ -153,6 +170,8 @@ class Graph extends Component<IGraphProps, IGraphState> {
 
         cmdEvent.removeListener('cmd', this.applyCommand);
         window.removeEventListener('keyup', this.onKeyUp);
+        ipcRenderer.removeAllListeners('delete-node');
+        ipcRenderer.removeAllListeners('create-node');
         this.removeMouseMoveEvent();
     }
 
@@ -324,7 +343,6 @@ class Graph extends Component<IGraphProps, IGraphState> {
         }
 
         const { graph, zoomTransform } = this.state;
-
         const id = uuid.v4().substring(0, 3);
         const newNode: INode = {
             id,

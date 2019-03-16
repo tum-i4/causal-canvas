@@ -3,7 +3,10 @@ import styled from '../../style/theme/styled-components';
 import { cmdEvent } from './CmdEvent';
 import { INode } from '../../types/GraphTypes';
 import Graph from '../graph/Graph';
-
+import { IpcRenderer } from 'electron';
+const electron = (window as any).require('electron');
+const fs = electron.remote.require('fs');
+const ipcRenderer: IpcRenderer = electron.ipcRenderer;
 
 const CmdContainer = styled.div`
     position: fixed;
@@ -86,10 +89,17 @@ export class Cmd extends Component<ICmdProps, ICmdState> {
 
     componentDidMount() {
         window.addEventListener('keyup', this.keyUpHandlerWindow)
+        ipcRenderer.on('open-cmd', (event, data) => {
+            this.setState({
+                ...this.state,
+                open: !this.state.open
+            })
+        })
     }
 
     componentWillUnmount() {
         window.removeEventListener('keyup', this.keyUpHandlerWindow);
+        ipcRenderer.removeAllListeners('open-cmd');
     }
 
     keyUpHandlerWindow = (event: KeyboardEvent) => {
