@@ -192,62 +192,65 @@ export class QueryInput extends Component<IQueryInputProps, IQueryInputState> {
         return <QueryInputContainer
             width={width}
         >
-            <FirstLabel>
-                Context
+            <Scrollbars style={{ width: '100%', height: '100%' }}>
+
+                <FirstLabel>
+                    Context
             </FirstLabel>
-            <CauseContainer>
-                <Scrollbars style={{ width: '100%', height: '100%' }}>
-                    {
-                        context.map((c, idx) => <CauseListItem key={`context-${name}${idx}`} {...c} idx={idx} toggel={this.toggelContextItem} />)
-                    }
-                </Scrollbars>
-            </CauseContainer>
-            <Label>
-                Cause
+                <CauseContainer>
+                    <Scrollbars style={{ width: '100%', height: '100%' }}>
+                        {
+                            context.map((c, idx) => <CauseListItem key={`context-${name}${idx}`} {...c} idx={idx} toggel={this.toggelContextItem} />)
+                        }
+                    </Scrollbars>
+                </CauseContainer>
+                <Label>
+                    Cause
             </Label>
-            <QueryNodeInput
-                value={causeSearch}
-                onChange={this.onCauseSearchChange}
-                onSubmit={this.onCauseSearchSubmit}
-                suggsestions={this.props.graph.getCurrentGraph().nodes.filter(n => !n.isExogenousVariable).map(n => n.title)}
-            />
-            <CauseContainer>
-                <Scrollbars style={{ width: '100%', height: '100%' }}>
-                    {
-                        cause.map((c, idx) => <CauseListItem key={`cause-${name}${idx}`} {...c} idx={idx} remove={this.removeCauseItem} toggel={this.toggelCauseItem} />)
-                    }
-                </Scrollbars>
-            </CauseContainer>
-            <Label>
-                Phi
-            </Label>
-            <PhiContainer>
-                <NewFormulaInput
-                    formula={phi}
-                    onChange={this.onPhiUpdate}
-                    nodes={this.props.graph.getCurrentGraph().nodes}
+                <QueryNodeInput
+                    value={causeSearch}
+                    onChange={this.onCauseSearchChange}
+                    onSubmit={this.onCauseSearchSubmit}
+                    suggsestions={this.props.graph.getCurrentGraph().nodes.filter(n => !n.isExogenousVariable).map(n => n.title)}
                 />
-            </PhiContainer>
-            <Label>
-                SolvingStrategy
+                <CauseContainer>
+                    <Scrollbars style={{ width: '100%', height: '100%' }}>
+                        {
+                            cause.map((c, idx) => <CauseListItem key={`cause-${name}${idx}`} {...c} idx={idx} remove={this.removeCauseItem} toggel={this.toggelCauseItem} />)
+                        }
+                    </Scrollbars>
+                </CauseContainer>
+                <Label>
+                    Phi
             </Label>
-            <Select
-                style={{
-                    width: '100%'
-                }}
-                value={solvingStrategy}
-                onChange={this.onSolvingStrategyChange}
-                input={<Input name="age" id="age-helper" />}
-            >
-                {SolvingStrategys.map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}
-            </Select>
-            <ButtonContainer>
-                <QueryButton
-                    onClick={this.onQueryClick}
+                <PhiContainer>
+                    <NewFormulaInput
+                        formula={phi}
+                        onChange={this.onPhiUpdate}
+                        nodes={this.props.graph.getCurrentGraph().nodes}
+                    />
+                </PhiContainer>
+                <Label>
+                    SolvingStrategy
+            </Label>
+                <Select
+                    style={{
+                        width: '100%'
+                    }}
+                    value={solvingStrategy}
+                    onChange={this.onSolvingStrategyChange}
+                    input={<Input name="age" id="age-helper" />}
                 >
-                    Query
+                    {SolvingStrategys.map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}
+                </Select>
+                <ButtonContainer>
+                    <QueryButton
+                        onClick={this.onQueryClick}
+                    >
+                        Query
                 </QueryButton>
-            </ButtonContainer>
+                </ButtonContainer>
+            </Scrollbars>
         </QueryInputContainer>
     }
 }

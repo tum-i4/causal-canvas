@@ -47,6 +47,15 @@ const FormulaContainer = styled.div`
     transform: translate(-50%);
 `
 
+const ValueDiv = styled.div`
+    width: 100%;
+    text-align: center;
+`
+
+const ValueSpan = styled.div`
+    cursor: pointer;
+`
+
 const TitleSpan = styled.span<{ isNotClick?: boolean }>`
     cursor: ${props => props.isNotClick ? 'auto' : 'pointer'};
     color: ${props => props.isNotClick ? props.theme.colors.error : props.theme.colors.primary};
@@ -102,6 +111,13 @@ export class InfoPanel extends React.Component<IInfoPanelProps, IInfoPanelState>
         this.setState({
             ...this.state,
             title: ev.target.value
+        })
+    }
+
+    changeValue = () => {
+        this.props.applyNodeChanges({
+            ...this.props.selectedNodes[0],
+            value: !this.props.selectedNodes[0].value
         })
     }
 
@@ -177,13 +193,17 @@ export class InfoPanel extends React.Component<IInfoPanelProps, IInfoPanelState>
                     </TitleSpan>
                 </NodeTypeWrapper>
                 <FormulaContainer>
-                    <NewFormulaInput
-                        nodes={nodes}
-                        formula={node.formula}
-                        onChange={
-                            (formula => this.props.applyNodeChanges({ ...node, formula }))
-                        }
-                    />
+                    {
+                        node.isExogenousVariable
+                            ? <ValueDiv><ValueSpan onClick={this.changeValue}>{String(node.value)}</ValueSpan></ValueDiv>
+                            : <NewFormulaInput
+                                nodes={nodes}
+                                formula={node.formula}
+                                onChange={
+                                    (formula => this.props.applyNodeChanges({ ...node, formula }))
+                                }
+                            />
+                    }
                 </FormulaContainer>
             </InfoPannelContainer>
         )

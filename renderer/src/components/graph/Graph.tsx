@@ -590,27 +590,6 @@ class Graph extends Component<IGraphProps, IGraphState> {
                         {newEdgeComponent}
                     </g>
                 </SVG>
-                {/* {
-                    selected.nodes.length === 1
-                        ? <React.Fragment key={selectedNodes[0].id}>
-                            <InfoPanel applyNodeChanges={this.updateNode} node={selectedNodes[0]} />
-                            {
-                                !selectedNodes[0].isExogenousVariable
-                                    ? <FormulaContainer>
-                                        <NewFormulaInput
-                                            autoFocus
-                                            nodes={graph.nodes}
-                                            formula={selectedNodes[0].formula}
-                                            onChange={
-                                                (formula => this.updateNode({ ...selectedNodes[0], formula }))
-                                            }
-                                        />
-                                    </FormulaContainer>
-                                    : null
-                            }
-                        </React.Fragment>
-                        : null
-                } */}
                 <InfoPanel
                     selectedNodes={selectedNodes}
                     applyNodeChanges={this.updateNode}
