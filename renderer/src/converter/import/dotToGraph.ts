@@ -1,4 +1,4 @@
-import { IGraph } from "../types/GraphTypes";
+import { IGraph } from "../../types/GraphTypes";
 
 export function dotToGraph(src: string): IGraph {
 

@@ -65,7 +65,7 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
                 submenu: [
                     {
                         label: 'dot-file',
-                        click: () => console.log('export dot-file')
+                        click: menuHandlerExport('dot')
                     },
                     {
                         label: 'svg',
@@ -169,4 +169,8 @@ function menuHandlerSave() {
 
 function menuHandlerSaveAs() {
     BrowserWindow.getFocusedWindow().webContents.send('saveas');
+}
+
+function menuHandlerExport(type: string) {
+    return () => BrowserWindow.getFocusedWindow().webContents.send('export', type);
 }

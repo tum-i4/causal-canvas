@@ -1,5 +1,5 @@
-import { IGraph, INode } from "../types/GraphTypes";
-import { IGeneralSettings } from "../components/settings/GeneralSettings";
+import { IGraph, INode } from "../../types/GraphTypes";
+import { IGeneralSettings } from "../../components/settings/GeneralSettings";
 
 
 export function extracterReportToGraph(src: string): IGraph {

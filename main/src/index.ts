@@ -66,11 +66,13 @@ app.on('window-all-closed', () => app.quit());
 console.log(`Electron Version ${app.getVersion()}`)
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 
-// ipcMain.on('export', (event: any, data: string) => {
-// 	dialog.showSaveDialog({}, (fileName: string) => {
-// 		if (fileName === undefined) {
-// 			return;
-// 		}
-// 		fs.writeFile(fileName, data, (err) => console.log(err));
-// 	})
-// })
+ipcMain.on('export', (event: any, data: string, type: string) => {
+	dialog.showSaveDialog({
+		filters: [{ name: type, extensions: [type] }]
+	}, (fileName: string) => {
+		if (fileName === undefined) {
+			return;
+		}
+		fs.writeFile(fileName, data, (err) => console.log(err));
+	})
+})

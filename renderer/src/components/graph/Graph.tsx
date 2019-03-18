@@ -19,6 +19,7 @@ import * as d3 from 'd3';
 import { CanvasModus } from '../CausalCanvas';
 
 import { IpcRenderer } from 'electron';
+import { drawGraphToDot } from '../../converter/export/toDot';
 const electron = (window as any).require('electron');
 const fs = electron.remote.require('fs');
 const ipcRenderer: IpcRenderer = electron.ipcRenderer;
@@ -152,6 +153,19 @@ class Graph extends Component<IGraphProps, IGraphState> {
                 pageX: this.props.width / 2,
                 pageY: this.props.height / 2,
             } as any)
+        })
+
+        ipcRenderer.on('export', (event, data) => {
+
+            let res = '';
+            switch (data) {
+                case 'dot': res = drawGraphToDot(this.state.graph.title, graphToDrawGraph(this.state.graph)); break;
+            }
+
+            if (res !== '') {
+                ipcRenderer.send('export', res, data)
+            }
+
         })
 
         this.zoomBehavior = d3.zoom<any, any>()

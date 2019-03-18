@@ -1,7 +1,7 @@
 import React, { Component, createRef } from 'react';
 import { IGraph, INode } from '../types/GraphTypes';
 import _ from 'lodash';
-import { extracterReportToGraph } from '../converter/extracterReportToGraph';
+import { extracterReportToGraph } from '../converter/import/extracterReportToGraph';
 import CausalCanvas from './CausalCanvas';
 import { Settings } from './settings/Settings';
 import { ThemeProvider } from '../style/theme/styled-components';
@@ -9,7 +9,7 @@ import { BasicTheme } from '../style/theme/themes/basic.theme';
 import { ITheme } from '../style/theme/Theme';
 import { IGeneralSettings, GeneralSettingsDefault } from './settings/GeneralSettings';
 import { layoutGraph } from '../graph-layout/layoutGraph';
-import { dotToGraph } from '../converter/dotToGraph';
+import { dotToGraph } from '../converter/import/dotToGraph';
 import { IpcRenderer } from 'electron';
 const electron = (window as any).require('electron');
 const fs = electron.remote.require('fs');
