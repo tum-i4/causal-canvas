@@ -36,6 +36,10 @@ const NodeSuggestionsContainer = styled.div`
 const NodeSuggestionsItem = styled.div<{ selected: boolean }>`
     padding: 4px;
     background-color: ${props => props.selected ? props.theme.colors.primary : props.theme.colors.background}
+    cursor: pointer;
+    &:hover{
+        background-color: ${props => props.theme.colors.primary};
+    }
 `
 
 export interface IQueryNodeInputState {
@@ -54,6 +58,7 @@ export interface IQueryNodeInputProps {
 export class QueryNodeInput extends React.Component<IQueryNodeInputProps, IQueryNodeInputState>{
 
     private inputRef = React.createRef<HTMLInputElement>();
+    private wrapperRef = React.createRef<HTMLDivElement>();
 
     constructor(props: IQueryNodeInputProps) {
         super(props);
@@ -74,21 +79,36 @@ export class QueryNodeInput extends React.Component<IQueryNodeInputProps, IQuery
         }
     }
 
+    componentDidMount() {
+        document.addEventListener('mousedown', this.clickOutside);
+    }
+    componentWillUnmount() {
+        document.addEventListener('mousedown', this.clickOutside);
+    }
+
+    private clickOutside = (event) => {
+        if (this.wrapperRef.current === null) {
+            return;
+        }
+        if (this.wrapperRef.current.contains(event.target)) {
+            return;
+        }
+        this.setState({ isFocused: false });
+    }
+
 
     private onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
 
         const { idx, suggestions } = this.state;
         if (event.keyCode === 13 && idx === -1) {
-            if (this.inputRef.current !== null) {
-                this.inputRef.current.blur();
-            }
             this.props.onSubmit();
         }
 
         if (event.keyCode === 13 && idx !== -1) {
             this.props.onChange(suggestions[idx]);
             this.setState({
-                idx: -1
+                idx: -1,
+                isFocused: false
             })
         }
 
@@ -113,17 +133,10 @@ export class QueryNodeInput extends React.Component<IQueryNodeInputProps, IQuery
 
     };
 
-    private onFocus = () => {
+    private onFocus = (event: React.FocusEvent<HTMLInputElement>) => {
         this.setState({
             ...this.state,
             isFocused: true
-        })
-    }
-
-    private onBlur = () => {
-        this.setState({
-            ...this.state,
-            isFocused: false
         })
     }
 
@@ -138,14 +151,13 @@ export class QueryNodeInput extends React.Component<IQueryNodeInputProps, IQuery
         const { value } = this.props;
         const { isFocused, idx, suggestions } = this.state;
 
-        return <FormulaRelativContainer>
+        return <FormulaRelativContainer ref={this.wrapperRef}>
             <CauseSearchInput
                 ref={this.inputRef}
                 value={value}
                 onChange={this.onChange}
                 onKeyUp={this.onKeyUp}
                 onFocus={this.onFocus}
-                onBlur={this.onBlur}
                 onKeyDown={this.onKeyDown}
             />
             {
@@ -157,6 +169,7 @@ export class QueryNodeInput extends React.Component<IQueryNodeInputProps, IQuery
                                     <NodeSuggestionsItem
                                         key={i}
                                         selected={i === idx}
+                                        onClick={() => { this.setState({ isFocused: false }); this.props.onChange(s); }}
                                     >
                                         {s}
                                     </NodeSuggestionsItem>
