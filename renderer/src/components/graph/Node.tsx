@@ -59,6 +59,7 @@ const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragSta
             }
             onMouseUp={
                 (ev) => {
+                    console.log("hit", id);
                     if (!ev.ctrlKey) {
                         return endNewEdge(id);
                     }
