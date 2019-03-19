@@ -20,6 +20,7 @@ import { CanvasModus } from '../CausalCanvas';
 
 import { IpcRenderer } from 'electron';
 import { drawGraphToDot } from '../../converter/export/toDot';
+import { svgExport } from '../../converter/export/svg';
 const electron = (window as any).require('electron');
 const fs = electron.remote.require('fs');
 const ipcRenderer: IpcRenderer = electron.ipcRenderer;
@@ -160,6 +161,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
             let res = '';
             switch (data) {
                 case 'dot': res = drawGraphToDot(this.state.graph.title, graphToDrawGraph(this.state.graph)); break;
+                case 'svg': res = svgExport(this.svgRef.current); break;
             }
 
             if (res !== '') {

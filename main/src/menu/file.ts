@@ -69,7 +69,7 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
                     },
                     {
                         label: 'svg',
-                        click: () => console.log('export svg')
+                        click: menuHandlerExport('svg')
                     }
                 ]
             },
