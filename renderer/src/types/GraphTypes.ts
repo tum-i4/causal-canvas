@@ -1,5 +1,6 @@
 
 export interface IGraph {
+    id: string;
     title: string;
     nodes: INode[];
     directed: boolean;

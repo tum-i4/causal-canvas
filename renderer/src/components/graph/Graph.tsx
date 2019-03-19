@@ -192,7 +192,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
     }
 
     componentDidUpdate(prevProps: IGraphProps, prevState: IGraphState) {
-        if (!_.isEqual(prevProps.data, this.props.data)) {
+        if (prevProps.data.graph.id !== this.props.data.graph.id) {
             this.setState({
                 ..._.cloneDeep(this.props.data),
                 newEdge: null

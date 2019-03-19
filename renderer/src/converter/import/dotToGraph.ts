@@ -1,4 +1,5 @@
 import { IGraph } from "../../types/GraphTypes";
+import * as uuid from "uuid";
 
 export function dotToGraph(src: string): IGraph {
 
@@ -26,6 +27,7 @@ export function dotToGraph(src: string): IGraph {
     nodes = nodes.map(node => node.formula === '' ? { ...node, isExogenousVariable: true } : node)
 
     return {
+        id: uuid.v4(),
         directed: true,
         title: src.split('{')[0].split(' ')[2],
         nodes,

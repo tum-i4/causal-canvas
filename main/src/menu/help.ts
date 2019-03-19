@@ -12,6 +12,13 @@ export const helpMenuTemplate: MenuItemConstructorOptions[] = [
                 label: 'Open Dev Tools',
                 click: menuHandlerOpenDevTool,
             },
+            {
+                type: "separator"
+            },
+            {
+                label: 'Open example',
+                click: showExample,
+            },
         ]
     }
 ]
@@ -22,4 +29,8 @@ function menuHandlerOpenDevTool() {
 
 function openSettings() {
     BrowserWindow.getFocusedWindow().webContents.send('settings');
+}
+
+function showExample() {
+    BrowserWindow.getFocusedWindow().webContents.send('showExample');
 }

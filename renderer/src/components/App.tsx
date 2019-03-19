@@ -11,6 +11,7 @@ import { IGeneralSettings, GeneralSettingsDefault } from './settings/GeneralSett
 import { layoutGraph } from '../graph-layout/layoutGraph';
 import { dotToGraph } from '../converter/import/dotToGraph';
 import { IpcRenderer } from 'electron';
+import * as uuid from 'uuid';
 const electron = (window as any).require('electron');
 const fs = electron.remote.require('fs');
 const ipcRenderer: IpcRenderer = electron.ipcRenderer;
@@ -23,7 +24,7 @@ enum AppView {
 interface ICausalCanvasState {
     width: number;
     height: number;
-    graph: IGraph;
+    graph: IGraph | null;
     appView: AppView;
     settings: {
         style: ITheme;
@@ -64,7 +65,7 @@ class App extends Component<any, ICausalCanvasState> {
         this.state = {
             width: 0,
             height: 0,
-            graph: susiExample(),
+            graph: null,
             appView: AppView.Graph,
             settings: {
                 style: style,
@@ -79,7 +80,9 @@ class App extends Component<any, ICausalCanvasState> {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
 
-        ipcRenderer.on('import', async (event, data) => this.handelGraphImport(JSON.parse(data)))
+        ipcRenderer.on('import', async (event, data) => this.handelGraphImport(JSON.parse(data)));
+
+        ipcRenderer.on('showExample', async (event, data) => this.setState({ graph: susiExample() }));
 
         ipcRenderer.on('save', async (event, data) => {
             if (this.canvasRef.current !== null) {
@@ -124,6 +127,7 @@ class App extends Component<any, ICausalCanvasState> {
         ipcRenderer.removeAllListeners('saveas');
         ipcRenderer.removeAllListeners('save');
         ipcRenderer.removeAllListeners('import');
+        ipcRenderer.removeAllListeners('showExample');
     }
 
     updateWindowDimensions = () => {
@@ -143,7 +147,11 @@ class App extends Component<any, ICausalCanvasState> {
             case GraphImportType.CausalModel: graph = JSON.parse(data.src); break;
         }
 
+
         if (graph !== null) {
+            if (graph.title === 'null') {
+                graph.title = `untitled`;
+            }
             this.setState({ graph });
         }
     }
@@ -237,6 +245,7 @@ function getTestData(): IGraph {
     }
 
     return {
+        id: "spoüpsi909",
         directed: true,
         title: 'test',
         nodes: [nodeA, nodeB, nodeC],
@@ -244,18 +253,19 @@ function getTestData(): IGraph {
 }
 
 function susiExample() {
-    const Exo_Suzi_Throws = createNode(-200, -200, 'Exo_Suzi_Throws', true, '', true);
+    const Exo_Suzi_Throws = createNode(-200, -200, 'Exo_Suzy_Throws', true, '', true);
     const Exo_Billy_Throws = createNode(200, -200, 'Exo_Billy_Throws', true, '', true);
 
-    const Suzi_Throws = createNode(-200, 0, 'Suzi_Throws', true, 'Exo_Suzi_Throws', false);
+    const Suzi_Throws = createNode(-200, 0, 'Suzy_Throws', true, 'Exo_Suzy_Throws', false);
     const Billy_Throws = createNode(200, 0, 'Billy_Throws', true, 'Exo_Billy_Throws', false);
 
-    const Suzi_Hits = createNode(-150, 150, 'Suzi_Hits', true, 'Suzi_Throws', false);
-    const Billy_Hits = createNode(150, 150, 'Billy_Hits', true, '!Suzi_Hits&Billy_Throws', false);
+    const Suzi_Hits = createNode(-150, 150, 'Suzy_Hits', true, 'Suzy_Throws', false);
+    const Billy_Hits = createNode(150, 150, 'Billy_Hits', true, '!Suzy_Hits&Billy_Throws', false);
 
-    const Bottel_Broken = createNode(0, 300, 'Bottel_Broken', true, 'Suzi_Hits|Billy_Hits', false);
+    const Bottel_Broken = createNode(0, 300, 'Bottel_Broken', true, 'Suzy_Hits|Billy_Hits', false);
 
     return {
+        id: uuid.v4(),
         directed: true,
         title: 'Bottel',
         nodes: [

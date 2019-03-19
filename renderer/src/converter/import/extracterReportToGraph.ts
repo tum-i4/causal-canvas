@@ -1,11 +1,13 @@
 import { IGraph, INode } from "../../types/GraphTypes";
 import { IGeneralSettings } from "../../components/settings/GeneralSettings";
+import * as uuid from "uuid";
 
 
 export function extracterReportToGraph(src: string): IGraph {
 
     const parts = src.split('\n\n');
     return {
+        id: uuid.v4(),
         title: getTitel(parts[0]),
         directed: true,
         nodes: getNodes(parts[1], parts[2])

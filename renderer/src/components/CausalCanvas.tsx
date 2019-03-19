@@ -41,7 +41,7 @@ export interface IGraphData {
 interface ICausalCanvasProps {
     width: number;
     height: number;
-    graph: IGraph;
+    graph: IGraph | null;
 }
 
 const CanvasModusToggelButton = styled.div<any>`
@@ -71,7 +71,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
 
         this.state = {
             modus: CanvasModus.Edit,
-            graphs: [this.makeNewGraphState(props.graph)],
+            graphs: props.graph !== null ? [this.makeNewGraphState(props.graph)] : [],
             selected: 0
         }
 
@@ -88,7 +88,11 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
     }
 
     componentDidUpdate(lastProps: ICausalCanvasProps) {
-        if (!_.isEqual(lastProps.graph, this.props.graph)) {
+        if (this.props.graph === null) {
+            return;
+        }
+
+        if (lastProps.graph === null || lastProps.graph.id !== this.props.graph.id) {
             this.setState({
                 ...this.state,
                 graphs: [...this.state.graphs, this.makeNewGraphState(this.props.graph)],
@@ -100,7 +104,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
     private makeNewGraphState(graph: IGraph) {
         return {
             id: uuid.v4(),
-            graph,
+            graph: _.cloneDeep(graph),
             selected: {
                 nodes: [],
                 edges: []
@@ -122,6 +126,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
         this.setState({
             ...this.state,
             graphs: [...this.state.graphs, this.makeNewGraphState({
+                id: uuid.v4(),
                 directed: true,
                 nodes: [],
                 title: 'new-graph-' + this.state.graphs.length
