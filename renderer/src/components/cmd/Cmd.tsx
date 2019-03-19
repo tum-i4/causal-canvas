@@ -53,6 +53,11 @@ const CmdListItem = styled.div<{ selected: boolean }>`
     font-size: 12px;
     color: ${props => props.selected ? props.theme.colors.background : props.theme.colors.primary};
     background-color: ${props => props.selected ? props.theme.colors.primary : props.theme.colors.background}
+    cursor: pointer;
+    &:hover{
+        background-color: ${props => props.theme.colors.primary};
+        color: ${props => props.theme.colors.background};
+    }
 `
 
 interface ICmdState {
@@ -88,8 +93,14 @@ export class Cmd extends Component<ICmdProps, ICmdState> {
     }
 
     componentDidMount() {
-        window.addEventListener('keyup', this.keyUpHandlerWindow)
         ipcRenderer.on('open-cmd', (event, data) => {
+            if (!this.state.open) {
+                setTimeout(() => {
+                    if (this.inputRef.current !== null) {
+                        this.inputRef.current.focus();
+                    }
+                }, 80)
+            }
             this.setState({
                 ...this.state,
                 open: !this.state.open
@@ -98,25 +109,7 @@ export class Cmd extends Component<ICmdProps, ICmdState> {
     }
 
     componentWillUnmount() {
-        window.removeEventListener('keyup', this.keyUpHandlerWindow);
         ipcRenderer.removeAllListeners('open-cmd');
-    }
-
-    keyUpHandlerWindow = (event: KeyboardEvent) => {
-        if (event.shiftKey && event.ctrlKey && event.keyCode === 80) {
-
-            if (!this.state.open) {
-                setTimeout(() => {
-                    if (this.inputRef.current !== null) {
-                        this.inputRef.current.focus();
-                    }
-                }, 80)
-            }
-
-            this.setState({
-                open: !this.state.open
-            })
-        }
     }
 
     cmdInoutChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,13 +118,29 @@ export class Cmd extends Component<ICmdProps, ICmdState> {
         })
     }
 
+    replaceLast = (value: string) => {
+        let splitt = this.state.cmdValue.split(' ');
+        if (splitt.length > 1) {
+            splitt.splice(splitt.length - 1, 1, value)
+        } else {
+            splitt = [value + " "]
+        }
+
+        this.setState({
+            cmdValue: splitt.join(' '),
+            selected: -1
+        });
+
+        if (this.inputRef.current !== null) {
+            this.inputRef.current.focus();
+        }
+    }
+
     keyUpHandlerInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.keyCode === 13) {
             if (this.state.selected !== -1) {
-                this.setState({
-                    selected: -1,
-                    cmdValue: this.state.cmdValue.split(' ').length > 1 ? this.state.cmdValue + this.list[this.state.selected] + " " : this.list[this.state.selected] + " ",
-                })
+
+                this.replaceLast(this.list[this.state.selected]);
                 return;
             }
             this.setState({
@@ -174,6 +183,8 @@ export class Cmd extends Component<ICmdProps, ICmdState> {
         const split = cmdValue.split(' ');
         if (split.length > 1) {
             this.list = this.props.graphRef.getCurrentGraph().nodes.map(n => n.title);
+        } else {
+            this.list = this.commands;
         }
 
         return (
@@ -191,6 +202,7 @@ export class Cmd extends Component<ICmdProps, ICmdState> {
                                 ? <CmdListItem
                                     key={idx}
                                     selected={selected === idx}
+                                    onClick={() => this.replaceLast(c)}
                                 >
                                     {c}
                                 </CmdListItem>

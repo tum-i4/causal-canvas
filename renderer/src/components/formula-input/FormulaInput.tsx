@@ -129,7 +129,6 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
                 newFormula += word;
             }
         }
-        console.log({ formula, newFormula });
 
         return newFormula;
     }

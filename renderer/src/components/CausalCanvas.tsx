@@ -78,8 +78,6 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
     }
 
     componentDidMount() {
-        //trigger rerender after ref is created
-        this.setState(this.state);
         ipcRenderer.on('toggel-modus', () => this.toggelModus());
     }
 
@@ -99,6 +97,10 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
                 selected: this.state.graphs.length
             })
         }
+    }
+
+    private rerender = () => {
+        this.setState({ ...this.state })
     }
 
     private makeNewGraphState(graph: IGraph) {
@@ -242,6 +244,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
                 onGraphChanged={this.onGraphTitleChanged}
             />
             <Graph
+                rerender={this.rerender}
                 ref={this.graphRef}
                 width={width - this.queryWidth * modus}
                 height={height - this.queryHeight * modus}

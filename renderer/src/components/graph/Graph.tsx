@@ -29,6 +29,7 @@ const SVG = styled.svg`
     background-color: ${props => props.theme.colors.background}
 `
 export interface IGraphProps {
+    rerender: () => void;
     data: {
         graph: IGraph;
         selected: ISelect;
@@ -180,6 +181,8 @@ class Graph extends Component<IGraphProps, IGraphState> {
             d3.select(this.svgRef.current)
                 .call(this.zoomBehavior);
         }
+
+        this.props.rerender();
     }
 
     componentWillUnmount() {

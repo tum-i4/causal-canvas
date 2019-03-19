@@ -19,6 +19,7 @@ export const editMenuTemplate: MenuItemConstructorOptions[] = [
             },
             {
                 label: 'Toggel Command Input',
+                accelerator: 'Ctrl+Shift+P',
                 click: openCMD,
             },
             {
