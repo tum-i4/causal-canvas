@@ -1,6 +1,9 @@
 
+1) install node
+2) run npm install in main and renderer
 
-## dev
+
+for dev:
 in rernderer:
 * npm start
 
@@ -8,5 +11,5 @@ in rernderer:
 in main:
 * npm start
 
-## build prod
+for prod build:
 npm build
