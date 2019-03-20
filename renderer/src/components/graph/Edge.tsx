@@ -10,7 +10,7 @@ import styled from './../../style/theme/styled-components';
 
 export interface IEdgeProps extends IDrawEdge {
     selected: boolean;
-    select: (event: React.MouseEvent, selected: ISelect) => void;
+    select: (event: React.MouseEvent) => void;
     theme: ITheme;
     isNewEge?: boolean;
     isNotHighlight: boolean;
@@ -33,7 +33,7 @@ const EdgeRender: React.SFC<IEdgeProps> = ({ source, target, select, selected, i
             </defs>
             <path
                 stroke={selected ? theme.edge.color.selected : theme.edge.color.default}
-                onClick={(ev) => select(ev, { nodes: [], edges: [id] })}
+                onClick={select}
                 strokeWidth={theme.edge.width}
                 d={`M${sourcePoint.x},${sourcePoint.y}L${targetPoint.x},${targetPoint.y}`}
                 markerEnd={'url(#arrow)'}

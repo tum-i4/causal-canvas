@@ -139,6 +139,9 @@ class Graph extends Component<IGraphProps, IGraphState> {
             ...this.state,
             ...changes
         });
+        const fps = 1000 / 32;
+        this.onMouseMove = _.debounce(this.onMouseMove, fps, { maxWait: fps });
+        this.onZoom = _.debounce(this.onZoom, fps, { maxWait: fps });
     }
 
     componentDidMount() {
@@ -255,6 +258,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
     }
 
     onMouseMove = (event: MouseEvent) => {
+        event.preventDefault();
 
         const delta = this.calcMouseDelta(event);
         switch (this.moveType) {
@@ -336,7 +340,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
         return delta;
     }
 
-    select = (event: React.MouseEvent, selected: ISelect) => {
+    select = (selected: ISelect) => (event: React.MouseEvent) => {
         this.setState({
             ...this.state,
             selected: {
@@ -418,8 +422,10 @@ class Graph extends Component<IGraphProps, IGraphState> {
         this.addMouseMoveEvent(MoveType.NewEdge);
     }
 
-    endNewEdge = (targetID: string) => {
-
+    endNewEdge = (targetID: string) => (event: React.MouseEvent<SVGGElement>) => {
+        if (event.ctrlKey) {
+            return;
+        }
         const { newEdge, graph } = this.state;
 
         if (newEdge === null) {
@@ -427,6 +433,14 @@ class Graph extends Component<IGraphProps, IGraphState> {
         }
 
         console.log('newEdge', newEdge.source.id, targetID);
+
+        const node = this.getNodeByID(targetID);
+        if (node === undefined || node.formula.split(/&|\|/).some(s => s.includes(newEdge.source.id))) {
+            this.removeMouseMoveEvent();
+            return;
+        }
+
+
 
         if (newEdge.source.id !== targetID) {
             const nodes = graph.nodes.map(node => node.id === targetID && !node.isExogenousVariable ? {
@@ -453,7 +467,6 @@ class Graph extends Component<IGraphProps, IGraphState> {
     }
 
     onMouseDown = (ev: React.MouseEvent<SVGSVGElement>) => {
-
         if (ev.shiftKey) {
             return;
         }
@@ -483,7 +496,6 @@ class Graph extends Component<IGraphProps, IGraphState> {
     }
 
     onMouseUp = (ev: React.MouseEvent<SVGSVGElement>) => {
-
         if (ev.shiftKey) {
             this.createNewNode(ev);
             return;
@@ -542,11 +554,11 @@ class Graph extends Component<IGraphProps, IGraphState> {
             (node, idx) => <Node
                 key={node.id}
                 {...node}
-                select={this.select}
+                select={this.select({ nodes: [node.id], edges: [] })}
                 selected={selected.nodes.includes(node.id)}
                 dragStart={this.addMouseMoveEvent}
                 startNewEdge={this.startNewEdge}
-                endNewEdge={this.endNewEdge}
+                endNewEdge={this.endNewEdge(node.id)}
                 markAsPartOfFormular={formularNodes.has(node.id)}
                 isNotHighlight={highlight.length === 0 ? false : !highlightSet.has(node.id)}
             />
@@ -557,7 +569,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
                 (edge, idx) => <Edge
                     key={edge.id}
                     {...edge}
-                    select={this.select}
+                    select={this.select({ nodes: [], edges: [edge.id] })}
                     selected={false}
                     isNotHighlight={highlight.length === 0 ? false : !highlightSet.has(edge.source.id) && !highlightSet.has(edge.target.id)}
                 />
@@ -570,7 +582,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
                 isNewEge={true}
                 key={newEdge.id}
                 {...newEdge}
-                select={this.select}
+                select={this.select({ nodes: [], edges: [newEdge.id] })}
                 selected={false}
             />
 

@@ -20,7 +20,7 @@ const NodeShape = styled.rect<React.SVGProps<SVGRect> & { selected: boolean, isE
 `
 
 const NodeText = styled.text<React.SVGProps<SVGTextElement>>`
-    user-select: none;
+    // user-select: none;
 `
 
 const StyledNodeGroupe = styled.g<{ isNotHighlight: boolean }>`
@@ -31,10 +31,10 @@ export interface INodeProps extends INode {
     isNotHighlight: boolean;
     markAsPartOfFormular: boolean;
     selected: boolean;
-    select: (event: React.MouseEvent, selected: ISelect) => void;
+    select: (event: React.MouseEvent) => void;
     dragStart: (moveType: MoveType) => void;
     startNewEdge: (sourceID: string) => void;
-    endNewEdge: (sourceID: string) => void;
+    endNewEdge: (event: React.MouseEvent<SVGGElement>) => void;
     theme: ITheme;
 }
 
@@ -46,6 +46,7 @@ const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragSta
             onMouseDown={
                 (ev) => {
                     ev.stopPropagation();
+                    ev.preventDefault();
 
                     if (!selected) {
                         return;
@@ -57,15 +58,8 @@ const NodeRender: React.SFC<INodeProps> = ({ x, y, selected, select, id, dragSta
                     return startNewEdge(id);
                 }
             }
-            onMouseUp={
-                (ev) => {
-                    console.log("hit", id);
-                    if (!ev.ctrlKey) {
-                        return endNewEdge(id);
-                    }
-                }
-            }
-            onClick={(ev) => select(ev, { nodes: [id], edges: [] })}
+            onMouseUp={endNewEdge}
+            onClick={select}
         >
             <NodeShape
                 isExogenousVariable={isExogenousVariable}
