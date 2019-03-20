@@ -3,15 +3,16 @@ import _ from 'lodash';
 
 
 export function graphToDrawGraph(graph: IGraph): IDrawGraph {
+    const edges = getEdgeFromNodesFormula(graph.nodes, new Map<string, INode>(graph.nodes.map((n): [string, INode] => [n.id, n])));
     return {
         nodes: graph.nodes,
-        edges: getEdgeFromNodesFormula(graph.nodes)
+        edges
     }
 }
 
-function getEdgeFromNodesFormula(nodes: INode[]): IDrawEdge[] {
+function getEdgeFromNodesFormula(_nodes: INode[], nodes: Map<string, INode>): IDrawEdge[] {
 
-    const getNodeByID = (id: string): INode | undefined => nodes.find(node => node.id === id);
+    const getNodeByID = (id: string): INode | undefined => nodes.get(id);
 
     const makeDrawEdgeFromEdge = (sourceID: string, targetID: string): IDrawEdge | undefined => {
         const source = getNodeByID(sourceID);
@@ -27,7 +28,7 @@ function getEdgeFromNodesFormula(nodes: INode[]): IDrawEdge[] {
         };
     }
 
-    return _.flatten(nodes.map(node => {
+    return _.flatten(_nodes.map(node => {
 
         const { id, formula } = node;
 

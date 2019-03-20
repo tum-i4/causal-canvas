@@ -2,7 +2,9 @@ import { INode } from "../../../types/GraphTypes";
 
 export function getSubTree(nodes: INode[], startNodes: string[]) {
 
-    const getNodeByID = (id: string) => nodes.find(node => node.id === id);
+
+    const nodeMap = new Map<string, INode>(nodes.map((n): [string, INode] => [n.id, n]))
+    const getNodeByID = (id: string) => nodeMap.get(id);
     let returnSet = new Set<string>();
     let nextNodes = nodes.filter(node => startNodes.includes(node.id));
 
