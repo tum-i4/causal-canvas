@@ -35,7 +35,6 @@ export interface IGraphData {
     },
     zoomTransform: d3.ZoomTransform;
     selected: ISelect;
-
 }
 
 interface ICausalCanvasProps {
@@ -132,9 +131,8 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
                 directed: true,
                 nodes: [],
                 title: 'new-graph-' + this.state.graphs.length
-            })],
-            selected: this.state.graphs.length
-        })
+            })]
+        }, () => this.onTabChange(this.state.graphs.length - 1))
     }
 
     public getCurrentGraph = () => {
@@ -233,7 +231,7 @@ class CausalCanvas extends Component<ICausalCanvasProps, ICausalCanvasState> {
             : null
 
 
-        const { changed, id, ...selectedGraph } = graphs[selected]
+        const { changed, ...selectedGraph } = graphs[selected]
         return <React.Fragment>
             <TabBar
                 graphs={graphs}

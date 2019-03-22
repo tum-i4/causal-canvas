@@ -31,6 +31,7 @@ const SVG = styled.svg`
 export interface IGraphProps {
     rerender: () => void;
     data: {
+        id: string;
         graph: IGraph;
         selected: ISelect;
         areaSelect: {
@@ -196,7 +197,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
     }
 
     componentDidUpdate(prevProps: IGraphProps, prevState: IGraphState) {
-        if (prevProps.data.graph.id !== this.props.data.graph.id) {
+        if (prevProps.data.id !== this.props.data.id) {
             this.setState({
                 ..._.cloneDeep(this.props.data),
                 newEdge: null
