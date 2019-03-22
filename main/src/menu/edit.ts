@@ -12,6 +12,7 @@ export const editMenuTemplate: MenuItemConstructorOptions[] = [
             },
             {
                 label: 'Delete Node',
+                accelerator: 'Delete',
                 click: deleteNode,
             },
             {

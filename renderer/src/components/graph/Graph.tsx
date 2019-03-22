@@ -145,7 +145,6 @@ class Graph extends Component<IGraphProps, IGraphState> {
     }
 
     componentDidMount() {
-        window.addEventListener('keyup', this.onKeyUp);
         cmdEvent.on('cmd', this.applyCommand);
 
         ipcRenderer.on('delete-node', () => {
@@ -191,7 +190,6 @@ class Graph extends Component<IGraphProps, IGraphState> {
     componentWillUnmount() {
 
         cmdEvent.removeListener('cmd', this.applyCommand);
-        window.removeEventListener('keyup', this.onKeyUp);
         ipcRenderer.removeAllListeners('delete-node');
         ipcRenderer.removeAllListeners('create-node');
         this.removeMouseMoveEvent();
@@ -458,12 +456,6 @@ class Graph extends Component<IGraphProps, IGraphState> {
         }
 
         this.removeMouseMoveEvent();
-    }
-
-    onKeyUp = (event: KeyboardEvent) => {
-        if (event.key === 'Delete') {
-            this.deleteSelected();
-        }
     }
 
     onMouseDown = (ev: React.MouseEvent<SVGSVGElement>) => {

@@ -1,4 +1,4 @@
-import { MenuItemConstructorOptions, dialog, BrowserWindow, ipcMain } from 'electron';
+import { MenuItemConstructorOptions, dialog, BrowserWindow, ipcMain, app } from 'electron';
 import { extractr_atack, extractr_fault } from '../java-tools-wrapper/extractr';
 import * as fs from 'fs-extra';
 
@@ -18,7 +18,7 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
         label: 'File',
         submenu: [
             {
-                label: 'New File',
+                label: 'New Model',
                 click: () => newFile(),
                 accelerator: 'Ctrl+N'
             },
@@ -78,7 +78,7 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
             },
             {
                 label: 'Exit',
-                click: () => console.log('exit')
+                click: exit
             }
         ]
     }
@@ -86,6 +86,10 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
 
 function newFile() {
     BrowserWindow.getFocusedWindow().webContents.send('new-file');
+}
+
+function exit() {
+    BrowserWindow.getFocusedWindow().close();
 }
 
 function openFile(properties: Electron.OpenDialogOptions) {

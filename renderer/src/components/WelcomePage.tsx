@@ -17,6 +17,7 @@ const WelcomePageText = styled.div`
     font-size: 23px;
     text-align: center;
     color: ${props => props.theme.colors.primary};
+    margin-bottom: 5px;
 `
 
 export const WelcomePage: React.SFC<any> = () => {
@@ -26,7 +27,10 @@ export const WelcomePage: React.SFC<any> = () => {
             no Causal Model open
         </WelcomePageText>
         <WelcomePageText>
-            create a new or import one
+            create a new with Ctrl+N
+        </WelcomePageText>
+        <WelcomePageText>
+            or import one
         </WelcomePageText>
     </WelcomePageContainer>
 }

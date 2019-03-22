@@ -98,14 +98,18 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
     private makeIDFormula = () => {
         const { formula } = this.state;
         const splitFormula = formula.split(' ');
-        let newFormula = ""
+        let newFormula = "";
         for (const word of splitFormula) {
             if (getWordType(word) === WordType.Variable) {
-                const node = this.props.nodes.find(n => n.title === word);
+                const node = this.props.nodes.find(n => n.title === word.replace('!', ''));
                 if (node === undefined) {
                     newFormula += word;
                 } else {
-                    newFormula += node.id;
+                    if (word.startsWith('!')) {
+                        newFormula += '!' + node.id;
+                    } else {
+                        newFormula += node.id;
+                    }
                 }
             } else {
                 newFormula += word;
@@ -119,11 +123,15 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
         let newFormula = ""
         for (const word of splitFormula) {
             if (getWordType(word) === WordType.Variable) {
-                const node = this.props.nodes.find(n => n.id === word);
+                const node = this.props.nodes.find(n => n.id === word.replace('!', ''));
                 if (node === undefined) {
                     newFormula += word;
                 } else {
-                    newFormula += node.title;
+                    if (word.startsWith('!')) {
+                        newFormula += '!' + node.title;
+                    } else {
+                        newFormula += node.title;
+                    }
                 }
             } else {
                 newFormula += word;
@@ -185,8 +193,6 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
 
         const { formula, selectedIdx, suggestionList, isFocused } = this.state;
         const { autoFocus } = this.props;
-
-        this.makeIDFormula();
 
         return <FormulaRelativContainer>
             <FormularInputInput
