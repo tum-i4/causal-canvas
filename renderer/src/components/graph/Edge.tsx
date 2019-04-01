@@ -25,6 +25,9 @@ const EdgeRender: React.SFC<IEdgeProps> = ({ source, target, select, selected, i
     return (
         <StyledEdgeGroupe
             isNotHighlight={isNotHighlight}
+            style={{
+                pointerEvents: isNewEge ? "none" : "inherit"
+            }}
         >
             <defs>
                 <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">

@@ -147,11 +147,11 @@ class App extends Component<any, ICausalCanvasState> {
             case GraphImportType.CausalModel: graph = JSON.parse(data.src); break;
         }
 
-        console.log({ graph, data });
         if (graph !== null) {
             if (graph.title === 'null') {
                 graph.title = `untitled`;
             }
+            graph.id = uuid.v4();
             this.setState({ graph });
         }
     }

@@ -122,6 +122,7 @@ export class NewFormulaInput extends Component<IFormulaInputProps, IFormulaInput
         const splitFormula = formula.replace(/&/g, ' & ').replace(/\|/g, ' | ').split(' ');
         let newFormula = ""
         for (const word of splitFormula) {
+            console.log(word);
             if (getWordType(word) === WordType.Variable) {
                 const node = this.props.nodes.find(n => n.id === word.replace('!', ''));
                 if (node === undefined) {
