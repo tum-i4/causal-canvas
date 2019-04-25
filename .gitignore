@@ -1,5 +1,5 @@
 node_modules
-causal-canvas-win32-x64
+causal-canvas-*-*
 main/node_modules
 main/dist
 renderer/node_modules

@@ -5,118 +5,119 @@ import Graph from '../graph/Graph';
 
 import { IpcRenderer } from 'electron';
 import { forumlaToJavaFormula } from '../util';
+import { makeTitleFormula } from '../formula-input/helper';
 const electron = (window as any).require('electron');
 const fs = electron.remote.require('fs');
 const ipcRenderer: IpcRenderer = electron.ipcRenderer;
 
 export interface INewModelData {
-    name: string;
-    exos: string[];
-    endos: {
-        name: string;
-        formula: string;
-    }[]
+	name: string;
+	exos: string[];
+	endos: {
+		name: string;
+		formula: string;
+	}[]
 }
 
 export interface IQueryData {
-    context: {
-        name: string;
-        value: boolean;
-    }[];
-    cause: {
-        name: string;
-        value: boolean;
-    }[];
-    phi: string;
-    solvingStrategy: string;
+	context: {
+		name: string;
+		value: boolean;
+	}[];
+	cause: {
+		name: string;
+		value: boolean;
+	}[];
+	phi: string;
+	solvingStrategy: string;
 }
 
 interface IQueryContainerState {
-    result: object;
+	result: object;
 }
 
 interface IQueryContainerProps {
-    width: number;
-    height: number;
-    graph: Graph;
+	width: number;
+	height: number;
+	graph: Graph;
 }
 
 export class QueryContainer extends Component<IQueryContainerProps, IQueryContainerState> {
 
-    private queryResultRef = createRef<QueryResult>();
-    private queryInputRef = createRef<QueryInput>();
-    private lastIdx = -1;
+	private queryResultRef = createRef<QueryResult>();
+	private queryInputRef = createRef<QueryInput>();
+	private lastIdx = -1;
 
-    constructor(props: IQueryContainerProps) {
-        super(props);
+	constructor(props: IQueryContainerProps) {
+		super(props);
 
-        this.state = {
-            result: {}
-        }
-    }
+		this.state = {
+			result: {}
+		}
+	}
 
-    componentDidMount() {
-        ipcRenderer.on('query-result', this.onQueryResult)
+	componentDidMount() {
+		ipcRenderer.on('query-result', this.onQueryResult)
 
-        const graph = this.props.graph.getCurrentGraph();
+		const graph = this.props.graph.getCurrentGraph();
 
-        const endos = graph.nodes.filter(n => !n.isExogenousVariable).map(n => ({
-            formula: forumlaToJavaFormula(n.formula),
-            name: n.title
-        }))
+		const endos = graph.nodes.filter(n => !n.isExogenousVariable).map(n => ({
+			formula: forumlaToJavaFormula(makeTitleFormula(n.formula, graph.nodes)),
+			name: n.title
+		}))
 
-        const exos = graph.nodes.filter(n => n.isExogenousVariable).map(n => n.title);
-        this.setModel({
-            endos,
-            exos,
-            name: graph.title
-        })
-    }
+		const exos = graph.nodes.filter(n => n.isExogenousVariable).map(n => n.title);
+		this.setModel({
+			endos,
+			exos,
+			name: graph.title
+		})
+	}
 
-    componentWillUnmount() {
-    }
+	componentWillUnmount() {
+	}
 
-    private onQueryResult = (event, result) => {
-        if (this.queryResultRef.current !== null) {
-            this.queryResultRef.current.addResult(this.lastIdx, result);
-        }
-    }
+	private onQueryResult = (event, result) => {
+		if (this.queryResultRef.current !== null) {
+			this.queryResultRef.current.addResult(this.lastIdx, result);
+		}
+	}
 
-    private sendQuery = (query: IQueryData) => {
-        if (this.queryResultRef.current !== null) {
-            ipcRenderer.send('query', query)
-            this.lastIdx = this.queryResultRef.current.addQuery(query);
-        }
-    }
+	private sendQuery = (query: IQueryData) => {
+		if (this.queryResultRef.current !== null) {
+			ipcRenderer.send('query', query)
+			this.lastIdx = this.queryResultRef.current.addQuery(query);
+		}
+	}
 
-    private setModel = (model: INewModelData) => {
-        ipcRenderer.send('setModel', model);
-    }
+	private setModel = (model: INewModelData) => {
+		ipcRenderer.send('setModel', model);
+	}
 
-    private resetQuery = (data: IQueryData) => {
-        if (this.queryInputRef.current !== null) {
-            this.queryInputRef.current.setQuery(data);
-        }
-    }
+	private resetQuery = (data: IQueryData) => {
+		if (this.queryInputRef.current !== null) {
+			this.queryInputRef.current.setQuery(data);
+		}
+	}
 
-    public render() {
+	public render() {
 
-        const { width, height, graph } = this.props;
+		const { width, height, graph } = this.props;
 
-        return <React.Fragment>
-            <QueryInput
-                query={this.sendQuery}
-                width={width}
-                graph={graph}
-                ref={this.queryInputRef}
-            />
-            <QueryResult
-                ref={this.queryResultRef}
-                result={this.state.result}
-                height={height}
-                width={width}
-                reSetQuery={this.resetQuery}
-            />
-        </React.Fragment>
-    }
+		return <React.Fragment>
+			<QueryInput
+				query={this.sendQuery}
+				width={width}
+				graph={graph}
+				ref={this.queryInputRef}
+			/>
+			<QueryResult
+				ref={this.queryResultRef}
+				result={this.state.result}
+				height={height}
+				width={width}
+				reSetQuery={this.resetQuery}
+			/>
+		</React.Fragment>
+	}
 }
