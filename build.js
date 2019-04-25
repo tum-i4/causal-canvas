@@ -4,14 +4,22 @@ const path = require('path');
 const child_process = require('child_process');
 
 (async function () {
-	await build('darwin');
-	// await build('linux');
-	// await build('win32');
+	//todo: choose platform
+
+	await build('darwin', false);
+	// await build('linux',false);
+	// await build('win32',false);
+
 })().then(() => undefined).catch(() => undefined)
 
-function build(platform) {
+function build(platform, install = false) {
 	return new Promise(async (reoslve, reject) => {
 		console.log('build');
+		if (install) {
+			console.log('npm install...');
+			await exec('npm install', path.join(process.cwd(), 'main'));
+			await exec('npm install', path.join(process.cwd(), 'renderer'));
+		}
 		console.log('main...');
 		await exec('npm run build:prod', path.join(process.cwd(), 'main'));
 		console.log('renderer...');

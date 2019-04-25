@@ -1,16 +1,22 @@
+# causal-canvas
 
-1) install node
-2) run npm install in main and renderer
+## build:
 
+nodejs & npm must be installed
 
-for dev:
+1) starting from the project root dir
+2) run 'npm install'
+3) change to render dir and run 'npm install'
+4) change to main dir and run 'npm install'
+5) change to project root dir and run 'npm build'
 
-in rernderer:
-* npm start
+6) to choose the target platform, go in the build.js file and comment in/out the platform you want to build for
 
+## for dev:
 
-in main:
-* npm start
+1) starting from the project root dir
+2) change to render dir and run 'npm install' and 'npm start'
+3) change to main dir and run 'npm install' and 'npm start'
 
-for prod build:
-npm build
+changes in the render process are reloaded on save
+for changes in the main procces the app must be closed and run npm start again
