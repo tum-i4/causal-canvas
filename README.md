@@ -1,5 +1,7 @@
 # causal-canvas
 
+a canvas to interact with causal models based on the HP-defenition
+
 ## build:
 
 nodejs & npm must be installed
