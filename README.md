@@ -10,9 +10,13 @@ nodejs & npm must be installed
 2) run 'npm install'
 3) change to render dir and run 'npm install'
 4) change to main dir and run 'npm install'
-5) change to project root dir and run 'npm build'
+5) change to project root dir and run 'npm run build'
 
-6) to choose the target platform, go in the build.js file and comment in/out the platform you want to build for
+- to choose the target platform, go in the build.js file and comment in/out the platform you want to build for
+- first time building for a platform requiers internet connection to downloade the platform specific files
+- to update the jar's just replace tham in the main/java-tools/xxx dir
+- build proccess is done with <https://github.com/electron-userland/electron-packager>
+
 
 ## for dev:
 

@@ -6,15 +6,15 @@ const child_process = require('child_process');
 (async function () {
 	//todo: choose platform
 
-	await build('darwin', false);
-	// await build('linux',false);
-	// await build('win32',false);
+	// await build('darwin', false);
+	// await build('linux', false);
+	await build('win32', false);
 
 })().then(() => undefined).catch(() => undefined)
 
 function build(platform, install = false) {
 	return new Promise(async (reoslve, reject) => {
-		console.log('build');
+		console.log('building for ' + platform);
 		if (install) {
 			console.log('npm install...');
 			await exec('npm install', path.join(process.cwd(), 'main'));
@@ -27,7 +27,7 @@ function build(platform, install = false) {
 		console.log('packaging');
 		await electronPackager(platform);
 		console.log('copy renderer');
-		copyRenderer();
+		copyRenderer(platform);
 	})
 }
 
@@ -47,11 +47,17 @@ function electronPackager(platform) {
 	})
 }
 
-function copyRenderer() {
+function copyRenderer(platform) {
 
 	const rendererBuildPath = path.join(__dirname, 'renderer', 'build');
-	// const rendererDestPath = path.join(__dirname, 'causal-canvas-win32-x64', 'resources', 'app', 'dist');
-	const rendererDestPath = path.join(__dirname, 'causal-canvas-darwin-x64', 'causal-canvas.app', 'Contents', 'Resources', 'app', 'dist');
+	let rendererDestPath = '';
+	if (platform === 'win32')
+		rendererDestPath = path.join(__dirname, 'causal-canvas-win32-x64', 'resources', 'app', 'dist');
+	else if (platform === 'darwin')
+		rendererDestPath = path.join(__dirname, 'causal-canvas-darwin-x64', 'causal-canvas.app', 'Contents', 'Resources', 'app', 'dist');
+	else if (platform === 'linux')
+		rendererDestPath = path.join(__dirname, 'causal-canvas-linux-x64', 'resources', 'app', 'dist');
+	else return;
 
 	const existsRenderrBuild = fs.existsSync(rendererBuildPath);
 	if (!existsRenderrBuild) {
