@@ -48,7 +48,7 @@ export class HP2SAT {
     public static create(): Promise<HP2SAT | undefined> {
 
         const port: number = 4000;
-        const host: string = '10.0.75.1';
+        const host: string = 'localhost';
 
         return new Promise<HP2SAT | undefined>(async (resolve, reject) => {
             if (this.server === undefined) {
