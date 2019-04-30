@@ -4,7 +4,7 @@ a canvas to interact with causal models based on the HP-defenition
 
 ## build:
 
-nodejs (https://nodejs.org/en/download/) & npm must be installed 
+nodejs  & npm must be installed (node installs npm from (https://nodejs.org/en/download/))
 
 1) starting from the project root dir
 2) run 'npm install'
