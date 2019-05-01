@@ -134,7 +134,6 @@ export class QueryInput extends Component<IQueryInputProps, IQueryInputState> {
     }
 
     onCauseSearchChange = (value: string) => {
-        console.log(value);
         this.setState({
             ...this.state,
             causeSearch: value

@@ -17,30 +17,32 @@ const SuggestionItem = styled.div<{ selected: boolean }>`
 `
 
 export interface ISuggestionBox {
-    suggestions: string[];
-    selectedIdx: number;
-    position: number | null;
+	suggestions: string[];
+	selectedIdx: number;
+	position: number | null;
+	onClick: (idx: number) => void;
 }
 
-export const SuggestionBox: React.SFC<ISuggestionBox> = ({ suggestions, selectedIdx, position }) => {
-    if (position === null || suggestions.length === 0) {
-        return null;
-    }
+export const SuggestionBox: React.SFC<ISuggestionBox> = ({ suggestions, selectedIdx, position,onClick }) => {
+	if (position === null || suggestions.length === 0) {
+		return null;
+	}
 
-    return <SuggestionContainer
-        style={{
-            left: position
-        }}
-    >
-        {
-            suggestions.map((suggestion, idx) =>
-                <SuggestionItem
-                    selected={idx === selectedIdx}
-                    key={`suggestion-${idx}`}
-                >
-                    {suggestion}
-                </SuggestionItem>
-            )
-        }
-    </SuggestionContainer>;
+	return <SuggestionContainer
+		style={{
+			left: position
+		}}
+	>
+		{
+			suggestions.map((suggestion, idx) =>
+				<SuggestionItem
+					selected={idx === selectedIdx}
+					key={`suggestion-${idx}`}
+					onClick={()=>onClick(idx)}
+				>
+					{suggestion}
+				</SuggestionItem>
+			)
+		}
+	</SuggestionContainer>;
 }

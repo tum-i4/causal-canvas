@@ -102,7 +102,6 @@ export class QueryResult extends Component<IQueryResultProps, IQueryResultState>
 
     public addResult(idx: number, result: any) {
 
-        console.log(result);
         let _result;
         if (result.error !== null) {
             _result = { error: result.error };

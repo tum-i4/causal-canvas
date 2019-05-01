@@ -431,8 +431,6 @@ class Graph extends Component<IGraphProps, IGraphState> {
             return;
         }
 
-        console.log('newEdge', newEdge.source.id, targetID);
-
         const node = this.getNodeByID(targetID);
         if (node === undefined || node.formula.split(/&|\|/).some(s => s.includes(newEdge.source.id))) {
             this.removeMouseMoveEvent();

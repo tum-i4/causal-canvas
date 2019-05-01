@@ -87,7 +87,6 @@ export class Settings extends React.Component<ISettingsPorps, ISettingsState> {
 
 
     componentDidUpdate(lastProps: ISettingsPorps) {
-        console.log({ lastProps, porps: this.props });
         if (this.state.selected === SettingsType.Style) {
             if (!_.isEqual(lastProps.style, this.props.style)) {
                 return this.setState({
