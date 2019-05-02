@@ -39,7 +39,7 @@ function electronPackager(platform) {
 			platform: platform,
 			arch: 'x64',
 			name: 'causal-canvas',
-			// icon: './logo.ico'
+			icon: platform === 'win32' ? './logo.ico' : platform === 'darwin' ? './logo.icns' : undefined
 		})
 			.then(appPaths => {
 				resolve();
