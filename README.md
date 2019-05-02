@@ -18,6 +18,14 @@ nodejs  & npm must be installed (node installs npm from (https://nodejs.org/en/d
 - build proccess is done with <https://github.com/electron-userland/electron-packager>
 
 
+## install:
+
+1- Download the specific platform distribution zip file
+2- Extract the compressed file, locate causal-canvas executable in the root  of the extracted folder
+3- Run the executable (double click on windows, on Linux either use your GUI option to make it executable, or run using
+a terminal with ./causal-canvas (may need to grant execute permissions before) )
+
+
 ## for dev:
 
 1) starting from the project root dir
