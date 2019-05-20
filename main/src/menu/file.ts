@@ -42,19 +42,19 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
                 label: 'Import',
                 submenu: [
                     {
-                        label: 'atack-tree',
+                        label: 'Attack Tree',
                         click: menuHandlerAtackConvert
                     },
                     {
-                        label: 'fault-tree',
+                        label: 'Fault Tree',
                         click: menuHandlerFaultConvert
                     },
                     {
-                        label: 'dot-file',
+                        label: 'Dot File',
                         click: menuHandlerImportDot
                     },
                     {
-                        label: 'causal-model',
+                        label: 'Causal Model',
                         click: menuHandlerImportCausalModel
 
                     },
@@ -64,11 +64,11 @@ export const fileMenuTemplate: MenuItemConstructorOptions[] = [
                 label: 'Export',
                 submenu: [
                     {
-                        label: 'dot-file',
+                        label: 'Dot File',
                         click: menuHandlerExport('dot')
                     },
                     {
-                        label: 'svg',
+                        label: 'SVG',
                         click: menuHandlerExport('svg')
                     }
                 ]
