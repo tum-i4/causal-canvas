@@ -8,6 +8,7 @@ import { forumlaToJavaFormula } from '../util';
 import { CauseListItem } from './CauseListItem';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { QueryNodeInput } from './QueryNodeInput';
+import { makeTitleFormula } from '../formula-input/helper';
 
 const QueryInputContainer = styled.div<{ width: number }>`
     position: fixed;
@@ -127,13 +128,11 @@ export class QueryInput extends Component<IQueryInputProps, IQueryInputState> {
 	}
 
 	onPhiUpdate = (phi: string) => {
-		const selectedNode = this.props.graph.getCurrentGraph().nodes.find(n => n.id === phi)!
-		if (selectedNode !== undefined) {
-			this.setState({
-				...this.state,
-				phi: selectedNode.title
-			})
-		}
+		const titlePhi = makeTitleFormula(phi, this.props.graph.getCurrentGraph().nodes)
+		this.setState({
+			...this.state,
+			phi: titlePhi
+		})
 	}
 
 	onCauseSearchChange = (value: string) => {
