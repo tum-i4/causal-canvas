@@ -17,7 +17,7 @@ Please cite the following paper (to appear) when using this Canvas.
 
 
 ## How to Install:
-1) Download the specific platform distribution zip file 
+1) Download the latest distribution file from https://github.com/tum-i22/causal-canvas/releases/latest
 2) Extract the compressed file, locate causal-canvas executable in the root of the extracted folder 
 3) Run the executable (double click on windows, on Linux, either use your GUI option to make it executable or run using a terminal with ./causal-canvas (may need to grant 'execute' permissions before))
 4) Start using the Canvas by creating a causal model using one of the options:
