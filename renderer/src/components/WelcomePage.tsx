@@ -22,15 +22,12 @@ const WelcomePageText = styled.div`
 
 export const WelcomePage: React.SFC<any> = () => {
     return <WelcomePageContainer>
-        <WelcomePageHeader>Causal Canvas</WelcomePageHeader>
+        <WelcomePageHeader>Welcome to the Canvas</WelcomePageHeader>
         <WelcomePageText>
-            no Causal Model open
+            No Causal Model is open:
         </WelcomePageText>
         <WelcomePageText>
-            create a new with Ctrl+N
-        </WelcomePageText>
-        <WelcomePageText>
-            or import one
+            Use File menu to create a new model (ctrl+N) or to import one.
         </WelcomePageText>
     </WelcomePageContainer>
 }
