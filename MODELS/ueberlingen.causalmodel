@@ -1,0 +1,1141 @@
+{
+  "id": "f53c8a9e-75c8-4a2f-9d3d-0649bfbf42c9",
+  "directed": true,
+  "nodes": [
+    {
+      "id": "a01",
+      "x": -362.70353544371824,
+      "y": -389.06601717798213,
+      "title": "e2",
+      "value": true,
+      "formula": "6db",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "d55",
+      "x": -74.70353544371837,
+      "y": -386.06601717798213,
+      "title": "e1",
+      "value": true,
+      "formula": "e8b",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "6db",
+      "x": -343.70353544371824,
+      "y": -281.0660171779821,
+      "title": "e4",
+      "value": true,
+      "formula": "f9f",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "e8b",
+      "x": -39.70353544371836,
+      "y": -280.0660171779821,
+      "title": "e3",
+      "value": true,
+      "formula": "f9f",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "f9f",
+      "x": -175.70353544371832,
+      "y": -182.06601717798213,
+      "title": "e5",
+      "value": true,
+      "formula": "c5d",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "c5d",
+      "x": -177.70353544371832,
+      "y": -44.06601717798214,
+      "title": "e6",
+      "value": true,
+      "formula": "3fd|54b|401",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "3fd",
+      "x": -552.288455329568,
+      "y": 76.05382386916239,
+      "title": "e8",
+      "value": true,
+      "formula": "15a&d38&a6c&!401",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "15a",
+      "x": -563.6021638285528,
+      "y": 211.81832585697944,
+      "title": "e11",
+      "value": true,
+      "formula": "f69",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "f69",
+      "x": -815.1168824543145,
+      "y": 347.8254685319159,
+      "title": "e18",
+      "value": true,
+      "formula": "515",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "401",
+      "x": -215.3064439637715,
+      "y": 123.14254043512221,
+      "title": "e13",
+      "value": true,
+      "formula": "f8d&c31&8ca&510",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "54b",
+      "x": 135.01933598375612,
+      "y": 64.74011537017762,
+      "title": "e7",
+      "value": true,
+      "formula": "391&bb9&!401&!3fd",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "d38",
+      "x": -257.0287175865492,
+      "y": 210.751760721877,
+      "title": "e12",
+      "value": true,
+      "formula": "8ca|c9e",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "a6c",
+      "x": -35.03206395956843,
+      "y": 567.2918407894521,
+      "title": "e29",
+      "value": true,
+      "formula": "986|7a6",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "f8d",
+      "x": 143.23797607421906,
+      "y": 180.4794897727434,
+      "title": "e21",
+      "value": true,
+      "formula": "1f8|c31",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "1f8",
+      "x": -66.98612773920959,
+      "y": 348.65877282348623,
+      "title": "e30",
+      "value": true,
+      "formula": "612",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "c31",
+      "x": 163.41949004030823,
+      "y": 340.24980867094905,
+      "title": "e20",
+      "value": true,
+      "formula": "a6c",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "8ca",
+      "x": 270.0280465230681,
+      "y": 503.95231917333786,
+      "title": "e19",
+      "value": true,
+      "formula": "e9a",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "510",
+      "x": 504.8234346333164,
+      "y": 160.2979758066541,
+      "title": "e14",
+      "value": true,
+      "formula": "a66|dea",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "391",
+      "x": 963.9528773618447,
+      "y": 180.47948977274328,
+      "title": "e10",
+      "value": true,
+      "formula": "d8a|5fc",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "5fc",
+      "x": 1150.6318815481693,
+      "y": 298.2049879082633,
+      "title": "e17",
+      "value": true,
+      "formula": "2f4|5f2|6fe",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "d8a",
+      "x": 906.771921124592,
+      "y": 306.61395206080044,
+      "title": "e15",
+      "value": true,
+      "formula": "719&6fb",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "2f4",
+      "x": 1390.1996289975718,
+      "y": 794.4074052655126,
+      "title": "e25",
+      "value": true,
+      "formula": "20c",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "5f2",
+      "x": 1628.0410519981167,
+      "y": 794.4074052655126,
+      "title": "e26",
+      "value": true,
+      "formula": "f6b",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "6fe",
+      "x": 1861.1256465386489,
+      "y": 792.0289910355071,
+      "title": "e27",
+      "value": true,
+      "formula": "2f7",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "bb9",
+      "x": 667.1617030759169,
+      "y": 304.45407388439213,
+      "title": "e16",
+      "value": true,
+      "formula": "2f4&6fb",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "719",
+      "x": 1157.1150344570372,
+      "y": 784.893748345491,
+      "title": "e23",
+      "value": true,
+      "formula": "ba3",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "6fb",
+      "x": 931.1656826065204,
+      "y": 787.2721625754963,
+      "title": "e24",
+      "value": true,
+      "formula": "256|ca2",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "a66",
+      "x": 409.1797313445509,
+      "y": 286.0743331441854,
+      "title": "e22",
+      "value": true,
+      "formula": "6fb|56d|a6c",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "56d",
+      "x": 387.77400327450187,
+      "y": 595.2681830448931,
+      "title": "e31",
+      "value": true,
+      "formula": "d8d",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "e9a",
+      "x": 173.71672257401207,
+      "y": 714.1888945451647,
+      "title": "e33",
+      "value": true,
+      "formula": "6fb|eb1|71c",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "c9e",
+      "x": -742.2357654721654,
+      "y": 676.5842797598189,
+      "title": "e32",
+      "value": true,
+      "formula": "6dc",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "eb1",
+      "x": 349.9198699315616,
+      "y": 863.0584307749234,
+      "title": "e36",
+      "value": true,
+      "formula": "f47",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "71c",
+      "x": 104.943204241001,
+      "y": 860.680016544918,
+      "title": "e38",
+      "value": true,
+      "formula": "3ac",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "986",
+      "x": -137.65504721955426,
+      "y": 863.0584307749234,
+      "title": "e35",
+      "value": true,
+      "formula": "f2d",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "7a6",
+      "x": -401.6590267501585,
+      "y": 863.0584307749234,
+      "title": "e34",
+      "value": true,
+      "formula": "6dc",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "6dc",
+      "x": -446.8488971202619,
+      "y": 996.2496276552282,
+      "title": "e37",
+      "value": true,
+      "formula": "1ae",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "1ae",
+      "x": -450.1647609918169,
+      "y": 1139.4796321921424,
+      "title": "e45",
+      "value": true,
+      "formula": "3c1|22f",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "3c1",
+      "x": -472.16476099181693,
+      "y": 1267.4796321921426,
+      "title": "e46",
+      "value": true,
+      "formula": "c78|868",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "868",
+      "x": -334.35197834151745,
+      "y": 1413.0985649417341,
+      "title": "e47",
+      "value": true,
+      "formula": "d6e",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "c78",
+      "x": -674.4652132322959,
+      "y": 1408.3417364817233,
+      "title": "e48",
+      "value": true,
+      "formula": "5e6|0d6",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "5e6",
+      "x": -864.7383516327315,
+      "y": 1548.6681760520444,
+      "title": "e50",
+      "value": true,
+      "formula": "0e1|47a&!0d6",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "0d6",
+      "x": -600.7343721021272,
+      "y": 1541.532933362028,
+      "title": "e51",
+      "value": true,
+      "formula": "772",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "47a",
+      "x": -1050.254661573156,
+      "y": 1669.967301782322,
+      "title": "e59",
+      "value": true,
+      "formula": "6be",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "0e1",
+      "x": -774.0369477540856,
+      "y": 1680.380984491825,
+      "title": "e58",
+      "value": true,
+      "formula": "a6f",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "772",
+      "x": -493.7057317518822,
+      "y": 1660.4536448623003,
+      "title": "e60",
+      "value": true,
+      "formula": "f0f",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "256",
+      "x": 898.3796151901252,
+      "y": 933.7490746615146,
+      "title": "e41",
+      "value": true,
+      "formula": "f65|22f",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "f65",
+      "x": 878.5806253169018,
+      "y": 1100.6262750215399,
+      "title": "e44",
+      "value": true,
+      "formula": "8d0",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "ca2",
+      "x": 1181.2223276647444,
+      "y": 1044.057732526616,
+      "title": "e42",
+      "value": true,
+      "formula": "4f0",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "22f",
+      "x": 1005.8598459304804,
+      "y": 1230.7339227598648,
+      "title": "e43",
+      "value": true,
+      "formula": "78a",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "78a",
+      "x": 1025.6588358037038,
+      "y": 1349.5278619992048,
+      "title": "e49",
+      "value": true,
+      "formula": "bd1|9c3|4f0|482|2cf",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "bd1",
+      "x": 423.20385823276456,
+      "y": 1457.0080927395602,
+      "title": "e52",
+      "value": true,
+      "formula": "28c&!4f0&!2cf",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "dea",
+      "x": 697.5612893331452,
+      "y": 1442.8659571158291,
+      "title": "e57",
+      "value": true,
+      "formula": "440|070",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "482",
+      "x": 1063.267726440699,
+      "y": 1515.620352308328,
+      "title": "e53",
+      "value": true,
+      "formula": "fc4&ac7&!4f0&!2cf",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "9c3",
+      "x": 2297.980442683852,
+      "y": 1227.837210679629,
+      "title": "e55",
+      "value": true,
+      "formula": "5a5&!4f0&!2cf",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "4f0",
+      "x": 2663.2398968015623,
+      "y": 1488.9464721359645,
+      "title": "e56",
+      "value": true,
+      "formula": "ddc|57c|440",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "ddc",
+      "x": 1893.700653364416,
+      "y": 1619.0769380311237,
+      "title": "e66",
+      "value": true,
+      "formula": "bbc|b44",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "57c",
+      "x": 1542.975689895888,
+      "y": 1638.875927904347,
+      "title": "e65",
+      "value": true,
+      "formula": "173|cb2|070",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "fc4",
+      "x": 1217.706570550076,
+      "y": 1638.875927904347,
+      "title": "e64",
+      "value": true,
+      "formula": "fe7",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "ac7",
+      "x": 872.6384613310406,
+      "y": 1624.7337922806162,
+      "title": "e63",
+      "value": true,
+      "formula": "fe7",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "440",
+      "x": 561.5114776089595,
+      "y": 1630.3906465301086,
+      "title": "e67",
+      "value": true,
+      "formula": "070|550|e26",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "28c",
+      "x": 304.124609257056,
+      "y": 1624.7337922806162,
+      "title": "e61",
+      "value": true,
+      "formula": "18c|62a",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "2cf",
+      "x": -66.39934408469514,
+      "y": 1616.2485109063775,
+      "title": "e62",
+      "value": true,
+      "formula": "18c&62a&!4f0",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "b44",
+      "x": 2015.3230197285022,
+      "y": 1785.9541383911492,
+      "title": "e74",
+      "value": true,
+      "formula": "659",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "bbc",
+      "x": 1766.4214327508375,
+      "y": 1794.4394197653876,
+      "title": "e73",
+      "value": true,
+      "formula": "999",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "173",
+      "x": 1528.8335542721572,
+      "y": 1797.2678468901338,
+      "title": "e71",
+      "value": true,
+      "formula": "d7f",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "cb2",
+      "x": 1291.2456757934765,
+      "y": 1800.09627401488,
+      "title": "e72",
+      "value": true,
+      "formula": "838|7bd",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "fe7",
+      "x": 997.0892548198731,
+      "y": 1783.125711266403,
+      "title": "e70",
+      "value": true,
+      "formula": "586",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "070",
+      "x": 731.217105093731,
+      "y": 1785.9541383911492,
+      "title": "e75",
+      "value": true,
+      "formula": "299",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "550",
+      "x": 499.2860808645433,
+      "y": 1785.9541383911492,
+      "title": "e76",
+      "value": true,
+      "formula": "b28|25a|974",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "e26",
+      "x": 264.5266295106093,
+      "y": 1788.7825655158954,
+      "title": "e77",
+      "value": true,
+      "formula": "abf",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "18c",
+      "x": -4.173947340278918,
+      "y": 1791.6109926406416,
+      "title": "e69",
+      "value": true,
+      "formula": "d2f",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "62a",
+      "x": -250.24710719319765,
+      "y": 1785.9541383911492,
+      "title": "e68",
+      "value": true,
+      "formula": "1b2|7ff",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "1b2",
+      "x": -315.30093106236006,
+      "y": 1950.0029116264282,
+      "title": "e78",
+      "value": true,
+      "formula": "202|d83|7ff",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "7ff",
+      "x": -648.741623283426,
+      "y": 2100.689203127444,
+      "title": "e84",
+      "value": true,
+      "formula": "453",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "d83",
+      "x": -351.7567751850758,
+      "y": 2092.2039217532056,
+      "title": "e101",
+      "value": true,
+      "formula": "9bd",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "202",
+      "x": -63.25720846096414,
+      "y": 2100.689203127444,
+      "title": "e85",
+      "value": true,
+      "formula": "806",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "b28",
+      "x": 488.2860808645434,
+      "y": 1956.4394197653885,
+      "title": "e96",
+      "value": true,
+      "formula": "91d|903",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "25a",
+      "x": 776.7856475886553,
+      "y": 1956.4394197653883,
+      "title": "e95",
+      "value": true,
+      "formula": "0c8",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "91d",
+      "x": 287.46775500756377,
+      "y": 2078.0617861294745,
+      "title": "e98",
+      "value": true,
+      "formula": "96f",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "903",
+      "x": 536.3693419852287,
+      "y": 2086.547067503713,
+      "title": "e97",
+      "value": true,
+      "formula": "1a5",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "0c8",
+      "x": 807.8983459608631,
+      "y": 2072.4049318799825,
+      "title": "e82",
+      "value": true,
+      "formula": "d66",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "838",
+      "x": 1260.446685920254,
+      "y": 1959.2678468901345,
+      "title": "e80",
+      "value": true,
+      "formula": "ebf",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "7bd",
+      "x": 1608.3432222640363,
+      "y": 1964.924701139627,
+      "title": "e81",
+      "value": true,
+      "formula": "df0|d9e",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "ebf",
+      "x": 1226.5055604232996,
+      "y": 2066.74807763049,
+      "title": "e86",
+      "value": true,
+      "formula": "8b1",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "df0",
+      "x": 1495.206137274188,
+      "y": 2075.2333590047283,
+      "title": "e88",
+      "value": true,
+      "formula": "1c7",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "d9e",
+      "x": 1738.450870002361,
+      "y": 2066.7480776304897,
+      "title": "e87",
+      "value": true,
+      "formula": "e8d",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "d66",
+      "x": 762.6435119649241,
+      "y": 2227.968423741023,
+      "title": "e89",
+      "value": true,
+      "formula": "97e",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "974",
+      "x": 1031.3440888158125,
+      "y": 2230.796850865769,
+      "title": "e99",
+      "value": true,
+      "formula": "67c|109",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "586",
+      "x": 1616.3878114172085,
+      "y": 2361.968423741023,
+      "title": "e79",
+      "value": true,
+      "formula": "169",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "97e",
+      "x": 692.3612838999344,
+      "y": 2396.0357378562476,
+      "title": "e92",
+      "value": true,
+      "formula": "a8c",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "67c",
+      "x": 962.2340913897015,
+      "y": 2407.54063049245,
+      "title": "e100",
+      "value": true,
+      "formula": "a8c",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "109",
+      "x": 1305.3198288132176,
+      "y": 2387.3591165263606,
+      "title": "e83",
+      "value": true,
+      "formula": "a8c",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "a8c",
+      "x": 1058.9601472540583,
+      "y": 2561.997761780692,
+      "title": "e93",
+      "value": true,
+      "formula": "abe",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "169",
+      "x": 1301.1383148471284,
+      "y": 2538.452662153588,
+      "title": "e91",
+      "value": true,
+      "formula": "abe",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "abe",
+      "x": 1169.9584740675487,
+      "y": 2713.359116526361,
+      "title": "e94",
+      "value": true,
+      "formula": "8d9",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "515",
+      "x": -834.01857114282,
+      "y": 455.67820321538426,
+      "title": "e18_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "612",
+      "x": -34.23971664252263,
+      "y": 432.8566621147058,
+      "title": "e30_ex0",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "f2d",
+      "x": -156.2397166425228,
+      "y": 976.8566621147065,
+      "title": "e35_ex0",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "3ac",
+      "x": 113.76028335747759,
+      "y": 982.8566621147065,
+      "title": "e38_ex0",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "f47",
+      "x": 367.7602833574779,
+      "y": 980.8566621147065,
+      "title": "e36_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "2f7",
+      "x": 1928.4840879713902,
+      "y": 974.9810959687827,
+      "title": "e27_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "f6b",
+      "x": 1678.7505938208187,
+      "y": 967.8458532787663,
+      "title": "e26_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "20c",
+      "x": 1443.2875850502794,
+      "y": 970.2242675087717,
+      "title": "e25_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "ba3",
+      "x": 1212.5814047397519,
+      "y": 970.2242675087717,
+      "title": "e23_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "8d0",
+      "x": 803.4941571788156,
+      "y": 1170.011062829229,
+      "title": "e44_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "d6e",
+      "x": -336.21468363755196,
+      "y": 1525.164596104449,
+      "title": "e47_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "6be",
+      "x": -1133.831132815978,
+      "y": 1830.6347255770377,
+      "title": "e59_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "a6f",
+      "x": -839.6747118423741,
+      "y": 1853.2621425750071,
+      "title": "e58_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "f0f",
+      "x": -587.9446977399631,
+      "y": 1853.2621425750071,
+      "title": "e60_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "d2f",
+      "x": -22.259272790724708,
+      "y": 1923.9728206936618,
+      "title": "e69_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "abf",
+      "x": 243.61287693541732,
+      "y": 1932.4581020679004,
+      "title": "e77_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "299",
+      "x": 840.4110002568634,
+      "y": 1856.0905696997534,
+      "title": "e75_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "d7f",
+      "x": 1578.6304798156195,
+      "y": 1875.8895595729766,
+      "title": "e71_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "999",
+      "x": 1847.331056666508,
+      "y": 1887.2032680719617,
+      "title": "e73_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "659",
+      "x": 2110.3747792679037,
+      "y": 1912.659112194677,
+      "title": "e74_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "e8d",
+      "x": 1849.4113936002943,
+      "y": 2176.6054025055764,
+      "title": "e87_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "1c7",
+      "x": 1567.411393600294,
+      "y": 2172.6054025055764,
+      "title": "e88_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "8b1",
+      "x": 1233.4113936002939,
+      "y": 2188.6054025055764,
+      "title": "e86_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "8d9",
+      "x": 1200.0078679897629,
+      "y": 2840.582765320436,
+      "title": "e94_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "96f",
+      "x": 246.8279269502967,
+      "y": 2218.328797876274,
+      "title": "e98_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "1a5",
+      "x": 504.2147953022002,
+      "y": 2212.6719436267817,
+      "title": "e97_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "453",
+      "x": -673.7530397995903,
+      "y": 2245.456343821651,
+      "title": "e84_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "9bd",
+      "x": -340.77504759882805,
+      "y": 2257.348414971678,
+      "title": "e101_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "806",
+      "x": -3.040226938054967,
+      "y": 2257.348414971678,
+      "title": "e85_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "d8d",
+      "x": 450.5281374238575,
+      "y": 695.9301576774109,
+      "title": "e31_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "5a5",
+      "x": 1311.1714969510574,
+      "y": 1528.893605866221,
+      "title": "e55_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    }
+  ],
+  "title": "ueberlingenSemPree1"
+}

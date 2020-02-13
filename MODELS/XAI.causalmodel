@@ -1,0 +1,178 @@
+{
+  "id": "953a0582-3e5a-45ea-bbeb-079e8d80b86c",
+  "directed": true,
+  "nodes": [
+    {
+      "id": "e79",
+      "x": 91.35309015526397,
+      "y": -300.37907748510594,
+      "title": "arthropods",
+      "value": true,
+      "formula": "31d|0fd|0d2|105",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "31d",
+      "x": -306.62025925979304,
+      "y": -71.9173952247687,
+      "title": "spider",
+      "value": true,
+      "formula": "bbf&!7e7&!b4d&350&!528&!e99&!cf2",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "0fd",
+      "x": -60.62025925979322,
+      "y": -69.91739522476871,
+      "title": "beetle",
+      "value": true,
+      "formula": "!bbf&!7e7&b4d&!350&!528&e99&!cf2",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "0d2",
+      "x": 176.37974074020684,
+      "y": -66.91739522476868,
+      "title": "bee",
+      "value": true,
+      "formula": "!bbf&7e7&b4d&!350&528&!e99&cf2",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "105",
+      "x": 472.37974074020667,
+      "y": -58.9173952247687,
+      "title": "fly",
+      "value": true,
+      "formula": "!bbf&!7e7&b4d&!350&528&e99&!cf2",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "bbf",
+      "x": -325.61400395764207,
+      "y": 177.49749022023545,
+      "title": "n_legs",
+      "value": true,
+      "formula": "fb7",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "7e7",
+      "x": -48.61400395764229,
+      "y": 182.49749022023545,
+      "title": "stinger",
+      "value": true,
+      "formula": "68c",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "b4d",
+      "x": 226.38599604235773,
+      "y": 168.49749022023548,
+      "title": "compoundEyes",
+      "value": true,
+      "formula": "b90",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "528",
+      "x": 1284.2289843742467,
+      "y": 293.95180536131113,
+      "title": "n_eyes0",
+      "value": true,
+      "formula": "352",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "350",
+      "x": 1017.4830508640005,
+      "y": 290.87676973180754,
+      "title": "n_eyes1",
+      "value": true,
+      "formula": "bc0",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "fb7",
+      "x": -359.38908573737416,
+      "y": 365.02643082720914,
+      "title": "legs_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "68c",
+      "x": -51.620997754514136,
+      "y": 359.98105233568685,
+      "title": "stringer_exo",
+      "value": false,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "b90",
+      "x": 309.9644608045838,
+      "y": 354.93567384416457,
+      "title": "compoundeyes_exo",
+      "value": false,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "e99",
+      "x": -1191.5851099531844,
+      "y": 252.4733194313886,
+      "title": "n_wings0",
+      "value": true,
+      "formula": "e6d",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "cf2",
+      "x": -929.2254283940248,
+      "y": 249.10973377037374,
+      "title": "n_wings1",
+      "value": true,
+      "formula": "bc4",
+      "isExogenousVariable": false
+    },
+    {
+      "id": "e6d",
+      "x": -1225.3029930407458,
+      "y": 448.79751437370913,
+      "title": "wings0_exo",
+      "value": false,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "bc4",
+      "x": -894.7034150699886,
+      "y": 448.79751437370913,
+      "title": "wings1_exo",
+      "value": false,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "bc0",
+      "x": 1008.0279689343698,
+      "y": 527.2851839638889,
+      "title": "eyes1_exo",
+      "value": true,
+      "formula": "",
+      "isExogenousVariable": true
+    },
+    {
+      "id": "352",
+      "x": 1276.7887769249849,
+      "y": 517.7715270438673,
+      "title": "eyes0_exo",
+      "value": false,
+      "formula": "",
+      "isExogenousVariable": true
+    }
+  ],
+  "title": "bitrepoption3"
+}

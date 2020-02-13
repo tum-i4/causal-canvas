@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<emfta:FTAModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:emfta="http://cmu.edu/emfta" root="//@events.0" name="">
+  <events name="OUTenvironment" description="The computer crashes">
+    <gate description="" events="//@events.1 //@events.2"/>
+  </events>
+  <events name="environment" description="Unhandled interrupt"/>
+  <events name="INenvironment" description="Software error">
+    <gate description="" events="//@events.3 //@events.4"/>
+  </events>
+  <events name="actuator" description="Divide By Zero"/>
+  <events name="INactuator" description="Missing Recovery">
+    <gate events="//@events.5 //@events.6"/>
+  </events>
+  <events name="controller"/>
+  <events type="Intermediate" name="INcontroller">
+    <gate events="//@events.7"/>
+  </events>
+  <events name="sensor"/>
+</emfta:FTAModel>
