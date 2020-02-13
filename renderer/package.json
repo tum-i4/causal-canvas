@@ -19,7 +19,7 @@
     "dagre": "^0.8.4",
     "electron": "^3.0.11",
     "kld-intersections": "^0.4.3",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "react": "^16.8.4",
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.8.4",
