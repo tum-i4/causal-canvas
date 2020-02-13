@@ -262,12 +262,12 @@ function susiExample() {
 	const Suzi_Hits = createNode(-150, 150, 'Suzy_Hits', true, 'Suzy_Throws', false);
 	const Billy_Hits = createNode(150, 150, 'Billy_Hits', true, '!Suzy_Hits&Billy_Throws', false);
 
-	const Bottel_Broken = createNode(0, 300, 'Bottel_Broken', true, 'Suzy_Hits|Billy_Hits', false);
+	const Bottel_Broken = createNode(0, 300, 'Bottle_Broken', true, 'Suzy_Hits|Billy_Hits', false);
 
 	return {
 		id: uuid.v4(),
 		directed: true,
-		title: 'Bottel',
+		title: 'Rock-Throwing',
 		nodes: [
 			Exo_Suzi_Throws, Exo_Billy_Throws,
 			Suzi_Throws, Billy_Throws,
